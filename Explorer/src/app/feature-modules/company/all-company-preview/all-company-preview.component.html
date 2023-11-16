@@ -1,0 +1,20 @@
+<div>
+  <div *ngIf="companies">
+    <div *ngFor="let company of companies">
+      <h2>{{ company.name }}</h2>
+      <p><strong>Adress:</strong>{{ company.adress }}</p>
+      <p><strong>Description:</strong>{{ company.description }}</p>
+
+      <div *ngIf="company.equipmentSet && company.equipmentSet.length > 0">
+        <h3><strong>Equipment:</strong></h3>
+        <ul>
+          <li *ngFor="let equipment of company.equipmentSet">
+            <strong>Name:</strong>{{ equipment.name }}<br />
+            <strong>Description</strong> {{ equipment.description }}<br />
+            <strong>Status</strong>{{ equipment.status }}<br />
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
