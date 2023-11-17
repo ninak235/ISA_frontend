@@ -2,7 +2,6 @@ export interface CustomerRegistration {
   firstName: string;
   lastName: string;
   email: string;
-  userName: string;
   password: string;
   country: string;
   city: string;

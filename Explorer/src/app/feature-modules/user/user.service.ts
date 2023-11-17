@@ -15,7 +15,7 @@ export class UserService {
     registrationForm: CustomerRegistration
   ): Observable<CustomerRegistration> {
     return this.http.post<CustomerRegistration>(
-      environment.apiHost + '/customer/registerUser',
+      environment.apiHost + '/customer/registerCustomer',
       registrationForm
     );
   }
