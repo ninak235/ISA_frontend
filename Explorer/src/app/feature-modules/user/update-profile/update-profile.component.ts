@@ -57,7 +57,8 @@ export class UpdateProfileComponent implements OnInit, OnChanges {
       number: this.profileForm.value.number || '',
       occupation: this.profileForm.value.occupation || '',
       companyInfo: this.profileForm.value.companyInfo || '',
-      email: this.customer.email 
+      email: this.customer.email,
+      penaltyPoints: this.customer.penaltyPoints
     };
     console.log(updatedCustomer);
     this.service.updateProfile(updatedCustomer).subscribe({

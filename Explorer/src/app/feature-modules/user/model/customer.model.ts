@@ -8,4 +8,5 @@ export interface Customer {
   number: string;
   occupation: string;
   companyInfo: string;
+  penaltyPoints: number;
 }

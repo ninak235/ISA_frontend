@@ -10,13 +10,15 @@ import { Router } from '@angular/router';
 })
 export class CustomerProfileComponent implements OnInit{
   customer: Customer;
+  penaltyPoints: number;
   //shouldRenderUpdateForm: boolean = false;
   constructor(private service: UserService, private router: Router   ) { }
 
   ngOnInit(): void {
     this.service.getById(1).subscribe({
       next: (c: Customer) => {
-          this.customer = c;
+        this.customer = c;
+        this.penaltyPoints = c.penaltyPoints;
       },
       error: (err: any) => {
         console.log(err);

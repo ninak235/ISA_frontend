@@ -54,6 +54,7 @@ export class CustomerRegistrationComponent {
         number: this.registrationForm.value.number || '',
         occupation: this.registrationForm.value.occupation || '',
         companyInfo: this.registrationForm.value.companyInfo || '',
+        penaltyPoints: 0
       };
 
       this.userService.registerCustomer(registration).subscribe({
