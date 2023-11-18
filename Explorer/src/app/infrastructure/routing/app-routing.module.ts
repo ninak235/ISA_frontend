@@ -5,18 +5,31 @@ import { LoginComponent } from '../auth/login/login.component';
 import { EquipmentComponent } from 'src/app/feature-modules/administration/equipment/equipment.component';
 import { AuthGuard } from '../auth/auth.guard';
 import { RegistrationComponent } from '../auth/registration/registration.component';
-import { ProfileComponent } from 'src/app/feature-modules/customer/profile/profile.component';
+import { CustomerRegistrationComponent } from 'src/app/feature-modules/user/customer-registration/customer-registration.component';
+import { AllCompanyPreviewComponent } from 'src/app/feature-modules/company/all-company-preview/all-company-preview.component';
+import { CustomerProfileComponent } from 'src/app/feature-modules/user/customer-profile/customer-profile.component';
+import { UpdateProfileComponent } from 'src/app/feature-modules/user/update-profile/update-profile.component';
 
 const routes: Routes = [
-  {path: 'home', component: HomeComponent},
-  {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegistrationComponent},
-  { path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard], },
-  { path: 'profile', component: ProfileComponent}
+  { path: '', component: AllCompanyPreviewComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: CustomerRegistrationComponent },
+  {
+    path: 'equipment',
+    component: EquipmentComponent,
+    canActivate: [AuthGuard],
+  },
+
+  {
+    path: 'allCompanies',
+    component: AllCompanyPreviewComponent,
+  },
+  { path: 'profile', component: CustomerProfileComponent },
+  { path: 'updateProfile/:id', component: UpdateProfileComponent}
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
