@@ -10,6 +10,7 @@ import { AdministrationModule } from './feature-modules/administration/administr
 import { AuthModule } from './infrastructure/auth/auth.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { JwtInterceptor } from './infrastructure/auth/jwt/jwt.interceptor';
+import { CustomerModule } from './feature-modules/customer/customer.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,6 +23,7 @@ import { JwtInterceptor } from './infrastructure/auth/jwt/jwt.interceptor';
     AdministrationModule,
     AuthModule,
     HttpClientModule,
+    CustomerModule
   ],
   providers: [
     {
