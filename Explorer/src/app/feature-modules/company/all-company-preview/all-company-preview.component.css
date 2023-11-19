@@ -68,3 +68,14 @@ li.equipment-item {
    justify-content: center;
    margin-top: 20px;
  }
+
+ #gradeSelect{
+  margin-left: 30px;
+  width:fit-content;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  height: 30px;
+ }

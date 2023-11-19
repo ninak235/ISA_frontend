@@ -11,7 +11,7 @@ export class AllCompanyPreviewComponent implements OnInit {
   companies: Company[] = [];
   searchValue: String;
   filteredCompanies: Company[] = [];
-  selectedGrade: number;
+  selectedGrade: string = ''; 
 
   constructor(private companyService: CompanyService) {}
 
@@ -35,6 +35,11 @@ export class AllCompanyPreviewComponent implements OnInit {
     );
   }
   onGradeChange(): void{
-
+    console.log("OCENA: ", this.selectedGrade);
+    this.companyService.getByGradeCompanies(this.selectedGrade).subscribe({
+      next: (result: Company[]) => {
+        this.filteredCompanies = result;
+      }
+    })
   }
 }

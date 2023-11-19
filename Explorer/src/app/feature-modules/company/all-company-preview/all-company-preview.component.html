@@ -2,14 +2,14 @@
   <div class="search-container">
     <input type="text" class="search-input" placeholder="Search name or address..." [(ngModel)]="searchValue" (ngModelChange)="onSearchChange()">
     <button class="search-button">Search</button>
-    <label for="gradeSelect">Select Grade:</label>
     <select id="gradeSelect" [(ngModel)]="selectedGrade" (change)="onGradeChange()">
-      <option value="5">>5</option>
-      <option value="6">>6</option>
-      <option value="7">>7</option>
-      <option value="8">>8</option>
-      <option value="9">>9</option>
-      <option value="10">10</option>
+      <option *ngIf="!selectedGrade" value="" disabled selected>Select Grade</option>
+      <option value="A">A</option>
+      <option value="B">B</option>
+      <option value="C">C</option>
+      <option value="D">D</option>
+      <option value="E">E</option>
+      <option value="F">F</option>
     </select>
   </div>
   <div>

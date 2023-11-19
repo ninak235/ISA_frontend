@@ -23,6 +23,6 @@ export class UserService {
   }
 
   updateProfile(updatedProfile: Customer): Observable<void> {
-    return this.http.post<void>(environment.apiHost + '/customer/update', updatedProfile);
+    return this.http.put<void>(environment.apiHost + '/customer/update', updatedProfile);
   }
 }
