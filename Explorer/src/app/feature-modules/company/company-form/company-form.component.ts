@@ -15,7 +15,6 @@ export class CompanyFormComponent implements OnChanges {
   renderCreateCompany: boolean = true;
   companies: Company[] = [];
 
-
   
   constructor(private service: CompanyService){
   }
