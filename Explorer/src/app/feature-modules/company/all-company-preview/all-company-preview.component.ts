@@ -47,6 +47,8 @@ export class AllCompanyPreviewComponent implements OnInit {
   }
   onAddCompanyClicked(): void {
     this.renderCreateCompany = false;
+    this.refreshCompanyList();
+
   }
   onSearchChange(): void {
     this.filterCompanies();

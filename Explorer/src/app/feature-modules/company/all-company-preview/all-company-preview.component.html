@@ -17,7 +17,7 @@
   </div>
   <div>
 
-    <xp-company-form class="formAdding" *ngIf="renderCreateCompany" (addCompanyClicked)="onAddCompanyClicked()"></xp-company-form>
+    <xp-company-form class="formAdding" *ngIf="renderCreateCompany"  (addCompanyClicked)="onAddCompanyClicked()"></xp-company-form>
 
   <div class="available-company-container" *ngIf="companies">
     <div class="company-container" *ngFor="let company of filteredCompanies">
@@ -33,8 +33,10 @@
         <ul>
           <li *ngFor="let equipment of company.equipmentSet" class="equipment-item">
             <strong>Name:</strong>{{ equipment.name }}<br />
-            <strong>Description</strong> {{ equipment.description }}<br />
-            <strong>Status</strong>{{ equipment.status }}<br />
+            <strong>Description:</strong> {{ equipment.description }}<br />
+            <strong>Type:</strong> {{ equipment.typeOfEquipment }}<br />
+            <strong>Grade:</strong> {{ equipment.grade }}<br />
+            <strong>Price:</strong> {{ equipment.price }}<br />
           </li>
         </ul>
       </div>
