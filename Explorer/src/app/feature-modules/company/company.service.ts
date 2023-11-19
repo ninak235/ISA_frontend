@@ -13,4 +13,8 @@ export class CompanyService {
   getAllCompanise(): Observable<Company[]> {
     return this.http.get<Company[]>(environment.apiHost + '/company/getAll');
   }
+
+  getByGradeCompanies(grade: string): Observable<Company[]> {
+    return this.http.get<Company[]>(`${environment.apiHost}/company/byGrade?grade=${grade}`);
+  }
 }

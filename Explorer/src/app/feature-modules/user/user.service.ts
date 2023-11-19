@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-5;
 import { environment } from 'src/env/environment';
 import { Observable } from 'rxjs';
-import { CustomerRegistration } from './model/customerModel';
+import { Customer } from './model/customer.model';
 
 @Injectable({
   providedIn: 'root',
@@ -12,11 +11,18 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   registerCustomer(
-    registrationForm: CustomerRegistration
-  ): Observable<CustomerRegistration> {
-    return this.http.post<CustomerRegistration>(
+    registrationForm: Customer
+  ): Observable<Customer> {
+    return this.http.post<Customer>(
       environment.apiHost + '/customer/registerCustomer',
       registrationForm
     );
+  }
+  getById(id: number): Observable<Customer> {
+    return this.http.get<Customer>(environment.apiHost + '/customer/' + id);
+  }
+
+  updateProfile(updatedProfile: Customer): Observable<void> {
+    return this.http.put<void>(environment.apiHost + '/customer/update', updatedProfile);
   }
 }

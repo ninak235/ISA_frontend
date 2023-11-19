@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CustomerRegistration } from '../model/customerModel';
+import { Customer } from '../model/customer.model';
 import {
   AbstractControl,
   FormBuilder,
@@ -44,7 +44,7 @@ export class CustomerRegistrationComponent {
 
   register(): void {
     if (this.registrationForm.valid) {
-      const registration: CustomerRegistration = {
+      const registration: Customer = {
         firstName: this.registrationForm.value.firstName || '',
         lastName: this.registrationForm.value.lastName || '',
         email: this.registrationForm.value.email || '',
@@ -54,6 +54,7 @@ export class CustomerRegistrationComponent {
         number: this.registrationForm.value.number || '',
         occupation: this.registrationForm.value.occupation || '',
         companyInfo: this.registrationForm.value.companyInfo || '',
+        penaltyPoints: 0
       };
 
       this.userService.registerCustomer(registration).subscribe({

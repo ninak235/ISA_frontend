@@ -7,6 +7,8 @@ import { AuthGuard } from '../auth/auth.guard';
 import { RegistrationComponent } from '../auth/registration/registration.component';
 import { CustomerRegistrationComponent } from 'src/app/feature-modules/user/customer-registration/customer-registration.component';
 import { AllCompanyPreviewComponent } from 'src/app/feature-modules/company/all-company-preview/all-company-preview.component';
+import { CustomerProfileComponent } from 'src/app/feature-modules/user/customer-profile/customer-profile.component';
+import { UpdateProfileComponent } from 'src/app/feature-modules/user/update-profile/update-profile.component';
 
 const routes: Routes = [
   { path: '', component: AllCompanyPreviewComponent },
@@ -22,6 +24,8 @@ const routes: Routes = [
     path: 'allCompanies',
     component: AllCompanyPreviewComponent,
   },
+  { path: 'profile', component: CustomerProfileComponent },
+  { path: 'updateProfile/:id', component: UpdateProfileComponent}
 ];
 
 @NgModule({
