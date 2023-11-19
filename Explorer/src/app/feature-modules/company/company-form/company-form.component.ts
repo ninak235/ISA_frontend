@@ -19,7 +19,6 @@ export class CompanyFormComponent implements OnChanges {
   companies: Company[] = [];
   
 
-
   
   constructor(private service: CompanyService){
   }

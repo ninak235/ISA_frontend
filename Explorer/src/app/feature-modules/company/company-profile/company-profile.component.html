@@ -12,8 +12,10 @@
         <ul>
           <li *ngFor="let equipment of company.equipmentSet" class="equipment-item">
             <strong>Name:</strong>{{ equipment.name }}<br />
-            <strong>Description</strong> {{ equipment.description }}<br />
-            <strong>Status</strong>{{ equipment.status }}<br />
+            <strong>Description:</strong> {{ equipment.description }}<br />
+            <strong>Type:</strong> {{ equipment.typeOfEquipment }}<br />
+            <strong>Grade:</strong> {{ equipment.grade }}<br />
+            <strong>Price:</strong> {{ equipment.price }}<br />
           </li>
         </ul>
       </div>
