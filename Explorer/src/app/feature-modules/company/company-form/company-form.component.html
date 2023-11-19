@@ -1,7 +1,7 @@
 <form [formGroup]="companyForm" *ngIf="renderCreateCompany" (ngSubmit)="addCompany()">
-    <div >
+    <div class="fields">
       <p class="label">Create new company:</p>
-      <mat-form-field>
+      <mat-form-field >
         <mat-label>Name</mat-label>
         <input matInput formControlName="name" type="text" />
       </mat-form-field>

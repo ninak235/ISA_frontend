@@ -26,4 +26,7 @@ export class CompanyService {
     this.addCompanyClicked.emit();
     return this.http.post<Company>(environment.apiHost + '/company/registerCompany', company);
   }
+  getByGradeCompanies(grade: string): Observable<Company[]> {
+    return this.http.get<Company[]>(`${environment.apiHost}/company/byGrade?grade=${grade}`);
+  }
 }

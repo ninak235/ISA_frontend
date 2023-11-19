@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Company } from '../model/companyModel';
 import { CompanyService } from '../company.service';
 
@@ -10,6 +10,9 @@ import { CompanyService } from '../company.service';
 export class AllCompanyPreviewComponent implements OnInit {
   companies: Company[] = [];
   renderCreateCompany: boolean = false;
+  searchValue: String;
+  filteredCompanies: Company[] = [];
+  selectedGrade: string = ''; 
 
   constructor(private companyService: CompanyService) {}
 
@@ -25,6 +28,7 @@ export class AllCompanyPreviewComponent implements OnInit {
     this.companyService.getAllCompanise().subscribe({
       next: (result: Company[]) => {
         this.companies = result;
+        this.filteredCompanies = this.companies;
       },
     });
   }
@@ -43,5 +47,23 @@ export class AllCompanyPreviewComponent implements OnInit {
   }
   onAddCompanyClicked(): void {
     this.renderCreateCompany = false;
+  }
+  onSearchChange(): void {
+    this.filterCompanies();
+  }
+
+  private filterCompanies(): void {
+    this.filteredCompanies = this.companies.filter((c) =>
+      c.name.toLowerCase().match(this.searchValue.toLowerCase()) ||
+      c.adress.toLowerCase().match(this.searchValue.toLowerCase())
+    );
+  }
+  onGradeChange(): void{
+    console.log("OCENA: ", this.selectedGrade);
+    this.companyService.getByGradeCompanies(this.selectedGrade).subscribe({
+      next: (result: Company[]) => {
+        this.filteredCompanies = result;
+      }
+    })
   }
 }

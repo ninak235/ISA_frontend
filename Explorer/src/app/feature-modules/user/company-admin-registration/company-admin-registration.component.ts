@@ -4,6 +4,11 @@ import { UserService } from '../user.service';
 import { CompanyAdminRegistration } from '../model/companyAdminModel';
 import { CompanyService } from '../../company/company.service';
 import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatOptionModule } from '@angular/material/core';
 
 @Component({
   selector: 'xp-company-admin-registration',
