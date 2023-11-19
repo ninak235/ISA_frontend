@@ -17,14 +17,14 @@
   </div>
   <div>
 
-    <xp-company-form class="formAdding" *ngIf="renderCreateCompany"  (addCompanyClicked)="onAddCompanyClicked()"></xp-company-form>
+    <xp-company-form class="formAdding" *ngIf="renderCreateCompany" (addCompanyClicked)="onAddCompanyClicked()" [company]="selectedCompany" [shouldEdit]="shouldEdit" [oldCompanyName]="oldCompanyName"></xp-company-form>
 
   <div class="available-company-container" *ngIf="companies">
     <div class="company-container" *ngFor="let company of filteredCompanies">
       <h2>{{ company.name }}</h2>
       <p><strong>Adress:</strong>{{ company.adress }}</p>
       <p><strong>Description:</strong>{{ company.description }}</p>
-  
+      <p><strong>Grade:</strong>{{ company.grade }}</p>
       <div *ngIf="
           company.equipmentSet && company.equipmentSet.length > 0;
           else noEquipment
@@ -45,6 +45,12 @@
         <br />
         Coming soon!
       </ng-template>
+      <button (click)="onEditCompanyClicked(company)" color="primary" mat-icon-button>
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button (click)="onCompanyNameClicked(company)" color="primary" mat-icon-button>
+        <mat-icon>details</mat-icon>
+      </button>
     </div>
   </div>
   <div>

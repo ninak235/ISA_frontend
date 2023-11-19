@@ -1,17 +1,16 @@
-import { Component, OnChanges, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { CompanyAdminRegistration } from '../model/companyAdminModel';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Customer } from '../model/customer.model';
 import { UserService } from '../user.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'xp-update-profile',
-  templateUrl: './update-profile.component.html',
-  styleUrls: ['./update-profile.component.css']
+  selector: 'xp-update-admin-profile',
+  templateUrl: './update-admin-profile.component.html',
+  styleUrls: ['./update-admin-profile.component.css']
 })
-export class UpdateProfileComponent implements OnInit, OnChanges {
-
-  customer: Customer;
+export class UpdateAdminProfileComponent {
+  admin: CompanyAdminRegistration;
 
   constructor(private route: ActivatedRoute, private service: UserService, private router: Router) {}
 
@@ -19,10 +18,10 @@ export class UpdateProfileComponent implements OnInit, OnChanges {
       this.route.paramMap.subscribe((params) => {
       const idUser = params.get('id');
       if (idUser) {
-        this.service.getCustomerById(parseInt(idUser)).subscribe({
-          next: (c: Customer) => {
-            this.customer = c;
-            this.profileForm.patchValue(this.customer);
+        this.service.getAdminById(parseInt(idUser)).subscribe({
+          next: (a: CompanyAdminRegistration) => {
+            this.admin = a;
+            this.profileForm.patchValue(this.admin);
           },
           error: (err: any) => {
             console.log(err);
@@ -33,7 +32,7 @@ export class UpdateProfileComponent implements OnInit, OnChanges {
   }
   ngOnChanges(): void {
     this.profileForm.reset();
-    this.profileForm.patchValue(this.customer);
+    this.profileForm.patchValue(this.admin);
   }
 
   profileForm = new FormGroup({
@@ -42,30 +41,25 @@ export class UpdateProfileComponent implements OnInit, OnChanges {
       password: new FormControl('', [Validators.required]),
       country: new FormControl('', [Validators.required]),
       city: new FormControl('', [Validators.required]),
-      number: new FormControl('', [Validators.required]),
-      occupation: new FormControl('', [Validators.required]),
-      companyInfo: new FormControl('', [Validators.required]),
+      number: new FormControl('', [Validators.required])
   });
 
   updateProfile(): void {
-    const updatedCustomer: Customer = {
+    const updatedAdmin: CompanyAdminRegistration = {
       firstName: this.profileForm.value.firstName || '',
       lastName: this.profileForm.value.lastName || '',
+      email: this.admin.email,
       country: this.profileForm.value.country || '',
       city: this.profileForm.value.city || '',
       password: this.profileForm.value.password || '',
       number: this.profileForm.value.number || '',
-      occupation: this.profileForm.value.occupation || '',
-      companyInfo: this.profileForm.value.companyInfo || '',
-      email: this.customer.email,
-      penaltyPoints: this.customer.penaltyPoints
+      companyId: this.admin.companyId
     };
-    console.log(updatedCustomer);
-    this.service.updateCustomerProfile(updatedCustomer).subscribe({
+    console.log(updatedAdmin);
+    this.service.updateAdminProfile(updatedAdmin).subscribe({
       next: () => {
-       this.router.navigate(['/customerProfile']);
+       this.router.navigate(['/adminProfile']);
       }
     });
   }
-    
 }

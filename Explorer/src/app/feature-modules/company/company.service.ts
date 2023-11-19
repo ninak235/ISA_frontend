@@ -29,4 +29,18 @@ export class CompanyService {
   getByGradeCompanies(grade: string): Observable<Company[]> {
     return this.http.get<Company[]>(`${environment.apiHost}/company/byGrade?grade=${grade}`);
   }
+
+  getById(id: number): Observable<Company> {
+    return this.http.get<Company>(environment.apiHost + '/company/' + id);
+  }
+
+  getByName(companyName: string): Observable<Company> {
+    return this.http.get<Company>(environment.apiHost + '/company/name/' + companyName);
+  }
+
+  updateCompany(oldCompanyName: string, updatedCompany: Company): Observable<void> {
+    return this.http.put<void>(environment.apiHost + '/company/update/' + oldCompanyName, updatedCompany)
+  }
+
+
 }
