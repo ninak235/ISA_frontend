@@ -17,7 +17,7 @@ export class CustomerProfileComponent implements OnInit{
   constructor(private service: UserService, private router: Router   ) { }
 
   ngOnInit(): void {
-    this.service.getById(1).subscribe({
+    this.service.getCustomerById(1).subscribe({
       next: (c: Customer) => {
         this.customer = c;
         this.penaltyPoints = c.penaltyPoints;
@@ -29,7 +29,7 @@ export class CustomerProfileComponent implements OnInit{
   }
 
   editProfile(): void {
-    this.router.navigate(['/updateProfile/1']);
+    this.router.navigate(['/updateCustomerProfile/1']);
   }
 }
 

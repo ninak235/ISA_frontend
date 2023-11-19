@@ -1,6 +1,7 @@
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Company } from '../model/companyModel';
 import { CompanyService } from '../company.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'xp-all-company-preview',
@@ -13,8 +14,11 @@ export class AllCompanyPreviewComponent implements OnInit {
   searchValue: String;
   filteredCompanies: Company[] = [];
   selectedGrade: string = ''; 
+  selectedCompany: Company;
+  shouldEdit: boolean;
+  oldCompanyName: string;
 
-  constructor(private companyService: CompanyService) {}
+  constructor(private companyService: CompanyService, private router: Router) {}
 
   ngOnInit(): void {
     this.refreshCompanyList(); // Initial load of companies
@@ -47,6 +51,8 @@ export class AllCompanyPreviewComponent implements OnInit {
   }
   onAddCompanyClicked(): void {
     this.renderCreateCompany = false;
+    this.refreshCompanyList();
+    this.shouldEdit = false;
   }
   onSearchChange(): void {
     this.filterCompanies();
@@ -65,5 +71,17 @@ export class AllCompanyPreviewComponent implements OnInit {
         this.filteredCompanies = result;
       }
     })
+  }
+
+  onEditCompanyClicked(company: Company): void{
+    this.shouldEdit = true;
+    this.oldCompanyName = company.name;
+    this.selectedCompany = company;
+    console.log(this.selectedCompany);
+    console.log(this.shouldEdit);
+  }
+
+  onCompanyNameClicked(company: Company): void{
+    this.router.navigate(['/companyProfile/' + company.name]);
   }
 }

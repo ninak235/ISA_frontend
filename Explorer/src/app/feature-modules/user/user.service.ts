@@ -28,11 +28,19 @@ export class UserService {
     );
   }
   
-  getById(id: number): Observable<Customer> {
+  getCustomerById(id: number): Observable<Customer> {
     return this.http.get<Customer>(environment.apiHost + '/customer/' + id);
   }
 
-  updateProfile(updatedProfile: Customer): Observable<void> {
+  getAdminById(id: number): Observable<CompanyAdminRegistration> {
+    return this.http.get<CompanyAdminRegistration>(environment.apiHost + '/companyAdmin/' + id);
+  }
+
+  updateCustomerProfile(updatedProfile: Customer): Observable<void> {
     return this.http.put<void>(environment.apiHost + '/customer/update', updatedProfile);
+  }
+
+  updateAdminProfile(updatedProfile: CompanyAdminRegistration): Observable<void> {
+    return this.http.put<void>(environment.apiHost + '/companyAdmin/updateAdmin', updatedProfile);
   }
 }

@@ -1,0 +1,27 @@
+<div  *ngIf="company">
+    <div >
+      <h2>{{ company.name }}</h2>
+      <p><strong>Adress:</strong>{{ company.adress }}</p>
+      <p><strong>Description:</strong>{{ company.description }}</p>
+      <p><strong>Grade:</strong>{{ company.grade }}</p>
+      <div *ngIf="
+          company.equipmentSet && company.equipmentSet.length > 0;
+          else noEquipment
+        ">
+        <h3><strong>Equipment:</strong></h3>
+        <ul>
+          <li *ngFor="let equipment of company.equipmentSet" class="equipment-item">
+            <strong>Name:</strong>{{ equipment.name }}<br />
+            <strong>Description</strong> {{ equipment.description }}<br />
+            <strong>Status</strong>{{ equipment.status }}<br />
+          </li>
+        </ul>
+      </div>
+      <ng-template #noEquipment>
+        <h3><strong>Equipment:</strong></h3>
+        <br />
+        Coming soon!
+      </ng-template>
+    </div>
+  </div>
+  <div>

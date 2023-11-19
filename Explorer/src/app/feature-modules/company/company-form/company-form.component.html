@@ -27,7 +27,7 @@
             <input matInput formControlName="grade" type="text" />
       </mat-form-field>
   
-      <button
+      <button *ngIf="!shouldEdit"
         class="button"
         mat-raised-button
         type="button"
@@ -36,5 +36,14 @@
       >
         Add
       </button>
+      <button *ngIf="shouldEdit"
+        class="button"
+        mat-raised-button
+        type="button"
+        color="primary"
+        (click)="updateCompany()"
+      >
+      Update
+    </button>
     </div>
 </form>

@@ -11,6 +11,9 @@ import { CompanyFormComponent } from 'src/app/feature-modules/company/company-fo
 import { CompanyAdminRegistrationComponent } from 'src/app/feature-modules/user/company-admin-registration/company-admin-registration.component';
 import { CustomerProfileComponent } from 'src/app/feature-modules/user/customer-profile/customer-profile.component';
 import { UpdateProfileComponent } from 'src/app/feature-modules/user/update-profile/update-profile.component';
+import { CompanyAdminProfileComponent } from 'src/app/feature-modules/user/company-admin-profile/company-admin-profile.component';
+import { UpdateAdminProfileComponent } from 'src/app/feature-modules/user/update-admin-profile/update-admin-profile.component';
+import { CompanyProfileComponent } from 'src/app/feature-modules/company/company-profile/company-profile.component';
 
 const routes: Routes = [
   { path: '', component: AllCompanyPreviewComponent },
@@ -34,8 +37,11 @@ const routes: Routes = [
     path: 'registerCompanyAdmin',
     component: CompanyAdminRegistrationComponent,
   },
-  { path: 'profile', component: CustomerProfileComponent },
-  { path: 'updateProfile/:id', component: UpdateProfileComponent}
+  { path: 'customerProfile', component: CustomerProfileComponent },
+  { path: 'updateCustomerProfile/:id', component: UpdateProfileComponent},
+  { path: 'adminProfile', component: CompanyAdminProfileComponent },
+  { path: 'updateAdminProfile/:id', component: UpdateAdminProfileComponent},
+  { path: 'companyProfile/:companyName', component: CompanyProfileComponent }
 ];
 
 @NgModule({

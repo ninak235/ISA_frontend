@@ -9,10 +9,12 @@ import { UpdateProfileComponent } from './update-profile/update-profile.componen
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
+import { CompanyAdminProfileComponent } from './company-admin-profile/company-admin-profile.component';
+import { UpdateAdminProfileComponent } from './update-admin-profile/update-admin-profile.component';
 
 
 @NgModule({
-  declarations: [CustomerRegistrationComponent, CustomerProfileComponent, UpdateProfileComponent, CompanyAdminRegistrationComponent],
+  declarations: [CustomerRegistrationComponent, CustomerProfileComponent, UpdateProfileComponent, CompanyAdminRegistrationComponent, CompanyAdminProfileComponent, UpdateAdminProfileComponent],
   imports: [CommonModule, MaterialModule, ReactiveFormsModule, FormsModule, MatFormFieldModule, MatInputModule],
   exports: [CustomerRegistrationComponent, CompanyAdminRegistrationComponent],
 })
