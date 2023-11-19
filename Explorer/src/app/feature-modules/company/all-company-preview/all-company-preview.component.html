@@ -28,4 +28,12 @@
       Coming soon!
     </ng-template>
   </div>
+  <div>
+    <button *ngIf="!renderCreateCompany" (click)="onAddCompany()" color="primary">
+      Add new company
+    </button>
+
+    <xp-company-form *ngIf="renderCreateCompany" (addCompanyClicked)="onAddCompanyClicked()"></xp-company-form>
+  </div>
+
 </div>
