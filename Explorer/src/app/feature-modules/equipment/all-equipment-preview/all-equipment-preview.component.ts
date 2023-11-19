@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Equipment } from '../model/equipmentModel';
 import { EquipmentService } from '../equipment.service';
-import { NgModel } from '@angular/forms';
+import { FormControl, FormGroup, NgModel } from '@angular/forms';
 
 @Component({
   selector: 'xp-all-equipment-preview',
@@ -25,6 +25,7 @@ export class AllEquipmentPreviewComponent {
     this.equipmentService.getAllEquipments().subscribe(() => {
       this.refreshEquipmentList(); // Refresh the list of companies
     });
+
   }
   refreshEquipmentList(): void {
     this.equipmentService.getAllEquipments().subscribe({
