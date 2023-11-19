@@ -3,6 +3,8 @@ import { Customer } from '../model/customer.model';
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
 
+
+
 @Component({
   selector: 'xp-customer-profile',
   templateUrl: './customer-profile.component.html',

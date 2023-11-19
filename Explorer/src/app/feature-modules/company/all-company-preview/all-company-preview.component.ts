@@ -9,6 +9,7 @@ import { CompanyService } from '../company.service';
 })
 export class AllCompanyPreviewComponent implements OnInit {
   companies: Company[] = [];
+  renderCreateCompany: boolean = false;
   searchValue: String;
   filteredCompanies: Company[] = [];
   selectedGrade: string = ''; 
@@ -16,6 +17,14 @@ export class AllCompanyPreviewComponent implements OnInit {
   constructor(private companyService: CompanyService) {}
 
   ngOnInit(): void {
+    this.refreshCompanyList(); // Initial load of companies
+
+    // Subscribe to the addCompanyClicked event
+    this.companyService.addCompanyClicked.subscribe(() => {
+      this.refreshCompanyList(); // Refresh the list of companies
+    });
+  }
+  refreshCompanyList(): void {
     this.companyService.getAllCompanise().subscribe({
       next: (result: Company[]) => {
         this.companies = result;
@@ -24,6 +33,21 @@ export class AllCompanyPreviewComponent implements OnInit {
     });
   }
 
+  onAddCompany(): void {
+    this.renderCreateCompany = true;
+
+    this.companyService.getAllCompanise().subscribe({
+      next: (result: Company[]) => {
+        this.companies = result;
+      },
+      error: (error: any) => {
+        console.error('Error loading companies', error);
+      },
+    });
+  }
+  onAddCompanyClicked(): void {
+    this.renderCreateCompany = false;
+  }
   onSearchChange(): void {
     this.filterCompanies();
   }

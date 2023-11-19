@@ -12,6 +12,13 @@ import { AuthModule } from './infrastructure/auth/auth.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { JwtInterceptor } from './infrastructure/auth/jwt/jwt.interceptor';
 import { CompanyModule } from './feature-modules/company/company.module';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatOptionModule } from '@angular/material/core';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,6 +33,12 @@ import { CompanyModule } from './feature-modules/company/company.module';
     AuthModule,
     HttpClientModule,
     CompanyModule,
+    MatInputModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatNativeDateModule,
+    MatOptionModule,
   ],
   providers: [
     {
