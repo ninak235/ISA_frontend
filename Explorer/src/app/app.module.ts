@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { EquipmentModule } from './feature-modules/equipment/equipment.module';
 import { AppRoutingModule } from './infrastructure/routing/app-routing.module';
 import { AppComponent } from './app.component';
 import { LayoutModule } from './feature-modules/layout/layout.module';
 import { UserModule } from './feature-modules/user/user.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './infrastructure/material/material.module';
-import { AdministrationModule } from './feature-modules/administration/administration.module';
 import { AuthModule } from './infrastructure/auth/auth.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { JwtInterceptor } from './infrastructure/auth/jwt/jwt.interceptor';
@@ -20,6 +19,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatOptionModule } from '@angular/material/core';
 
 
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -29,7 +29,6 @@ import { MatOptionModule } from '@angular/material/core';
     UserModule,
     BrowserAnimationsModule,
     MaterialModule,
-    AdministrationModule,
     AuthModule,
     HttpClientModule,
     CompanyModule,
@@ -39,6 +38,7 @@ import { MatOptionModule } from '@angular/material/core';
     MatSelectModule,
     MatNativeDateModule,
     MatOptionModule,
+    EquipmentModule,
   ],
   providers: [
     {

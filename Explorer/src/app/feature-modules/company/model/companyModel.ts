@@ -1,4 +1,4 @@
-import { Equipment } from '../../administration/model/equipment.model';
+import { Equipment } from "../../equipment/model/equipmentModel";
 
 export interface Company {
   name: string;
@@ -11,9 +11,14 @@ export interface Company {
 export interface CompanyEquipment {
   name: string;
   description: string;
-  status: EquipmentStatus;
+  typeOfEquipment: TypeOfEquipment;
+  grade: string;
+  price: number;
 }
-export enum EquipmentStatus {
-  Status1 = 'Available',
-  Status2 = 'Unavailable',
+
+export enum TypeOfEquipment {
+  Type1 = 'Therapeutic',
+  Type2 = 'Surgical',
+  Type3 = 'Dental',
+  Type4 = 'Rehabilitation',
 }
