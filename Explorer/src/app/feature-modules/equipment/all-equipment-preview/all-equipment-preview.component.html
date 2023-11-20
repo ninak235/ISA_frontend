@@ -27,6 +27,15 @@
         <p><strong>Type:</strong> {{ equipment.typeOfEquipment }}</p>
         <p><strong>Grade:</strong> {{ equipment.grade }}</p>
         <p><strong>Price:</strong> {{ equipment.price }}</p>
+
+        <h3><strong>Companies:</strong></h3>
+        <ul>
+          <li *ngFor="let company of equipment.companySet" class="equipment-item">
+            <strong>Name:</strong>{{ company.name }}<br />
+            <strong>Description:</strong> {{ company.description }}<br />
+            <strong>Grade:</strong> {{ company.grade }}<br />
+          </li>
+        </ul>
       
         <button>Order now</button>
       </div>
