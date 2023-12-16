@@ -7,25 +7,22 @@ import { Login } from '../model/login.model';
 @Component({
   selector: 'xp-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   loginForm = new FormGroup({
-    username: new FormControl('', [Validators.required]),
+    userName: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
   });
 
   login(): void {
     const login: Login = {
-      username: this.loginForm.value.username || "",
-      password: this.loginForm.value.password || "",
+      username: this.loginForm.value.userName || '',
+      password: this.loginForm.value.password || '',
     };
+    console.log(login);
 
     if (this.loginForm.valid) {
       this.authService.login(login).subscribe({

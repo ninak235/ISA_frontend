@@ -7,16 +7,19 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'xp-update-profile',
   templateUrl: './update-profile.component.html',
-  styleUrls: ['./update-profile.component.css']
+  styleUrls: ['./update-profile.component.css'],
 })
 export class UpdateProfileComponent implements OnInit, OnChanges {
-
   customer: Customer;
 
-  constructor(private route: ActivatedRoute, private service: UserService, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private service: UserService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-      this.route.paramMap.subscribe((params) => {
+    this.route.paramMap.subscribe((params) => {
       const idUser = params.get('id');
       if (idUser) {
         this.service.getCustomerById(parseInt(idUser)).subscribe({
@@ -26,10 +29,10 @@ export class UpdateProfileComponent implements OnInit, OnChanges {
           },
           error: (err: any) => {
             console.log(err);
-          }
+          },
         });
       }
-      })
+    });
   }
   ngOnChanges(): void {
     this.profileForm.reset();
@@ -37,20 +40,21 @@ export class UpdateProfileComponent implements OnInit, OnChanges {
   }
 
   profileForm = new FormGroup({
-      firstName: new FormControl('', [Validators.required]),
-      lastName: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required]),
-      country: new FormControl('', [Validators.required]),
-      city: new FormControl('', [Validators.required]),
-      number: new FormControl('', [Validators.required]),
-      occupation: new FormControl('', [Validators.required]),
-      companyInfo: new FormControl('', [Validators.required]),
+    firstName: new FormControl('', [Validators.required]),
+    lastName: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required]),
+    country: new FormControl('', [Validators.required]),
+    city: new FormControl('', [Validators.required]),
+    number: new FormControl('', [Validators.required]),
+    occupation: new FormControl('', [Validators.required]),
+    companyInfo: new FormControl('', [Validators.required]),
   });
 
   updateProfile(): void {
     const updatedCustomer: Customer = {
       firstName: this.profileForm.value.firstName || '',
       lastName: this.profileForm.value.lastName || '',
+      userName: '',
       country: this.profileForm.value.country || '',
       city: this.profileForm.value.city || '',
       password: this.profileForm.value.password || '',
@@ -58,14 +62,13 @@ export class UpdateProfileComponent implements OnInit, OnChanges {
       occupation: this.profileForm.value.occupation || '',
       companyInfo: this.profileForm.value.companyInfo || '',
       email: this.customer.email,
-      penaltyPoints: this.customer.penaltyPoints
+      penaltyPoints: this.customer.penaltyPoints,
     };
     console.log(updatedCustomer);
     this.service.updateCustomerProfile(updatedCustomer).subscribe({
       next: () => {
-       this.router.navigate(['/customerProfile']);
-      }
+        this.router.navigate(['/customerProfile']);
+      },
     });
   }
-    
 }

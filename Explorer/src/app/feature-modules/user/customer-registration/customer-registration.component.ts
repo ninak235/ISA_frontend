@@ -28,6 +28,7 @@ export class CustomerRegistrationComponent {
         firstName: ['', [Validators.required]],
         lastName: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
+        userName: ['', [Validators.required]],
         password: ['', [Validators.required, Validators.minLength(8)]],
         confirmPassword: ['', [Validators.required]],
         country: ['', [Validators.required]],
@@ -48,13 +49,14 @@ export class CustomerRegistrationComponent {
         firstName: this.registrationForm.value.firstName || '',
         lastName: this.registrationForm.value.lastName || '',
         email: this.registrationForm.value.email || '',
+        userName: this.registrationForm.value.userName || '',
         password: this.registrationForm.value.password || '',
         country: this.registrationForm.value.country || '',
         city: this.registrationForm.value.city || '',
         number: this.registrationForm.value.number || '',
         occupation: this.registrationForm.value.occupation || '',
         companyInfo: this.registrationForm.value.companyInfo || '',
-        penaltyPoints: 0
+        penaltyPoints: 0,
       };
 
       this.userService.registerCustomer(registration).subscribe({
