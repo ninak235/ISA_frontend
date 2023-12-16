@@ -4,12 +4,15 @@
       <div *ngFor="let singleComplaint of complaints">
         <strong>Content of complaint:</strong> <span>{{ singleComplaint.content }}</span>
   
-        <button *ngIf="!renderReplayOnComplaint" (click)="onReplayOnComplaint()" color="primary">
+        <button *ngIf="!singleComplaint.disabled" (click)="onReplayOnComplaint(singleComplaint)" color="primary">
           Replay on complaint
         </button>
+        
+        
       </div>
+
+      <xp-replay-on-complaint *ngIf="renderReplayOnComplaint" [complaint]="selectedComplaint" (replayOnComplaintClicked)="onReplayOnComplaintClicked()"></xp-replay-on-complaint>
     </div>
   
     <button routerLink="/userProfile">Done with replays</button>
-  </div>
-  
+</div>

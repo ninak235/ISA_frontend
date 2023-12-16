@@ -1,1 +1,17 @@
-<p>replay-on-complaint works!</p>
+<form [formGroup]="complaintForm" *ngIf="renderUpdateComplaint">
+    <div class="fields">
+      <p class="label">Replay on complaint:</p>
+      <mat-form-field >
+        <input matInput formControlName="replay" type="text" />
+      </mat-form-field>  
+      <button
+        class="button"
+        mat-raised-button
+        type="button"
+        color="primary"
+        (click)="updateComplaint()"
+      >
+        Replay
+      </button>
+    </div>
+</form>

@@ -12,14 +12,13 @@ import { FormsModule } from '@angular/forms';
 import { CompanyAdminProfileComponent } from './company-admin-profile/company-admin-profile.component';
 import { UpdateAdminProfileComponent } from './update-admin-profile/update-admin-profile.component';
 import { SystemAdminCreateComponent } from './system-admin-create/system-admin-create.component';
-import { AllComplaintComponent } from '../complaint/all-complaint/all-complaint.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { RouterModule } from '@angular/router';
 
 
 @NgModule({
-  declarations: [CustomerRegistrationComponent, CustomerProfileComponent, UpdateProfileComponent, CompanyAdminRegistrationComponent, CompanyAdminProfileComponent, UpdateAdminProfileComponent, SystemAdminCreateComponent, AllComplaintComponent, UserProfileComponent],
+  declarations: [CustomerRegistrationComponent, CustomerProfileComponent, UpdateProfileComponent, CompanyAdminRegistrationComponent, CompanyAdminProfileComponent, UpdateAdminProfileComponent, SystemAdminCreateComponent, UserProfileComponent],
   imports: [RouterModule, CommonModule, MaterialModule, ReactiveFormsModule, FormsModule, MatFormFieldModule, MatInputModule],
-  exports: [CustomerRegistrationComponent, CompanyAdminRegistrationComponent, AllComplaintComponent],
+  exports: [CustomerRegistrationComponent, CompanyAdminRegistrationComponent],
 })
 export class UserModule {}
