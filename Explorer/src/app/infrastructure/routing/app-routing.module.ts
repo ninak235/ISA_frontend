@@ -11,6 +11,9 @@ import { AllEquipmentPreviewComponent } from 'src/app/feature-modules/equipment/
 import { CompanyAdminProfileComponent } from 'src/app/feature-modules/user/company-admin-profile/company-admin-profile.component';
 import { UpdateAdminProfileComponent } from 'src/app/feature-modules/user/update-admin-profile/update-admin-profile.component';
 import { CompanyProfileComponent } from 'src/app/feature-modules/company/company-profile/company-profile.component';
+import { SystemAdminCreateComponent } from 'src/app/feature-modules/user/system-admin-create/system-admin-create.component';
+import { UserProfileComponent } from 'src/app/feature-modules/user/user-profile/user-profile.component';
+import { AllComplaintComponent } from 'src/app/feature-modules/complaint/all-complaint/all-complaint.component';
 
 const routes: Routes = [
   { path: '', component: AllCompanyPreviewComponent },
@@ -34,7 +37,10 @@ const routes: Routes = [
   { path: 'allEquipments', component: AllEquipmentPreviewComponent},
   { path: 'adminProfile', component: CompanyAdminProfileComponent },
   { path: 'updateAdminProfile/:id', component: UpdateAdminProfileComponent},
-  { path: 'companyProfile/:companyName', component: CompanyProfileComponent }
+  { path: 'companyProfile/:companyName', component: CompanyProfileComponent },
+  { path: 'createSystemAdmin', component: SystemAdminCreateComponent },
+  { path: 'userProfile', component: UserProfileComponent },
+  { path: 'allCompaints', component: AllComplaintComponent }
 ];
 
 @NgModule({

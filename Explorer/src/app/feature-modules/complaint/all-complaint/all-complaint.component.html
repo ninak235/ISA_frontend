@@ -1,0 +1,15 @@
+<!-- all-complaint.component.html -->
+<div *ngIf="complaints && complaints.length > 0">
+    <div>
+      <div *ngFor="let singleComplaint of complaints">
+        <strong>Content of complaint:</strong> <span>{{ singleComplaint.content }}</span>
+  
+        <button *ngIf="!renderReplayOnComplaint" (click)="onReplayOnComplaint()" color="primary">
+          Replay on complaint
+        </button>
+      </div>
+    </div>
+  
+    <button routerLink="/userProfile">Done with replays</button>
+  </div>
+  

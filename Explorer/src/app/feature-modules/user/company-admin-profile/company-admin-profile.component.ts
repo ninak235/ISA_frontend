@@ -39,4 +39,5 @@ export class CompanyAdminProfileComponent {
   editProfile(): void {
     this.router.navigate(['/updateAdminProfile/1']);
   }
+
 }
