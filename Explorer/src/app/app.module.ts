@@ -18,6 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatOptionModule } from '@angular/material/core';
 import { ComplaintModule } from './feature-modules/complaint/complaint.module';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { ComplaintModule } from './feature-modules/complaint/complaint.module';
     MatOptionModule,
     EquipmentModule,
     ComplaintModule,
-  ],
+    FullCalendarModule
+    ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

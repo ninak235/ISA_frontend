@@ -40,7 +40,7 @@ const routes: Routes = [
   { path: 'companyProfile/:companyName', component: CompanyProfileComponent },
   { path: 'createSystemAdmin', component: SystemAdminCreateComponent },
   { path: 'userProfile', component: UserProfileComponent },
-  { path: 'allCompaints', component: AllComplaintComponent }
+  { path: 'allCompaints', component: AllComplaintComponent },
 ];
 
 @NgModule({

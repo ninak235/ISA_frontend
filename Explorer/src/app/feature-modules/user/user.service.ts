@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/env/environment';
 import { Observable } from 'rxjs';
@@ -11,6 +11,7 @@ import { User } from './model/user.model';
   providedIn: 'root',
 })
 export class UserService {
+  addCompanyClicked: EventEmitter<void> = new EventEmitter<void>();
   constructor(private http: HttpClient) {}
 
   registerCustomer(

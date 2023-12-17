@@ -14,11 +14,13 @@ import { UpdateAdminProfileComponent } from './update-admin-profile/update-admin
 import { SystemAdminCreateComponent } from './system-admin-create/system-admin-create.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { RouterModule } from '@angular/router';
+import { FullCalendarModule } from '@fullcalendar/angular';
+
 
 
 @NgModule({
   declarations: [CustomerRegistrationComponent, CustomerProfileComponent, UpdateProfileComponent, CompanyAdminRegistrationComponent, CompanyAdminProfileComponent, UpdateAdminProfileComponent, SystemAdminCreateComponent, UserProfileComponent],
-  imports: [RouterModule, CommonModule, MaterialModule, ReactiveFormsModule, FormsModule, MatFormFieldModule, MatInputModule],
+  imports: [RouterModule, CommonModule, MaterialModule, ReactiveFormsModule, FormsModule, MatFormFieldModule, MatInputModule, FullCalendarModule],
   exports: [CustomerRegistrationComponent, CompanyAdminRegistrationComponent],
 })
 export class UserModule {}

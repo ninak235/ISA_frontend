@@ -13,7 +13,6 @@ export class AppComponent implements OnInit {
     private authService: AuthService,
   ) {}
 
-
   ngOnInit(): void {
     this.checkIfUserExists();
   }

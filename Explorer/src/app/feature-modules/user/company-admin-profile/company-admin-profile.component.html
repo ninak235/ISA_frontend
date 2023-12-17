@@ -25,4 +25,11 @@
     </div>
     <mat-icon class="edit" (click)="editProfile()">edit</mat-icon>
 
+    <button *ngIf="!renderCreateCompany" (click)="onAddCompany()" color="primary">
+        View calendar
+      </button>
+      <full-calendar [options]="calendarOptions" class="formAdding" *ngIf="renderCreateCompany" 
+      (addCompanyClicked)="onAddCompanyClicked()"></full-calendar>
+
+
 </div>
