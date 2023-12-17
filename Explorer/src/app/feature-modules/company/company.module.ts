@@ -14,9 +14,10 @@ import { AddAvailabledateFormComponent } from './add-availabledate-form/add-avai
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
+import { CompanyReserveComponent } from './company-reserve/company-reserve.component';
 
 @NgModule({
-  declarations: [AllCompanyPreviewComponent, CompanyFormComponent, CompanyProfileComponent, AddAvailabledateFormComponent],
+  declarations: [AllCompanyPreviewComponent, CompanyFormComponent, CompanyProfileComponent, AddAvailabledateFormComponent, CompanyReserveComponent],
   imports: [CommonModule, MatInputModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatIconModule, MatCheckboxModule,
     MatCardModule, MatDatepickerModule, MatNativeDateModule, MatDialogModule],
   exports: [AllCompanyPreviewComponent],

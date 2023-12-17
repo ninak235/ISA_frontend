@@ -1,3 +1,5 @@
+import { CompanyEquipment } from "../../company/model/companyModel";
+
 export interface Reservation {
     id?: number;
     dateTime: Date;
@@ -6,6 +8,7 @@ export interface Reservation {
     status: ReservationStatus;
     customerId: number;
     companyAdminId: number;
+    reservationEquipments: CompanyEquipment[];
 }
 
 export enum ReservationStatus {
