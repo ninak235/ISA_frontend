@@ -1,6 +1,6 @@
-<div *ngIf="user" class="admin-card">
-    <img src="../../../../assets/user.png" height="100px" alt="user info"/>
-    <div class="admin-info">
+<div *ngIf="user" class="customer-card">
+    <img src="../../../../assets/user.png" height="100px" alt="customer-info"/>
+    <div class="customer-info">
         <div class="info-item">
             <strong>First Name:</strong> <span>{{ user.firstName }}</span>
         </div>
@@ -20,13 +20,16 @@
             <strong>Number:</strong> <span>{{ user.number }}</span>
         </div>
 
+        <div class="buttons">
+
+            <button class="button" routerLink="/createSystemAdmin">Add more system admins</button>
+            <button class="button" routerLink="/allCompaints">
+                Replay on complaint
+              </button>
+            </div>
         
     </div>
-
-    <button routerLink="/createSystemAdmin">Add more system admins</button>
-    <button  routerLink="/allCompaints">
-        Replay on complaint
-      </button>
+    
 
     <!--<xp-all-complaint *ngIf="renderReplayOnComplaint" (replayOnComplaintClicked)="onReplayOnComplaintClicked()"></xp-all-complaint>-->
     

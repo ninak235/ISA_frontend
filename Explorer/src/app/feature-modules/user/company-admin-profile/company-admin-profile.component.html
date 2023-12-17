@@ -1,6 +1,6 @@
-<div *ngIf="admin" class="admin-card">
+<div *ngIf="admin" class="customer-card">
     <img src="../../../../assets/user.png" height="100px" alt="user info"/>
-    <div class="admin-info">
+    <div class="customer-info">
         <div class="info-item">
             <strong>First Name:</strong> <span>{{ admin.firstName }}</span>
         </div>
@@ -22,14 +22,14 @@
         <div class="info-item">
             <strong>Company:</strong> <span>{{ company.name }}</span>
         </div>
+
+        <div class="buttons">
+            <mat-icon class="edit" (click)="editProfile()">edit</mat-icon>
+        
+            <button (click)="navigateToCalendar()">View calendar</button>
+        
+            </div>
     </div>
-    <mat-icon class="edit" (click)="editProfile()">edit</mat-icon>
-
-    <button *ngIf="!renderCreateCompany" (click)="onAddCompany()" color="primary">
-        View calendar
-      </button>
-      <full-calendar [options]="calendarOptions" class="formAdding" *ngIf="renderCreateCompany" 
-      (addCompanyClicked)="onAddCompanyClicked()"></full-calendar>
-
+    
 
 </div>

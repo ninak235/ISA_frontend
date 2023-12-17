@@ -1,6 +1,7 @@
 import { Equipment } from "../../equipment/model/equipmentModel";
 
 export interface Company {
+  id?:number,
   name: string;
   adress: string;
   description: string;
@@ -9,6 +10,7 @@ export interface Company {
 }
 
 export interface CompanyEquipment {
+  id?:number,
   name: string;
   description: string;
   typeOfEquipment: TypeOfEquipment;

@@ -25,6 +25,8 @@
     "@fullcalendar/daygrid": "^6.1.10",
     "fullcalendar": "^6.1.10",
     "fullcalendar-scheduler": "^6.1.10",
+    "angular-bootstrap-md": "^15.0.0",
+    "ngx-material-timepicker": "^13.1.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"

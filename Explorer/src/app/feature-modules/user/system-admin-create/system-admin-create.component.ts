@@ -20,6 +20,7 @@ export class SystemAdminCreateComponent {
     this.registrationAdminForm = this.formBuilder.group(
       { 
         firstName: ['', [Validators.required]],
+        userName: ['', [Validators.required]],
         lastName: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(8)]],
@@ -40,6 +41,7 @@ export class SystemAdminCreateComponent {
     if (this.registrationAdminForm.valid) {
       const registration: User = {
         firstName: this.registrationAdminForm.value.firstName || '',
+        userName: this.registrationAdminForm.value.userName || '',
         lastName: this.registrationAdminForm.value.lastName || '',
         email: this.registrationAdminForm.value.email || '',
         password: this.registrationAdminForm.value.password || '',

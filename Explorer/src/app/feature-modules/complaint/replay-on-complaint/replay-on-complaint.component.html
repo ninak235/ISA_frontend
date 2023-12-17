@@ -1,17 +1,12 @@
-<form [formGroup]="complaintForm" *ngIf="renderUpdateComplaint">
-    <div class="fields">
-      <p class="label">Replay on complaint:</p>
-      <mat-form-field >
-        <input matInput formControlName="replay" type="text" />
-      </mat-form-field>  
-      <button
-        class="button"
-        mat-raised-button
-        type="button"
-        color="primary"
-        (click)="updateComplaint()"
-      >
-        Replay
-      </button>
-    </div>
+<!-- your.component.html -->
+<form [formGroup]="complaintForm" *ngIf="renderUpdateComplaint" class="complaint-form">
+  <div class="fields">
+    <p class="label">Replay on complaint:</p>
+    <mat-form-field appearance="fill" class="input-field">
+      <input matInput formControlName="replay" type="text" />
+    </mat-form-field>
+    <button mat-raised-button type="button" color="primary" (click)="updateComplaint()" class="button">
+      Replay
+    </button>
+  </div>
 </form>

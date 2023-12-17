@@ -28,6 +28,7 @@ export class CompanyAdminRegistrationComponent {
       {
         firstName: ['', [Validators.required]],
         lastName: ['', [Validators.required]],
+        userName: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(8)]],
         confirmPassword: ['', [Validators.required]],
@@ -58,6 +59,7 @@ export class CompanyAdminRegistrationComponent {
       const registration: CompanyAdminRegistration = {
         firstName: this.registrationAdminForm.value.firstName || '',
         lastName: this.registrationAdminForm.value.lastName || '',
+        userName: this.registrationAdminForm.value.userName || '',
         email: this.registrationAdminForm.value.email || '',
         password: this.registrationAdminForm.value.password || '',
         country: this.registrationAdminForm.value.country || '',

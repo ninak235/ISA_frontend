@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Company } from './model/companyModel';
 import { environment } from 'src/env/environment';
 import { CompanyIdName } from './model/companyIdName';
+import { AvailableDate } from './model/availableDateModel';
 
 @Injectable({
   providedIn: 'root',
@@ -42,5 +43,16 @@ export class CompanyService {
     return this.http.put<void>(environment.apiHost + '/company/update/' + oldCompanyName, updatedCompany)
   }
 
+  getCompanyAvailableDates(id: number): Observable<AvailableDate[]>{
+    return this.http.get<AvailableDate[]>(environment.apiHost + '/availableDate/getByCompanyId/'+id);
+  }
+
+  /*createAvailableDate(date: AvailableDate) : Observable<void>{
+    return this.http.post<void>(environment.apiHost + '/availableDate/create', date);
+  }*/
+
+  getExtraAvailableDates(id:number, selectedDate: string): Observable<AvailableDate[]> {
+    return this.http.get<AvailableDate[]>(environment.apiHost + '/availableDate/getExtraByCompanyId/'+id + '/' + selectedDate);
+  }
 
 }

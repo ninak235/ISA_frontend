@@ -48,6 +48,7 @@ export class UpdateAdminProfileComponent {
     const updatedAdmin: CompanyAdminRegistration = {
       firstName: this.profileForm.value.firstName || '',
       lastName: this.profileForm.value.lastName || '',
+      userName: this.admin.userName || '',
       email: this.admin.email,
       country: this.profileForm.value.country || '',
       city: this.profileForm.value.city || '',

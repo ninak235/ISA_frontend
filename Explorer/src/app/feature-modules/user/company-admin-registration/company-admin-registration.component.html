@@ -26,6 +26,17 @@
       </div>
       <div>
         <mat-form-field class="one-item-container">
+          <mat-label>User Name</mat-label>
+          <input matInput formControlName="userName" type="text" />
+          <mat-error
+            *ngIf="registrationAdminForm.get('userName')?.hasError('required')"
+          >
+            UserName is required!
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="one-item-container">
           <mat-label>Email</mat-label>
           <input matInput formControlName="email" type="text" />
           <mat-error *ngIf="registrationAdminForm.get('email')?.hasError('required')">

@@ -1,0 +1,34 @@
+.date-time-container {
+    max-width: 400px; /* Adjust the max-width as needed */
+    margin: 20px auto; /* Center the container and add spacing */
+  }
+  
+  h2 {
+    color: #007bff; /* Blue color for the heading */
+    margin-bottom: 20px; /* Add spacing below the heading */
+  }
+  
+  .date-section,
+  .time-section {
+    margin-bottom: 15px; /* Add spacing between date and time sections */
+  }
+  
+  .buttons-section {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .cancel-button {
+    font-size: medium;
+    border: transparent;
+    background-color: #dc3545; /* Red color for cancel button */
+    color: white;
+  }
+  
+  .save-button {
+    font-size: medium;
+    border: transparent;
+    background-color: #28a745; /* Green color for save button */
+    color: white;
+  }
+  

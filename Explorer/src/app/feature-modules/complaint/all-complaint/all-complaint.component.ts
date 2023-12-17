@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Complaint } from '../model/complaintModel';
 import { ComplaintService } from '../complaint.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -13,7 +14,7 @@ export class AllComplaintComponent {
   complaints: Complaint[] = [];
   selectedComplaint: Complaint;
 
-  constructor(private complaintService: ComplaintService) { }
+  constructor(private complaintService: ComplaintService, private router: Router) { }
 
   ngOnInit(): void {
     this.refreshCompanyList();
@@ -59,5 +60,9 @@ export class AllComplaintComponent {
   // Add this method
   onReplayOnComplaintClicked(): void {
     this.renderReplayOnComplaint = false;
+  }
+
+  navigateToUserProfile() {
+    this.router.navigate(['/userProfile']);
   }
 }

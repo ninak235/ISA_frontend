@@ -19,7 +19,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatOptionModule } from '@angular/material/core';
 import { ComplaintModule } from './feature-modules/complaint/complaint.module';
 import { FullCalendarModule } from '@fullcalendar/angular';
-
+import { ReservationModule } from './feature-modules/reservation/reservation.module';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [AppComponent],
@@ -41,8 +43,11 @@ import { FullCalendarModule } from '@fullcalendar/angular';
     MatOptionModule,
     EquipmentModule,
     ComplaintModule,
-    FullCalendarModule
-    ],
+    FullCalendarModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    ReservationModule
+  ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

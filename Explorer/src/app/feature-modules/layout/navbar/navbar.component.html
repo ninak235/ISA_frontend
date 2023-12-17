@@ -1,12 +1,41 @@
 <mat-toolbar color="primary">
-    <div>
-        <p>Explorer</p>
-        <div id="buttons">
-            <button *ngIf="user && user.username === ''" color="accent" mat-raised-button [routerLink]="['login']">Login</button>
-            <button *ngIf="user && user.username !== ''" color="accent" mat-raised-button (click)="onLogout()">Logout</button>
-            <button color="primary" mat-raised-button [routerLink]="['home']">Home</button>
-            <button mat-raised-button [routerLink]="['customerProfile']">Profile</button>
-            <button *ngIf="user && user.role === 'administrator'"color="primary" mat-raised-button [routerLink]="['equipment']">Manage equipment</button>
-        </div>
+  <div>
+    <p>Explorer</p>
+    <div id="buttons">
+      <button
+        *ngIf="user && user.username === ''"
+        color="accent"
+        mat-raised-button
+        [routerLink]="['login']"
+      >
+        Login
+      </button>
+      <button
+        *ngIf="user && user.username !== ''"
+        color="accent"
+        mat-raised-button
+        (click)="onLogout()"
+      >
+        Logout
+      </button>
+      <button color="primary" mat-raised-button [routerLink]="['home']">
+        Home
+      </button>
+      <button mat-raised-button *ngIf="customer" [routerLink]="['customerProfile']">
+        Customer Profile
+      </button>
+
+      <button mat-raised-button *ngIf="systemAdmin" [routerLink]="['userProfile']">
+        System Admin Profile
+      </button>
+
+      <button mat-raised-button *ngIf="systemAdmin" [routerLink]="['registerCompanyAdmin']">
+        Register Company Admin
+      </button>
+
+      <button mat-raised-button *ngIf="companyAdmin" [routerLink]="['adminProfile']">
+        Comapny Admin Profile
+      </button>
     </div>
+  </div>
 </mat-toolbar>

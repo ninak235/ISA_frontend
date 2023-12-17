@@ -102,4 +102,8 @@ export class CompanyAdminProfileComponent {
     this.router.navigate(['/updateAdminProfile/1']);
   }
 
+  navigateToCalendar() {
+    this.router.navigate(['/allReservations']);
+  }
+
 }

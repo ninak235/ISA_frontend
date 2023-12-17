@@ -14,6 +14,7 @@ import { CompanyProfileComponent } from 'src/app/feature-modules/company/company
 import { SystemAdminCreateComponent } from 'src/app/feature-modules/user/system-admin-create/system-admin-create.component';
 import { UserProfileComponent } from 'src/app/feature-modules/user/user-profile/user-profile.component';
 import { AllComplaintComponent } from 'src/app/feature-modules/complaint/all-complaint/all-complaint.component';
+import { AllReservationsComponent } from 'src/app/feature-modules/reservation/all-reservations/all-reservations.component';
 
 const routes: Routes = [
   { path: '', component: AllCompanyPreviewComponent },
@@ -41,6 +42,7 @@ const routes: Routes = [
   { path: 'createSystemAdmin', component: SystemAdminCreateComponent },
   { path: 'userProfile', component: UserProfileComponent },
   { path: 'allCompaints', component: AllComplaintComponent },
+  { path: 'allReservations', component: AllReservationsComponent },
 ];
 
 @NgModule({

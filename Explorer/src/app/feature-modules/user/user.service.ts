@@ -14,17 +14,17 @@ export class UserService {
   addCompanyClicked: EventEmitter<void> = new EventEmitter<void>();
   constructor(private http: HttpClient) {}
 
-  registerCustomer(
-    registrationForm: Customer
-  ): Observable<Customer> {
+  registerCustomer(registrationForm: Customer): Observable<Customer> {
     return this.http.post<Customer>(
-      environment.apiHost + '/customer/registerCustomer',
+      environment.autHost + '/registerCustomer',
       registrationForm
     );
   }
 
-  registerCompanyAdmin(registrationAdminForm: CompanyAdminRegistration): Observable<CompanyAdminRegistration>{
-    console.log("companyAdmin:", registrationAdminForm.companyId)
+  registerCompanyAdmin(
+    registrationAdminForm: CompanyAdminRegistration
+  ): Observable<CompanyAdminRegistration> {
+    console.log('companyAdmin:', registrationAdminForm.companyId);
     return this.http.post<CompanyAdminRegistration>(
       environment.apiHost + '/companyAdmin/registerCompanyAdmin',
       registrationAdminForm
@@ -44,15 +44,25 @@ export class UserService {
   }
 
   getAdminById(id: number): Observable<CompanyAdminRegistration> {
-    return this.http.get<CompanyAdminRegistration>(environment.apiHost + '/companyAdmin/' + id);
+    return this.http.get<CompanyAdminRegistration>(
+      environment.apiHost + '/companyAdmin/' + id
+    );
   }
 
   updateCustomerProfile(updatedProfile: Customer): Observable<void> {
-    return this.http.put<void>(environment.apiHost + '/customer/update', updatedProfile);
+    return this.http.put<void>(
+      environment.apiHost + '/customer/update',
+      updatedProfile
+    );
   }
 
-  updateAdminProfile(updatedProfile: CompanyAdminRegistration): Observable<void> {
-    return this.http.put<void>(environment.apiHost + '/companyAdmin/updateAdmin', updatedProfile);
+  updateAdminProfile(
+    updatedProfile: CompanyAdminRegistration
+  ): Observable<void> {
+    return this.http.put<void>(
+      environment.apiHost + '/companyAdmin/updateAdmin',
+      updatedProfile
+    );
   }
 
   getUserById(userId: number): Observable<User> {

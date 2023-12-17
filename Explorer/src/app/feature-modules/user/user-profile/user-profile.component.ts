@@ -13,7 +13,7 @@ export class UserProfileComponent {
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    this.userService.getUserById(4).subscribe({
+    this.userService.getUserById(3).subscribe({
       next: (u: User) => {
         this.user = u;
       },
