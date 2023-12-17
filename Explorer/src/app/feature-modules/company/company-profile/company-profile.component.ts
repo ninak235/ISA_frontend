@@ -7,6 +7,8 @@ import { AvailableDate, Duration } from '../model/availableDateModel';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { AddAvailabledateFormComponent } from '../add-availabledate-form/add-availabledate-form.component';
+import { Reservation, ReservationStatus } from '../../reservation/model/reservation.model';
+import { ReservationService } from '../../reservation/reservation.service';
 
 @Component({
   selector: 'xp-company-profile',
@@ -23,10 +25,10 @@ export class CompanyProfileComponent {
   availableDates: AvailableDate[] = [];
   shouldRenderAddDate: boolean = false;
   shouldAdd0: boolean = false;
-  selectedDate: Date;
+  selectedDate: AvailableDate;
   
   constructor(private companyService: CompanyService,  private router: Router, private route: ActivatedRoute, 
-    private datePipe: DatePipe, private dialog: MatDialog) { }
+    private datePipe: DatePipe, private dialog: MatDialog, private reservationService: ReservationService) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
@@ -139,7 +141,26 @@ export class CompanyProfileComponent {
   }
 
   reserve() : void{
+    console.log("SELECTED_DATE: ", this.selectedDate);
+    const [year, month, day, hour, minute] = this.selectedDate.startTime;
 
+    const startDate = new Date(parseInt(year,10), parseInt(month,10)-1, parseInt(day, 10), parseInt(hour, 10), parseInt(minute,10));
+
+    const reservation: Reservation = {
+      dateTime: startDate,
+      duration: 2000,
+      grade: 4,      
+      status: ReservationStatus.Pending,
+      customerId: 1,  //dodati token upotrebu
+      companyAdminId: this.selectedDate.adminId|| 0,
+    };
+
+    this.reservationService.createReservation(reservation).subscribe({
+      next: (reservation: Reservation) => {
+        console.log('KREIRANO');
+      }
+    })
+    
   }
   
 }
