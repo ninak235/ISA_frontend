@@ -39,8 +39,32 @@ export class CompanyService {
   }
 
   updateCompany(oldCompanyName: string, updatedCompany: Company): Observable<void> {
+    console.log(oldCompanyName);
+    console.log(updatedCompany);
     return this.http.put<void>(environment.apiHost + '/company/update/' + oldCompanyName, updatedCompany)
   }
+
+  updateCompanyEquipment(updatedCompany: Company, oldId: number, newId: number): Observable<void> {
+    console.log(updatedCompany);
+    return this.http.put<void>(
+        `${environment.apiHost}/company/update/equipment/change/${updatedCompany.name}?oldId=${oldId}&newId=${newId}`,
+        updatedCompany
+    );
+  }
+
+  deleteCompanyEquipment(updatedCompany: Company, oldId: number): Observable<void> {
+    console.log(updatedCompany);
+    return this.http.put<void>(
+        `${environment.apiHost}/company/update/equipment/delete/${updatedCompany.name}?oldId=${oldId}`,
+        updatedCompany
+    );
+  }
+
+  addEquipmentToCompany(companyName: string, equipmentId: number): Observable<any> {
+    const url = `${environment.apiHost}/company/add-equipment/${companyName}/${equipmentId}`;
+    return this.http.post<void>(url, null); // Assuming you just need to send a POST request
+  }
+  
 
 
 }

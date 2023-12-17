@@ -23,4 +23,10 @@ export class EquipmentService {
   getByTypeEquipment(typeOfEquipment: string): Observable<Equipment[]> {
     return this.http.get<Equipment[]>(`${environment.apiHost}/equipment/byType?typeOfEquipment=${typeOfEquipment}`);
   }
+
+  addEquipment(equipment: Equipment): Observable<Equipment>{
+    console.log(equipment)
+    return this.http.post<Equipment>(environment.apiHost + '/equipment', equipment);
+  }
+
 }

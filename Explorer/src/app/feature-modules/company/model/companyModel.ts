@@ -6,9 +6,16 @@ export interface Company {
   description: string;
   grade: string;
   equipmentSet: CompanyEquipment[];
+  adminsSet: CompanyAdmin[];
+}
+
+export interface CompanyAdmin {
+  firstName: string;
+  lastName: string;
 }
 
 export interface CompanyEquipment {
+  id: number,
   name: string;
   description: string;
   typeOfEquipment: TypeOfEquipment;
