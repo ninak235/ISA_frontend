@@ -2,14 +2,10 @@ import { CompanyAdminRegistration } from "../../user/model/companyAdminModel";
 
 export interface AvailableDate {
     id?: number;
-    admin: CompanyAdminRegistration | null;
+    adminId: number | 0;
     startTime: string;
-    duration: Duration;
+    duration: number;
     adminConfirmationTime: Date;
     confirmed: boolean;
     selected: boolean;
-  }
-
-  export class Duration {
-    milliseconds: number;
   }
