@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Equipment } from '../model/equipmentModel';
+import { Equipment, EquipmentCompany } from '../model/equipmentModel';
 import { EquipmentService } from '../equipment.service';
 import { FormControl, FormGroup, NgModel } from '@angular/forms';
 

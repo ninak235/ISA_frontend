@@ -3,7 +3,7 @@ import { Equipment } from './model/equipmentModel';
 import { Observable } from 'rxjs';
 import { environment } from 'src/env/environment';
 import { HttpClient } from '@angular/common/http';
-import { TypeOfEquipment } from '../company/model/companyModel';
+import { CompanyEquipment, TypeOfEquipment } from '../company/model/companyModel';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +24,7 @@ export class EquipmentService {
     return this.http.get<Equipment[]>(`${environment.apiHost}/equipment/byType?typeOfEquipment=${typeOfEquipment}`);
   }
 
-  addEquipment(equipment: Equipment): Observable<Equipment>{
+  addEquipment(equipment: CompanyEquipment): Observable<Equipment>{
     console.log(equipment)
     return this.http.post<Equipment>(environment.apiHost + '/equipment', equipment);
   }

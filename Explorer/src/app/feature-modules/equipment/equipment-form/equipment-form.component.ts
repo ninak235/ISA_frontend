@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Equipment } from '../model/equipmentModel';
 import { EquipmentService } from '../equipment.service';
 import { CompanyService } from '../../company/company.service';
-import { Company, TypeOfEquipment } from '../../company/model/companyModel';
+import { Company, CompanyEquipment, TypeOfEquipment } from '../../company/model/companyModel';
 
 
 @Component({
@@ -12,7 +12,7 @@ import { Company, TypeOfEquipment } from '../../company/model/companyModel';
   styleUrls: ['./equipment-form.component.css']
 })
 export class EquipmentFormComponent {
-  @Input() equipment: Equipment;
+  @Input() equipment: CompanyEquipment;
   @Input() company: Company;
   @Output() updateEquipmentClicked = new EventEmitter<void>();
 
@@ -38,7 +38,7 @@ export class EquipmentFormComponent {
 
   updateEquipment(): void {
     console.log('USAO U APDEJT EQUI')
-    const updatedEqupiment: Equipment = {
+    const updatedEqupiment: CompanyEquipment = {
       id: 0,
       name: this.equipmentForm.value.name || '',
       description: this.equipmentForm.value.description || '',
@@ -62,7 +62,7 @@ export class EquipmentFormComponent {
         console.log('ZAMENJENA KOMPANIJA');
         console.log(this.company);
 
-        this._companyService.updateCompanyEquipment(this.company, this.equipment.id, updatedEquipmentFromBackend.id).subscribe({
+        this._companyService.updateCompanyEquipment(this.company, this.equipment.id!, updatedEquipmentFromBackend.id).subscribe({
           next: () => {
             this.updateEquipmentClicked.emit();
             this.equipmentForm.reset();

@@ -7,13 +7,25 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { CompanyProfileComponent } from './company-profile/company-profile.component';
-import { EquipmentModule } from '../equipment/equipment.module';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCardModule } from '@angular/material/card';
+import { DatePipe } from '@angular/common';
+import { AddAvailabledateFormComponent } from './add-availabledate-form/add-availabledate-form.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { CompanyReserveComponent } from './company-reserve/company-reserve.component';
+import { ReservationCreatedComponent } from './reservation-created/reservation-created.component';
+import { EquipmentModule } from '../equipment/equipment.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
-  declarations: [AllCompanyPreviewComponent, CompanyFormComponent, CompanyProfileComponent],
-  imports: [CommonModule, MatInputModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatIconModule, EquipmentModule, MatDatepickerModule, BrowserAnimationsModule],
+  declarations: [AllCompanyPreviewComponent, CompanyFormComponent, CompanyProfileComponent, AddAvailabledateFormComponent, CompanyReserveComponent, ReservationCreatedComponent],
+  imports: [CommonModule, MatInputModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatIconModule, MatCheckboxModule,
+    MatCardModule, MatDatepickerModule, MatNativeDateModule, MatDialogModule, EquipmentModule, BrowserAnimationsModule],
   exports: [AllCompanyPreviewComponent],
+  providers: [
+    DatePipe, 
+  ],
 })
 export class CompanyModule {}

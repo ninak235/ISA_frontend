@@ -17,8 +17,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatOptionModule } from '@angular/material/core';
-
-
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [AppComponent],
@@ -39,6 +39,8 @@ import { MatOptionModule } from '@angular/material/core';
     MatNativeDateModule,
     MatOptionModule,
     EquipmentModule,
+    MatDatepickerModule,
+    MatDialogModule
   ],
   providers: [
     {

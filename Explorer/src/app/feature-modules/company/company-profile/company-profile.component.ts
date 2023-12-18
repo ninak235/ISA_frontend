@@ -1,5 +1,5 @@
 import { Component, AfterViewInit, ViewEncapsulation } from '@angular/core';
-import { Company } from '../model/companyModel';
+import { Company, CompanyEquipment } from '../model/companyModel';
 import { CompanyService } from '../company.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as L from 'leaflet';
@@ -7,7 +7,12 @@ import { Equipment } from '../../equipment/model/equipmentModel';
 import { EquipmentService } from '../../equipment/equipment.service';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { AvailableDate } from '../model/availableDateModel';
-
+import { DatePipe } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { AddAvailabledateFormComponent } from '../add-availabledate-form/add-availabledate-form.component';
+import { Reservation, ReservationStatus } from '../../reservation/model/reservation.model';
+import { ReservationService } from '../../reservation/reservation.service';
+import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 
 @Component({
   selector: 'xp-company-profile',
@@ -16,11 +21,11 @@ import { AvailableDate } from '../model/availableDateModel';
 })
 export class CompanyProfileComponent {
   company: Company;
-  filteredEquipment: Equipment[];
+  filteredEquipment: CompanyEquipment[];
   equipmentSearchValue: string;
   map: L.Map;
   shouldRenderEquipmentForm: boolean = false;
-  equipmentForUpdate: Equipment;
+  equipmentForUpdate: CompanyEquipment;
   shouldRenderEquipmentSelect: boolean = false;
   selectedEquipmentId: number;
   availableEquipment: Equipment[];
@@ -132,11 +137,11 @@ export class CompanyProfileComponent {
     );
   }
 
-  deleteEquipment(equipment: Equipment): void {
+  deleteEquipment(equipment: CompanyEquipment): void {
     const index = this.company.equipmentSet.indexOf(equipment);
     if (index !== -1) {
       this.company.equipmentSet.splice(index, 1);
-      this.updateCompany(equipment.id);
+      this.updateCompany(equipment.id!);
     }
   
     // Now, call the updateCompany method to update the company on the server
@@ -159,7 +164,7 @@ export class CompanyProfileComponent {
     });
   }
 
-  openUpdateEquipmentForm(equipment: Equipment): void {
+  openUpdateEquipmentForm(equipment: CompanyEquipment): void {
     // Set the form values using patchValue with the equipment details
     // this.equipmentForm.patchValue({
       // name: equipment.name,
@@ -223,7 +228,7 @@ export class CompanyProfileComponent {
       const dateString: string = this.selectedDate.toISOString();
   
       // Call your method from the company service here
-      this.companyService.getExtraAvailableDates(this.company.name, 1, dateString).subscribe({
+      this.companyService.getExtraAdminAvailableDates(this.company.name, 1, dateString).subscribe({
         next: (result) => {
           console.log('TIMESLOTS');
           console.log(result);

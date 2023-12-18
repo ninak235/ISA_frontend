@@ -1,6 +1,7 @@
 import { Equipment } from "../../equipment/model/equipmentModel";
 
 export interface Company {
+  id?:number;
   name: string;
   adress: string;
   description: string;
@@ -15,7 +16,7 @@ export interface CompanyAdmin {
 }
 
 export interface CompanyEquipment {
-  id: number,
+  id?:number;
   name: string;
   description: string;
   typeOfEquipment: TypeOfEquipment;
@@ -28,4 +29,11 @@ export enum TypeOfEquipment {
   Type2 = 'Surgical',
   Type3 = 'Dental',
   Type4 = 'Rehabilitation',
+}
+
+export interface ComEq { 
+   id?:number;
+   equipmentId: number;
+   companyId: number;
+   quantity: number;
 }

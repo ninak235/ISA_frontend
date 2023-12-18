@@ -13,7 +13,7 @@ export class CompanyService {
 
   
 
-  getExtraAvailableDates(companyName:string, adminId:number, selectedDate: string): Observable<AvailableDate[]> {
+  getExtraAdminAvailableDates(companyName:string, adminId:number, selectedDate: string): Observable<AvailableDate[]> {
     return this.http.get<AvailableDate[]>(environment.apiHost + '/availableDate/getExtraByCompanyIdAndAdminId/'+ companyName + '/' + adminId + '/' + selectedDate);
   }
 
@@ -51,6 +51,25 @@ export class CompanyService {
     return this.http.put<void>(environment.apiHost + '/company/update/' + oldCompanyName, updatedCompany)
   }
 
+  getCompanyAvailableDates(id: number): Observable<AvailableDate[]>{
+    return this.http.get<AvailableDate[]>(environment.apiHost + '/availableDate/getByCompanyId/'+id);
+  }
+
+  /*createAvailableDate(date: AvailableDate) : Observable<void>{
+    return this.http.post<void>(environment.apiHost + '/availableDate/create', date);
+  }*/
+
+  getExtraAvailableDates(id:number, selectedDate: string): Observable<AvailableDate[]> {
+    return this.http.get<AvailableDate[]>(environment.apiHost + '/availableDate/getExtraByCompanyId/'+id + '/' + selectedDate);
+  }
+
+  updateAvailableDate(availableDate: AvailableDate): Observable<void>{
+    return this.http.put<void>(environment.apiHost + '/availableDate/update', availableDate);
+  }
+
+  createAvailableDate(availableDate: AvailableDate): Observable<AvailableDate>{
+    return this.http.post<AvailableDate>(environment.apiHost + '/availableDate/new', availableDate);
+  }
   updateCompanyEquipment(updatedCompany: Company, oldId: number, newId: number): Observable<void> {
     console.log(updatedCompany);
     return this.http.put<void>(
