@@ -9,6 +9,7 @@ import { Reservation, ReservationStatus } from '../../reservation/model/reservat
 import { ReservationService } from '../../reservation/reservation.service';
 import { AddAvailabledateFormComponent } from '../add-availabledate-form/add-availabledate-form.component';
 import { AvailableDate } from '../model/availableDateModel';
+import { ReservationCreatedComponent } from '../reservation-created/reservation-created.component';
 
 @Component({
   selector: 'xp-company-reserve',
@@ -117,20 +118,6 @@ export class CompanyReserveComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log('Data:', result.selectedDate);
-        /*const formattedDate = result.selectedDate.toISOString().split('T')[0];
-        const formattedTime = result.selectedTime;
-        const dateTimeToSend = `${formattedDate} ${formattedTime}`;
-
-        const newAvailableDate: AvailableDate = {
-          admin: null,
-          startTime: dateTimeToSend,
-          duration: new Duration(),
-          adminConfirmationTime: new Date(),
-          confirmed: false,
-          selected: false
-        };
-
-        this.companyService.createAvailableDate(newAvailableDate);*/
         result.selectedDate.setDate(result.selectedDate.getDate() + 1);
         const dateString: string = result.selectedDate.toISOString();
         this.companyService.getExtraAvailableDates(this.company.id || 0, dateString).subscribe({
@@ -164,23 +151,20 @@ export class CompanyReserveComponent {
   
       this.reservationService.createReservation(reservation).subscribe({
         next: (reservation: Reservation) => {
-          console.log('KREIRANO');
           this.selectedDate.taken = true;
           if(this.shouldAdd0 == false){
-            this.companyService.updateAvailableDate(this.selectedDate).subscribe({
-              next: () =>{
-                console.log("UPDATED");
-              }
-            });
+            this.companyService.updateAvailableDate(this.selectedDate).subscribe();
           }
           else{
-            this.companyService.createAvailableDate(this.selectedDate).subscribe({
-              next: (availableDate: AvailableDate) => {
-                console.log("CREATE");
-              }
-            });
+            this.companyService.createAvailableDate(this.selectedDate).subscribe();
           }
-  
+          const dialogRef = this.dialog.open(ReservationCreatedComponent, {
+            width: '400px',
+          });
+      
+          dialogRef.afterClosed().subscribe(() => {
+              this.router.navigate(['/allCompanies']);
+          });
         }
       })
     }
