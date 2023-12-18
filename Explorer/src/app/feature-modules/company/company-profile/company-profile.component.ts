@@ -1,14 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { Company, CompanyEquipment } from '../model/companyModel';
 import { CompanyService } from '../company.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as L from 'leaflet';
 import { Equipment } from '../../equipment/model/equipmentModel';
-import { AvailableDate} from '../model/availableDateModel';
+import { EquipmentService } from '../../equipment/equipment.service';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { AvailableDate } from '../model/availableDateModel';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { AddAvailabledateFormComponent } from '../add-availabledate-form/add-availabledate-form.component';
 import { Reservation, ReservationStatus } from '../../reservation/model/reservation.model';
 import { ReservationService } from '../../reservation/reservation.service';
+import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 
 @Component({
   selector: 'xp-company-profile',
@@ -17,37 +21,59 @@ import { ReservationService } from '../../reservation/reservation.service';
 })
 export class CompanyProfileComponent {
   company: Company;
-  selectedEquipment: CompanyEquipment[] = [];
-  filteredEquipments: CompanyEquipment[] = [];
-  searchValue: String;
-  isEquipmentChoosen: boolean = false;
-  isDone: boolean = false;
-  availableDates: AvailableDate[] = [];
-  shouldRenderAddDate: boolean = false;
-  shouldAdd0: boolean = false;
-  selectedDate: AvailableDate;
-  
-  constructor(private companyService: CompanyService,  private router: Router, private route: ActivatedRoute, 
-    private datePipe: DatePipe, private dialog: MatDialog, private reservationService: ReservationService) { }
+  filteredEquipment: CompanyEquipment[];
+  equipmentSearchValue: string;
+  map: L.Map;
+  shouldRenderEquipmentForm: boolean = false;
+  equipmentForUpdate: CompanyEquipment;
+  shouldRenderEquipmentSelect: boolean = false;
+  selectedEquipmentId: number;
+  availableEquipment: Equipment[];
+  showDatePicker: boolean = false;
+  selectedDate: Date;
+  availableTimeSlots: AvailableDate[];
+  selectedTimeSlot: AvailableDate;
 
-  ngOnInit(): void {
+  
+  //shouldRenderUpdateForm: boolean = false;
+  constructor(private companyService: CompanyService, private equipmentService: EquipmentService,  private router: Router, private route: ActivatedRoute) { }
+
+  ngAfterViewInit(): void {
     this.route.paramMap.subscribe((params) => {
       const companyName = params.get('companyName');
-      if(companyName){
+      if (companyName) {
         this.companyService.getByName(companyName).subscribe({
           next: (c: Company) => {
             this.company = c;
-            this.filteredEquipments = c.equipmentSet;
-            
-            console.log("PRE");
-            console.log("ID: ", c.id);
-            this.companyService.getCompanyAvailableDates(this.company.id || 0).subscribe({
-              next: (dates: AvailableDate[]) => {
-                console.log("available dates: ",dates);
-                 this.availableDates = dates;
-              }
-            })
-
+            console.log('KOMPANIJA');
+            console.log(this.company);
+            if (this.company && this.company.adress) {
+              let DefaultIcon = L.icon({
+                iconUrl: 'https://unpkg.com/leaflet@1.6.0/dist/images/marker-icon.png',
+                iconAnchor: [12, 41],
+              });
+  
+              L.Marker.prototype.options.icon = DefaultIcon;
+              setTimeout(() => {
+                this.initMap(this.company.adress);
+  
+                // Fetch all equipment after the company is available
+                this.equipmentService.getAllEquipments().subscribe({
+                  next: (allEquipment) => {
+                    this.availableEquipment = allEquipment.filter(equipment =>
+                      !this.company.equipmentSet.some(companyEquipment =>
+                        companyEquipment.id === equipment.id
+                      )
+                    );
+                    console.log(this.availableEquipment);
+                  },
+                  error: (error) => {
+                    console.error('Error fetching equipment:', error);
+                    // Handle error as needed
+                  },
+                });
+              }, 0);
+            }
           },
           error: (err: any) => {
             console.log(err);
@@ -56,35 +82,181 @@ export class CompanyProfileComponent {
       }
     });
   }
+  
 
-  selectEquipment(equipment: CompanyEquipment){
-    const index = this.selectedEquipment.indexOf(equipment);
-    if (index !== -1) {
-       this.selectedEquipment.splice(index, 1);
-    } else {
-      this.selectedEquipment.push(equipment);
+
+  private initMap(address: string): void {
+    if (this.map){
+      this.map.remove();
     }
-    console.log(this.selectedEquipment)
+    
+    
+
+    const apiKey = '0c7c0190d392458da8694650a0641bcd';
+    const geocodingUrl = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(address)}&key=${apiKey}`;
+  
+    fetch(geocodingUrl)
+      .then(response => response.json())
+      .then(data => {
+        if (data.results && data.results.length > 0) {
+          const coordinates = data.results[0].geometry;
+          console.log('Coordinates:', coordinates);
+  
+          this.map = L.map('leafletMap', { center: [coordinates.lat, coordinates.lng], zoom: 13 });
+        
+          const tiles = L.tileLayer(
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            {
+              maxZoom: 18,
+              minZoom: 3,
+              attribution:
+                '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            }
+          );
+
+          tiles.addTo(this.map);
+          L.marker([coordinates.lat, coordinates.lng]).addTo(this.map);
+        } else {
+          console.error('No results found for the given address.');
+        }
+      })
+      .catch(err => {
+        console.error('Error fetching coordinates', err);
+        // Provide user feedback if necessary
+      });
   }
 
-  isSelected(equipment: any): boolean {
-    return this.selectedEquipment.includes(equipment);
-  }
-
-  doneChoosing(): void{
-    if (this.selectedEquipment.length != 0)
-      this.isDone = true;
-  }
-
-  onSearchChange(): void {
-    this.filterEquipments();
+  onEquipmentSearchChange(): void {
+    this.filterEquipment();
   }
   
-  private filterEquipments(): void {
-    this.filteredEquipments = this.company.equipmentSet.filter((e) =>
-      e.name.toLowerCase().match(this.searchValue.toLowerCase()) 
+  private filterEquipment(): void {
+    this.filteredEquipment = this.company.equipmentSet.filter((equipment) =>
+      equipment.name.toLowerCase().includes(this.equipmentSearchValue.toLowerCase()) ||
+      equipment.description.toLowerCase().includes(this.equipmentSearchValue.toLowerCase())
     );
   }
+
+  deleteEquipment(equipment: CompanyEquipment): void {
+    const index = this.company.equipmentSet.indexOf(equipment);
+    if (index !== -1) {
+      this.company.equipmentSet.splice(index, 1);
+      this.updateCompany(equipment.id!);
+    }
+  
+    // Now, call the updateCompany method to update the company on the server
+    
+  }
+
+  private updateCompany(oldId: number): void {
+    console.log('Usao u apdejt');
+    console.log(oldId);
+    console.log(this.company);
+    this.companyService.deleteCompanyEquipment(this.company, oldId).subscribe({
+      next: () => {
+        console.log('Company updated successfully');
+        // You can add any additional logic or feedback here
+      },
+      error: (err: any) => {
+        console.error('Error updating company:', err);
+        // Handle error as needed (e.g., show an error message)
+      }
+    });
+  }
+
+  openUpdateEquipmentForm(equipment: CompanyEquipment): void {
+    // Set the form values using patchValue with the equipment details
+    // this.equipmentForm.patchValue({
+      // name: equipment.name,
+      // description: equipment.description,
+      // typeOfEquipment: equipment.typeOfEquipment,
+      // grade: equipment.grade,
+      // price: equipment.price,
+      // Add other equipment properties as needed
+      this.equipmentForUpdate = equipment;
+      this.shouldRenderEquipmentForm = true;
+      console.log(this.equipmentForUpdate)
+      console.log(this.shouldRenderEquipmentForm)
+    // });
+  }
+
+  showEquipmentSelect(): void {
+    // Set the form values using patchValue with the equipment details
+    // this.equipmentForm.patchValue({
+      // name: equipment.name,
+      // description: equipment.description,
+      // typeOfEquipment: equipment.typeOfEquipment,
+      // grade: equipment.grade,
+      // price: equipment.price,
+      // Add other equipment properties as needed
+      this.shouldRenderEquipmentSelect = true;
+      console.log(this.shouldRenderEquipmentSelect)
+    // });
+  }
+
+  addEquipment() {
+    this.companyService.addEquipmentToCompany(this.company.name, this.selectedEquipmentId).subscribe({
+      next:() => {
+        console.log('Equipment added successfully');
+        this.selectedEquipmentId = 0;
+        this.ngAfterViewInit();
+        
+        // You can add any additional logic or feedback here
+      },
+      error: (err: any) => {
+        console.error('Error adding the equipment company:', err);
+        this.selectedEquipmentId = 0;
+        // Handle error as needed (e.g., show an error message)
+      }
+    });
+    // Call your equipmentService method here with this.selectedEquipment
+    // Reset the selectedEquipment after adding
+    
+  }
+
+  updateEquipmentClicked(): void{
+    this.shouldRenderEquipmentForm = false;
+  }
+
+  openDatePicker() {
+    this.showDatePicker = true;
+  }
+
+  onDateSelected(event: MatDatepickerInputEvent<Date>): void {
+    if (event.value !== null) {
+      this.selectedDate = event.value;
+      const dateString: string = this.selectedDate.toISOString();
+  
+      // Call your method from the company service here
+      this.companyService.getExtraAdminAvailableDates(this.company.name, 1, dateString).subscribe({
+        next: (result) => {
+          console.log('TIMESLOTS');
+          console.log(result);
+          this.availableTimeSlots = result;
+        },
+        error: (err:any) => {
+          console.error('Error getting the available dates', err);
+        }
+      })
+    }
+  }
+
+  createPickupTerm(): void {
+    if(this.selectedTimeSlot){
+      this.companyService.createAvailableDate(this.selectedTimeSlot).subscribe({
+        next: () => {
+          console.log(this.selectedTimeSlot);
+        }
+        ,
+        error: (err:any) => {
+          console.log('There has been a error:', err);
+        }
+      })
+    }
+    // Call your company service method to create the pickup term using selectedTimeSlot
+    // You can use this.selectedTimeSlot to get the selected time slot ID or other information
+    // Reset the selectedTimeSlot after creating the pickup term
+  } 
 
   formatDateAndTime(localDateTime: string | object): { date: string, time: string } {
     if (typeof localDateTime === 'object' && localDateTime !== null) {
@@ -96,71 +268,20 @@ export class CompanyProfileComponent {
     const [year, month, day, hours, minutes] = dateTimeParts;
     const dateString = `${year}-${month}-${day}`;
     var timeString = '';
-    if(this.shouldAdd0 == false){
-      timeString = `${hours}:${minutes}`;
-    }
-    else{
-      timeString = `${hours}:${minutes}0`;
-    }
+    
+    timeString = `${hours}:${minutes}` + '0';
+ 
+   
+    
   
     return { date: dateString, time: timeString };
   }
+
+
   
-  addDate() : void {
-    const dialogRef = this.dialog.open(AddAvailabledateFormComponent, {
-      width: '400px',
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log('Data:', result.selectedDate);
-        /*const formattedDate = result.selectedDate.toISOString().split('T')[0];
-        const formattedTime = result.selectedTime;
-        const dateTimeToSend = `${formattedDate} ${formattedTime}`;
-
-        const newAvailableDate: AvailableDate = {
-          admin: null,
-          startTime: dateTimeToSend,
-          duration: new Duration(),
-          adminConfirmationTime: new Date(),
-          confirmed: false,
-          selected: false
-        };
-
-        this.companyService.createAvailableDate(newAvailableDate);*/
-        result.selectedDate.setDate(result.selectedDate.getDate() + 1);
-        const dateString: string = result.selectedDate.toISOString();
-        this.companyService.getExtraAvailableDates(this.company.id || 0, dateString).subscribe({
-          next: (result: AvailableDate[]) => {
-              this.availableDates = result;
-              this.shouldAdd0 = true;
-          }
-        });
-      }
-    });
-  }
-
-  reserve() : void{
-    console.log("SELECTED_DATE: ", this.selectedDate);
-    const [year, month, day, hour, minute] = this.selectedDate.startTime;
-
-    const startDate = new Date(parseInt(year,10), parseInt(month,10)-1, parseInt(day, 10), parseInt(hour, 10), parseInt(minute,10));
-
-    const reservation: Reservation = {
-      dateTime: startDate,
-      duration: 2000,
-      grade: 4,      
-      status: ReservationStatus.Pending,
-      customerId: 1,  //dodati token upotrebu
-      companyAdminId: this.selectedDate.adminId|| 0,
-    };
-
-    this.reservationService.createReservation(reservation).subscribe({
-      next: (reservation: Reservation) => {
-        console.log('KREIRANO');
-      }
-    })
-    
-  }
   
+
+  
+
+
 }

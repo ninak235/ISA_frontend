@@ -33,7 +33,6 @@ export class CompanyFormComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges):void {
     this.companyForm.reset();
-    console.log(this.shouldEdit);
     if(this.shouldEdit){
       this.companyForm.patchValue(this.company);
     }
@@ -51,6 +50,7 @@ export class CompanyFormComponent implements OnChanges {
       description: this.companyForm.value.description || '',
       grade: this.companyForm.value.grade || '',
       equipmentSet: [],
+      adminsSet: []
     };
   
     this.service.addCompany(company).subscribe({
@@ -81,11 +81,9 @@ export class CompanyFormComponent implements OnChanges {
       adress: this.companyForm.value.adress || '',
       description: this.companyForm.value.description || '',
       grade: this.companyForm.value.grade || '',
-      equipmentSet: this.company.equipmentSet
+      equipmentSet: this.company.equipmentSet,
+      adminsSet: this.company.adminsSet
     };
-
-    console.log(updatedCompany);
-    console.log(this.oldCompanyName);
   
     this.service.updateCompany(this.oldCompanyName, updatedCompany).subscribe({
       next: () => {

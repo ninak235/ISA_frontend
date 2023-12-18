@@ -1,0 +1,50 @@
+<form [formGroup]="equipmentForm" *ngIf="renderUpdateEquipment">
+    <div class="fields">
+      <p class="label">Update the equipment</p>
+      <mat-form-field >
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" type="text" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Description</mat-label>
+        <textarea
+          matInput
+          cdkTextareaAutosize
+          cdkAutosizeMinRows="1"
+          formControlName="description"
+          cdkAutosizeMaxRows="5"
+        ></textarea>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Type of Equipment</mat-label>
+        <mat-select formControlName="typeOfEquipment">
+          <mat-option *ngFor="let type of typesOfEquipment" [value]="type">
+            {{ type }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Grade</mat-label>
+            <input matInput formControlName="grade" type="text" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Price</mat-label>
+            <input matInput formControlName="price" type="number" />
+      </mat-form-field>
+  
+      <button 
+        class="button"
+        mat-raised-button
+        type="button"
+        color="primary"
+        (click)="updateEquipment()"
+      >
+        Update
+      </button>
+      
+    </div>
+</form>

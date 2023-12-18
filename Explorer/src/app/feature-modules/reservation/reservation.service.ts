@@ -27,4 +27,7 @@ export class ReservationService {
       environment.apiHost + '/reservations/getAllByAdminId/' + companyAdminId
     );
   }
+  getUserReservations(userId: number): Observable<Reservation[]>{
+    return this.http.get<Reservation[]>(environment.apiHost + '/reservations/byUserId/' + userId);
+  }
 }

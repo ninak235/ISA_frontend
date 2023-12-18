@@ -14,11 +14,15 @@ import { AddAvailabledateFormComponent } from './add-availabledate-form/add-avai
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
+import { CompanyReserveComponent } from './company-reserve/company-reserve.component';
+import { ReservationCreatedComponent } from './reservation-created/reservation-created.component';
+import { EquipmentModule } from '../equipment/equipment.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
-  declarations: [AllCompanyPreviewComponent, CompanyFormComponent, CompanyProfileComponent, AddAvailabledateFormComponent],
+  declarations: [AllCompanyPreviewComponent, CompanyFormComponent, CompanyProfileComponent, AddAvailabledateFormComponent, CompanyReserveComponent, ReservationCreatedComponent],
   imports: [CommonModule, MatInputModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatIconModule, MatCheckboxModule,
-    MatCardModule, MatDatepickerModule, MatNativeDateModule, MatDialogModule],
+    MatCardModule, MatDatepickerModule, MatNativeDateModule, MatDialogModule, EquipmentModule, BrowserAnimationsModule],
   exports: [AllCompanyPreviewComponent],
   providers: [
     DatePipe, 

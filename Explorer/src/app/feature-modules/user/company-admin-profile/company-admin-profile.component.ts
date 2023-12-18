@@ -60,7 +60,6 @@ export class CompanyAdminProfileComponent {
         this.admin = a;
         this.companyService.getById(this.admin.companyId).subscribe({
           next: (result: Company) => {
-            console.log(result);
             this.company = result;
           },
           error: (error: any) => {
