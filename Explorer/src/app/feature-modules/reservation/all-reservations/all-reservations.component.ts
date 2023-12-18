@@ -80,7 +80,7 @@ export class AllReservationsComponent implements OnInit  {
   
       return {
         id: String(reservation.id), // Convert id to string
-        title: `${reservation.customerName} ${reservation.customerLastName} - Duration: ${reservation.duration * 1000000} hours`,
+        title: `${reservation.customerName} ${reservation.customerLastName} - Duration: ${reservation.duration} hours`,
         start: dateObject, // Use the Date object for the 'start' property
       };
     });

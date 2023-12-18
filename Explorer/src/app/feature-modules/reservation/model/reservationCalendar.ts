@@ -1,5 +1,3 @@
-import { DateInput } from "fullcalendar";
-
 export interface ReservationCalendar {
     id?: number;
     dateTime: any;
