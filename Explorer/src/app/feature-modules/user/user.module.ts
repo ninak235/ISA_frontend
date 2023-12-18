@@ -15,12 +15,12 @@ import { SystemAdminCreateComponent } from './system-admin-create/system-admin-c
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { RouterModule } from '@angular/router';
 import { FullCalendarModule } from '@fullcalendar/angular';
-
+import { ChangePasswordSystemAdminComponent } from './change-password-system-admin/change-password-system-admin.component';
 
 
 @NgModule({
-  declarations: [CustomerRegistrationComponent, CustomerProfileComponent, UpdateProfileComponent, CompanyAdminRegistrationComponent, CompanyAdminProfileComponent, UpdateAdminProfileComponent, SystemAdminCreateComponent, UserProfileComponent],
+  declarations: [CustomerRegistrationComponent, CustomerProfileComponent, UpdateProfileComponent, CompanyAdminRegistrationComponent, CompanyAdminProfileComponent, UpdateAdminProfileComponent, SystemAdminCreateComponent, UserProfileComponent, ChangePasswordSystemAdminComponent],
   imports: [RouterModule, CommonModule, MaterialModule, ReactiveFormsModule, FormsModule, MatFormFieldModule, MatInputModule, FullCalendarModule],
-  exports: [CustomerRegistrationComponent, CompanyAdminRegistrationComponent],
+  exports: [CustomerRegistrationComponent, CompanyAdminRegistrationComponent, ChangePasswordSystemAdminComponent],
 })
 export class UserModule {}

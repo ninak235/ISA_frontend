@@ -1,4 +1,5 @@
-export interface User {
+export interface SystemUser {
+    id?: number;
     firstName: string;
     email: string;
     userName: string;
@@ -7,4 +8,5 @@ export interface User {
     country: string;
     city: string;
     number: string;
+    firstLogin: boolean;
   }

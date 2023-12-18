@@ -15,6 +15,7 @@ import { SystemAdminCreateComponent } from 'src/app/feature-modules/user/system-
 import { UserProfileComponent } from 'src/app/feature-modules/user/user-profile/user-profile.component';
 import { AllComplaintComponent } from 'src/app/feature-modules/complaint/all-complaint/all-complaint.component';
 import { AllReservationsComponent } from 'src/app/feature-modules/reservation/all-reservations/all-reservations.component';
+import { ChangePasswordSystemAdminComponent } from 'src/app/feature-modules/user/change-password-system-admin/change-password-system-admin.component';
 
 const routes: Routes = [
   { path: '', component: AllCompanyPreviewComponent },
@@ -43,6 +44,7 @@ const routes: Routes = [
   { path: 'userProfile', component: UserProfileComponent },
   { path: 'allCompaints', component: AllComplaintComponent },
   { path: 'allReservations', component: AllReservationsComponent },
+  { path: 'changeSystemAdmin', component: ChangePasswordSystemAdminComponent },
 ];
 
 @NgModule({

@@ -7,7 +7,8 @@ import { CompanyService } from '../../company/company.service';
 import { CalendarOptions } from '@fullcalendar/core'; // useful for typechecking
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import multiMonthPlugin from '@fullcalendar/multimonth'
+import multiMonthPlugin from '@fullcalendar/multimonth';
+import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 
 
 @Component({
@@ -19,6 +20,7 @@ export class CompanyAdminProfileComponent {
   admin: CompanyAdminRegistration;
   company: Company;
   renderCreateCompany: boolean = false;
+  id: number;
 
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, timeGridPlugin, multiMonthPlugin],
@@ -39,7 +41,7 @@ export class CompanyAdminProfileComponent {
     }
   };
   //shouldRenderUpdateForm: boolean = false;
-  constructor(private userService: UserService, private companyService: CompanyService,  private router: Router   ) { }
+  constructor(private userService: UserService, private companyService: CompanyService,  private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
 
@@ -52,7 +54,8 @@ export class CompanyAdminProfileComponent {
     
   }
   refreshCompanyList() {
-    this.userService.getAdminById(1).subscribe({
+    this.id = this.authService.user$.getValue().id;
+    this.userService.getAdminById(this.id).subscribe({
       next: (a: CompanyAdminRegistration) => {
         this.admin = a;
         this.companyService.getById(this.admin.companyId).subscribe({
@@ -73,8 +76,8 @@ export class CompanyAdminProfileComponent {
 
   onAddCompany(): void {
     this.renderCreateCompany = true;
-
-    this.userService.getAdminById(1).subscribe({
+    this.id = this.authService.user$.getValue().id;
+    this.userService.getAdminById(this.id).subscribe({
       next: (a: CompanyAdminRegistration) => {
         this.admin = a;
         this.companyService.getById(this.admin.companyId).subscribe({

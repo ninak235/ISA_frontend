@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
-import { User } from '../model/user.model';
+import { SystemUser } from '../model/user.model';
 import { Router } from '@angular/router';
 
 @Component({
@@ -39,7 +39,7 @@ export class SystemAdminCreateComponent {
 
   register(): void {
     if (this.registrationAdminForm.valid) {
-      const registration: User = {
+      const registration: SystemUser = {
         firstName: this.registrationAdminForm.value.firstName || '',
         userName: this.registrationAdminForm.value.userName || '',
         lastName: this.registrationAdminForm.value.lastName || '',
@@ -48,6 +48,7 @@ export class SystemAdminCreateComponent {
         country: this.registrationAdminForm.value.country || '',
         city: this.registrationAdminForm.value.city || '',
         number: this.registrationAdminForm.value.number || '',
+        firstLogin: false,
       };
 
 
