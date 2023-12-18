@@ -110,18 +110,9 @@
           </mat-error>
         </mat-form-field>
       </div>
-      <div>
-          <label>Select Company</label>
-          <select formControlName="selectedCompany">
-            <option *ngFor="let company of companyNames" [value]="company.id">
-              {{ company.name }}
-            </option> 
-          </select>
-      </div>
-      
       
          
-      <button color="primary" type="submit" mat-raised-button>Register</button>
+      <button color="primary" type="submit" mat-raised-button>Create system admin</button>
     </div>
   </form>
   

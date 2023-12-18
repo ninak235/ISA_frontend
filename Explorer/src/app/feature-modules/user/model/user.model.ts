@@ -1,13 +1,12 @@
-export interface CompanyAdminRegistration {
+export interface SystemUser {
     id?: number;
     firstName: string;
-    lastName: string;
-    userName: string;
     email: string;
+    userName: string;
+    lastName: string;
     password: string;
     country: string;
     city: string;
     number: string;
-    companyId: number;
+    firstLogin: boolean;
   }
-  

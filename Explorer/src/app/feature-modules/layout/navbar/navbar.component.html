@@ -21,8 +21,20 @@
       <button color="primary" mat-raised-button [routerLink]="['']">
         Home
       </button>
-      <button mat-raised-button [routerLink]="['customerProfile']">
-        Profile
+      <button mat-raised-button *ngIf="customer" [routerLink]="['customerProfile']">
+        Customer Profile
+      </button>
+
+      <button mat-raised-button *ngIf="systemAdmin" [routerLink]="['userProfile']">
+        System Admin Profile
+      </button>
+
+      <button mat-raised-button *ngIf="systemAdmin" [routerLink]="['registerCompanyAdmin']">
+        Register Company Admin
+      </button>
+
+      <button mat-raised-button *ngIf="companyAdmin" [routerLink]="['adminProfile']">
+        Comapny Admin Profile
       </button>
     </div>
   </div>

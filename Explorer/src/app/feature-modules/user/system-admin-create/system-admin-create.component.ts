@@ -1,77 +1,62 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
-import { CompanyAdminRegistration } from '../model/companyAdminModel';
-import { CompanyService } from '../../company/company.service';
-import { MatSelectModule } from '@angular/material/select';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatOptionModule } from '@angular/material/core';
+import { SystemUser } from '../model/user.model';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'xp-company-admin-registration',
-  templateUrl: './company-admin-registration.component.html',
-  styleUrls: ['./company-admin-registration.component.css']
+  selector: 'xp-system-admin-create',
+  templateUrl: './system-admin-create.component.html',
+  styleUrls: ['./system-admin-create.component.css']
 })
-export class CompanyAdminRegistrationComponent {
+export class SystemAdminCreateComponent {
   registrationAdminForm: FormGroup;
-  companyNames: { id: number; name: string; }[];
 
   constructor(
     private userService: UserService,
-    private companyService: CompanyService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router: Router
   ) {
     this.registrationAdminForm = this.formBuilder.group(
-      {
+      { 
         firstName: ['', [Validators.required]],
-        lastName: ['', [Validators.required]],
         userName: ['', [Validators.required]],
+        lastName: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(8)]],
         confirmPassword: ['', [Validators.required]],
         country: ['', [Validators.required]],
         city: ['', [Validators.required]],
         number: ['', [Validators.required]],
-        selectedCompany: ['']
       },
       {
         validators: [this.confirmPasswordValidator],
       }
-    );
-
-    this.companyService.getAllCompaniesIdName().subscribe({
-      next: (result: { id: number; name: string }[]) => {
-        this.companyNames = result;
-      },
-      error: (error: any) => {
-        console.error('Error getting company names', error);
-      },
-    });    
+    );  
   }
 
   
 
   register(): void {
     if (this.registrationAdminForm.valid) {
-      const registration: CompanyAdminRegistration = {
+      const registration: SystemUser = {
         firstName: this.registrationAdminForm.value.firstName || '',
-        lastName: this.registrationAdminForm.value.lastName || '',
         userName: this.registrationAdminForm.value.userName || '',
+        lastName: this.registrationAdminForm.value.lastName || '',
         email: this.registrationAdminForm.value.email || '',
         password: this.registrationAdminForm.value.password || '',
         country: this.registrationAdminForm.value.country || '',
         city: this.registrationAdminForm.value.city || '',
         number: this.registrationAdminForm.value.number || '',
-        companyId: parseInt(this.registrationAdminForm.value.selectedCompany) || 0,
+        firstLogin: false,
       };
 
 
 
-      this.userService.registerCompanyAdmin(registration).subscribe({
-        next: () => {},
+      this.userService.registerSystemAdmin(registration).subscribe({
+        next: () => {
+          this.router.navigate(['/userProfile']);
+        },
         error: (error: any) => {
           console.error('Registration failed', error);
         },
