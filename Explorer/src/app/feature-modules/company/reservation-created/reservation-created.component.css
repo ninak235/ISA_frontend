@@ -1,6 +1,6 @@
 .button2{
-    margin: auto;
-    background-color: greenyellow;
+    text-align: center;
+    background-color: rgb(132, 205, 22);
     color: white;
     border-color: transparent;
     font-size: large;
@@ -10,5 +10,5 @@
   }
   
   .button2:hover{
-    background-color: rgb(120, 177, 35);
+    background-color: rgb(106, 160, 24);
   }

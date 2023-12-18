@@ -8,8 +8,6 @@ export class TokenStorage {
   constructor() {}
 
   saveAccessToken(token: string): void {
-    console.log(token);
-    console.log('=================');
     localStorage.removeItem(ACCESS_TOKEN);
     localStorage.setItem(ACCESS_TOKEN, token);
   }

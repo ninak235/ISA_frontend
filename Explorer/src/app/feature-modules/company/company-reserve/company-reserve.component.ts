@@ -68,7 +68,6 @@ export class CompanyReserveComponent {
     } else {
       this.selectedEquipment.push(equipment);
     }
-    console.log(this.selectedEquipment)
   }
 
   isSelected(equipment: any): boolean {
@@ -117,7 +116,6 @@ export class CompanyReserveComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Data:', result.selectedDate);
         result.selectedDate.setDate(result.selectedDate.getDate() + 1);
         const dateString: string = result.selectedDate.toISOString();
         this.companyService.getExtraAvailableDates(this.company.id || 0, dateString).subscribe({
@@ -133,7 +131,6 @@ export class CompanyReserveComponent {
 
   reserve() : void{
     if(this.selectedDate != null){
-      console.log("SELECTED_DATE: ", this.selectedDate);
       const [year, month, day, hour, minute] = this.selectedDate.startTime;
 
       const startDate = new Date(parseInt(year,10), parseInt(month,10)-1, parseInt(day, 10), parseInt(hour, 10), parseInt(minute,10));

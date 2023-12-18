@@ -65,7 +65,6 @@ export class CompanyAdminRegistrationComponent {
         number: this.registrationAdminForm.value.number || '',
         companyId: parseInt(this.registrationAdminForm.value.selectedCompany) || 0,
       };
-      console.log("cJONCOJENO", registration)
 
 
 

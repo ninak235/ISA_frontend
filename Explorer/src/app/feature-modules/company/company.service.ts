@@ -23,7 +23,6 @@ export class CompanyService {
   }
 
   addCompany(company: Company): Observable<Company>{
-    console.log(company)
     this.addCompanyClicked.emit();
     return this.http.post<Company>(environment.apiHost + '/company/registerCompany', company);
   }

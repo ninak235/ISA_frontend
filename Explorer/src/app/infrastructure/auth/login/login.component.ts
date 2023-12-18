@@ -22,7 +22,6 @@ export class LoginComponent {
       username: this.loginForm.value.userName || '',
       password: this.loginForm.value.password || '',
     };
-    console.log(login);
 
     if (this.loginForm.valid) {
       this.authService.login(login).subscribe({
