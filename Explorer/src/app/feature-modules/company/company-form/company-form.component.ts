@@ -50,6 +50,7 @@ export class CompanyFormComponent implements OnChanges {
       description: this.companyForm.value.description || '',
       grade: this.companyForm.value.grade || '',
       equipmentSet: [],
+      adminsSet: []
     };
   
     this.service.addCompany(company).subscribe({
@@ -80,7 +81,8 @@ export class CompanyFormComponent implements OnChanges {
       adress: this.companyForm.value.adress || '',
       description: this.companyForm.value.description || '',
       grade: this.companyForm.value.grade || '',
-      equipmentSet: this.company.equipmentSet
+      equipmentSet: this.company.equipmentSet,
+      adminsSet: this.company.adminsSet
     };
   
     this.service.updateCompany(this.oldCompanyName, updatedCompany).subscribe({
