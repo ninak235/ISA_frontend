@@ -1,11 +1,14 @@
+import { CompanyEquipment } from "../../company/model/companyModel";
+
 export interface Reservation {
-    id: number;
+    id?: number;
     dateTime: Date;
-    duration: string; // Assuming Duration is represented as a string in your Java DTO
+    duration: number; 
     grade: number;
     status: ReservationStatus;
     customerId: number;
     companyAdminId: number;
+    reservationEquipments: CompanyEquipment[];
 }
 
 export enum ReservationStatus {

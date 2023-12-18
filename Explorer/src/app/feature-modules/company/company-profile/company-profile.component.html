@@ -1,55 +1,93 @@
-<div *ngIf="company" class="company-info">
-  <div class="company-details">
-    <h2>{{ company.name }}</h2>
-    <p><strong>Address:</strong> {{ company.adress }}</p>
-    <p><strong>Description:</strong> {{ company.description }}</p>
-    <p><strong>Grade:</strong> {{ company.grade }}</p>
-  </div>
-    <div *ngIf="!isDone; else nextPart">
-      <div *ngIf="company.equipmentSet && company.equipmentSet.length > 0; else noEquipment" class="equipment-list">
-        <h3><strong>Equipments:</strong></h3>
-        <input type="text" class="search-input" placeholder="🔍Search name..." [(ngModel)]="searchValue" (ngModelChange)="onSearchChange()">
+<div  *ngIf="company">
+    <div >
+      <h2>{{ company.name }}</h2>
+      <p><strong>Adress:</strong>{{ company.adress }}</p>
+      
+      <p><strong>Description:</strong>{{ company.description }}</p>
+      <p><strong>Grade:</strong>{{ company.grade }}</p>
+      <div *ngIf="
+          company.equipmentSet && company.equipmentSet.length > 0;
+          else noEquipment
+        ">
+        <h3><strong>Equipment:</strong></h3>
         
-        <div class="equipment-cards">
-          <div *ngFor="let equipment of filteredEquipments" class="equipment-card" (click)="selectEquipment(equipment)" [ngClass]="{'selected': isSelected(equipment)}" >
-            <div class="equipment-header">
-              <h3>{{ equipment.name }}</h3>
-            </div>
-            <div class="equipment-details">
-              <p><strong>Description:</strong> {{ equipment.description }}</p>
-              <p><strong>Type:</strong> {{ equipment.typeOfEquipment }}</p>
-              <p class="grade-and-price"><strong>📈Grade:</strong> {{ equipment.grade }} | <strong>💰Price:</strong> {{ equipment.price }}</p>
-            </div>
-          </div>
-          
-        <button class="button"  (click)="doneChoosing()">Done</button>
-        </div>
+        <input type="text" class="search-input" placeholder="Search equipment..." [(ngModel)]="equipmentSearchValue" (ngModelChange)="onEquipmentSearchChange()">
+        <button mat-icon-button color="primary" (click)="showEquipmentSelect()" >
+          <mat-icon>add</mat-icon>
+        </button>
+        <ul>
+          <li *ngFor="let equipment of filteredEquipment || company.equipmentSet" class="equipment-item">
+            <strong>Name: </strong>{{ equipment.name }}<br />
+            <strong>Description: </strong> {{ equipment.description }}<br />
+            <strong>Type: </strong> {{ equipment.typeOfEquipment }}<br />
+            <strong>Grade: </strong> {{ equipment.grade }}<br />
+            <strong>Price: </strong> {{ equipment.price }}<br />
+            <button mat-icon-button color="warn" (click)="deleteEquipment(equipment)">
+              <mat-icon>delete</mat-icon>
+            </button>
+            <button mat-icon-button color="primary" (click)="openUpdateEquipmentForm(equipment)">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </li>
+        </ul>
       </div>
-    </div>
+      <ng-template #noEquipment>
+        <h3><strong>Equipment:</strong></h3>
+        <br />
+        Coming soon!
+      </ng-template>
+      <div *ngIf="shouldRenderEquipmentSelect">
+        <h3><strong>Add Equipment:</strong></h3>
+        
+        <!-- Add the listbox for equipment selection -->
+        <select [(ngModel)]="selectedEquipmentId" class="equipment-listbox">
+          <option *ngFor="let equipment of availableEquipment" [value]="equipment.id">
+            {{ equipment.name }}
+          </option>
+        </select>
+        
+        <!-- Add the "Add" button to call the equipmentService method -->
+        <button mat-raised-button color="primary" (click)="addEquipment()">Add</button>
+      </div>
     
-
-    <ng-template #noEquipment>
-      <h3><strong>Equipment:</strong></h3>
-      <br />
-      Coming soon!
-    </ng-template>
-
-    <ng-template #nextPart>
+      <xp-equipment-form *ngIf="shouldRenderEquipmentForm" (updateEquipmentClicked)="updateEquipmentClicked()" [equipment]="equipmentForUpdate" [company]="company" ></xp-equipment-form>
+      
+      <button mat-raised-button color="primary" (click)="openDatePicker()">Add Pickup Date</button>
+      <mat-form-field *ngIf="showDatePicker">
+        <input matInput [matDatepicker]="picker" (dateInput)="onDateSelected($event)" placeholder="Select a date" [(ngModel)]="selectedDate">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
       <h2>AVAILABLE DATES:</h2>
-      <div class="date-cards-container">
-        <div class="date-card" *ngFor="let date of availableDates">
-          <div class="card-content">
-            <input type="radio" name="selectedDate" [(ngModel)]="selectedDate" [value]="date" class="custom-radio" />
-            <h3>📆 Date: {{ formatDateAndTime(date.startTime).date }}</h3>
-            <h3>⏰ Time: {{ formatDateAndTime(date.startTime).time }}</h3>
+        <div class="date-cards-container">
+          <div class="date-card" *ngFor="let timeSlot of availableTimeSlots">
+            <div class="card-content">
+              <input type="radio" name="selectedTimeSlot" [(ngModel)]="selectedTimeSlot" [value]="timeSlot" class="custom-radio" />
+              <h3>📆 Date: {{ formatDateAndTime(timeSlot.startTime).date }}</h3>
+              <h3>⏰ Time: {{ formatDateAndTime(timeSlot.startTime).time }}</h3>
+            </div>
           </div>
+          <button class="button3" (click)="createPickupTerm()">Choose other date</button>
         </div>
-        <button class="button3" (click)="addDate()">Choose other date</button>
-        <button class="button2" (click)="reserve()">Reserve</button>
+      
+      <div *ngIf="
+        company.adminsSet && company.adminsSet.length > 0;
+        else noAdmins">
+        <h3><strong>Company Admins:</strong></h3>
+        <ol>
+          <li *ngFor="let admin of company.adminsSet" class="admin-item">
+            <strong>First Name: </strong>{{ admin.firstName }}<br />
+            <strong>Last Name: </strong> {{ admin.lastName }}<br />
+          </li>
+        </ol>
       </div>
-    </ng-template>
-    
-    
-    
-    
-</div>
+      <ng-template #noAdmins>
+        <h3><strong>Company has no admins currently!</strong></h3>
+      </ng-template>
+      
+  
+    </div>
+    <div class="map-frame">
+      <div id="leafletMap" class="map-wrap"></div>
+    </div>
+<div>

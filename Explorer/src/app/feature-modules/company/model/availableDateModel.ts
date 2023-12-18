@@ -6,6 +6,6 @@ export interface AvailableDate {
     startTime: string;
     duration: number;
     adminConfirmationTime: Date;
-    confirmed: boolean;
+    taken: boolean;
     selected: boolean;
   }

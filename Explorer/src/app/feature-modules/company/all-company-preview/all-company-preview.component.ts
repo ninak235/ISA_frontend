@@ -84,4 +84,8 @@ export class AllCompanyPreviewComponent implements OnInit {
   onCompanyNameClicked(company: Company): void{
     this.router.navigate(['/companyProfile/' + company.name]);
   }
+
+  onReserve(company:Company) : void{
+    this.router.navigate(['/comapnyProfileReserve/' + company.name]);
+  }
 }
