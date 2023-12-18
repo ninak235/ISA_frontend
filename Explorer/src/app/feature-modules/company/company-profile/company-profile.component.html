@@ -58,6 +58,17 @@
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
+      <h2>AVAILABLE DATES:</h2>
+        <div class="date-cards-container">
+          <div class="date-card" *ngFor="let timeSlot of availableTimeSlots">
+            <div class="card-content">
+              <input type="radio" name="selectedTimeSlot" [(ngModel)]="selectedTimeSlot" [value]="timeSlot" class="custom-radio" />
+              <h3>📆 Date: {{ formatDateAndTime(timeSlot.startTime).date }}</h3>
+              <h3>⏰ Time: {{ formatDateAndTime(timeSlot.startTime).time }}</h3>
+            </div>
+          </div>
+          <button class="button3" (click)="createPickupTerm()">Choose other date</button>
+        </div>
       
       <div *ngIf="
         company.adminsSet && company.adminsSet.length > 0;
@@ -73,6 +84,7 @@
       <ng-template #noAdmins>
         <h3><strong>Company has no admins currently!</strong></h3>
       </ng-template>
+      
   
     </div>
     <div class="map-frame">

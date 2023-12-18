@@ -243,12 +243,39 @@ export class CompanyProfileComponent {
 
   createPickupTerm(): void {
     if(this.selectedTimeSlot){
-      console.log(this.selectedTimeSlot);
+      this.companyService.createAvailableDate(this.selectedTimeSlot).subscribe({
+        next: () => {
+          console.log(this.selectedTimeSlot);
+        }
+        ,
+        error: (err:any) => {
+          console.log('There has been a error:', err);
+        }
+      })
     }
     // Call your company service method to create the pickup term using selectedTimeSlot
     // You can use this.selectedTimeSlot to get the selected time slot ID or other information
     // Reset the selectedTimeSlot after creating the pickup term
   } 
+
+  formatDateAndTime(localDateTime: string | object): { date: string, time: string } {
+    if (typeof localDateTime === 'object' && localDateTime !== null) {
+      localDateTime = localDateTime.toString(); 
+    }
+  
+    const dateTimeParts = localDateTime.split(',');
+  
+    const [year, month, day, hours, minutes] = dateTimeParts;
+    const dateString = `${year}-${month}-${day}`;
+    var timeString = '';
+    
+    timeString = `${hours}:${minutes}` + '0';
+ 
+   
+    
+  
+    return { date: dateString, time: timeString };
+  }
 
 
   
