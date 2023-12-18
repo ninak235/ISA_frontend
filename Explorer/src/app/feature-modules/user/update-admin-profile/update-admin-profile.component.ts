@@ -55,7 +55,6 @@ export class UpdateAdminProfileComponent {
       number: this.profileForm.value.number || '',
       companyId: this.admin.companyId
     };
-    console.log(updatedAdmin);
     this.service.updateAdminProfile(updatedAdmin).subscribe({
       next: () => {
        this.router.navigate(['/adminProfile']);

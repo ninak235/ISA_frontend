@@ -65,7 +65,6 @@ export class AllCompanyPreviewComponent implements OnInit {
     );
   }
   onGradeChange(): void{
-    console.log("OCENA: ", this.selectedGrade);
     this.companyService.getByGradeCompanies(this.selectedGrade).subscribe({
       next: (result: Company[]) => {
         this.filteredCompanies = result;
@@ -77,8 +76,6 @@ export class AllCompanyPreviewComponent implements OnInit {
     this.shouldEdit = true;
     this.oldCompanyName = company.name;
     this.selectedCompany = company;
-    console.log(this.selectedCompany);
-    console.log(this.shouldEdit);
   }
 
   onCompanyNameClicked(company: Company): void{

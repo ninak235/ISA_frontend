@@ -21,7 +21,6 @@ export class UserService {
   registerCompanyAdmin(
     registrationAdminForm: CompanyAdminRegistration
   ): Observable<CompanyAdminRegistration> {
-    console.log('companyAdmin:', registrationAdminForm.companyId);
     return this.http.post<CompanyAdminRegistration>(
       environment.apiHost + '/companyAdmin/registerCompanyAdmin',
       registrationAdminForm

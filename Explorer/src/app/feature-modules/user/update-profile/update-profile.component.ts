@@ -64,7 +64,6 @@ export class UpdateProfileComponent implements OnInit, OnChanges {
       email: this.customer.email,
       penaltyPoints: this.customer.penaltyPoints,
     };
-    console.log(updatedCustomer);
     this.service.updateCustomerProfile(updatedCustomer).subscribe({
       next: () => {
         this.router.navigate(['/customerProfile']);

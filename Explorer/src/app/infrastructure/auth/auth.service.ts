@@ -26,13 +26,10 @@ export class AuthService {
   ) {}
 
   login(login: Login): Observable<AuthenticationResponse> {
-    console.log(login);
     return this.http
       .post<AuthenticationResponse>(environment.autHost + '/login', login)
       .pipe(
         tap((authenticationResponse) => {
-          console.log(authenticationResponse);
-          console.log('===========');
           this.tokenStorage.saveAccessToken(authenticationResponse.accessToken);
           this.setUser();
         })
@@ -65,9 +62,6 @@ export class AuthService {
       username: jwtHelperService.decodeToken(accessToken).sub,
       role: { roles: rolesArray },
     };
-    console.log(user.id);
-    console.log(user.username);
-    console.log(user.role);
     this.user$.next(user);
   }
 }
