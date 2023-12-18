@@ -11,6 +11,7 @@ import { AllEquipmentPreviewComponent } from 'src/app/feature-modules/equipment/
 import { CompanyAdminProfileComponent } from 'src/app/feature-modules/user/company-admin-profile/company-admin-profile.component';
 import { UpdateAdminProfileComponent } from 'src/app/feature-modules/user/update-admin-profile/update-admin-profile.component';
 import { CompanyProfileComponent } from 'src/app/feature-modules/company/company-profile/company-profile.component';
+import { CompanyReserveComponent } from 'src/app/feature-modules/company/company-reserve/company-reserve.component';
 
 const routes: Routes = [
   { path: '', component: AllCompanyPreviewComponent },
@@ -34,7 +35,8 @@ const routes: Routes = [
   { path: 'allEquipments', component: AllEquipmentPreviewComponent},
   { path: 'adminProfile', component: CompanyAdminProfileComponent },
   { path: 'updateAdminProfile/:id', component: UpdateAdminProfileComponent},
-  { path: 'companyProfile/:companyName', component: CompanyProfileComponent }
+  { path: 'companyProfile/:companyName', component: CompanyProfileComponent },
+  { path: 'comapnyProfileReserve/:companyName', component: CompanyReserveComponent }
 ];
 
 @NgModule({

@@ -55,4 +55,12 @@ export class CompanyService {
     return this.http.get<AvailableDate[]>(environment.apiHost + '/availableDate/getExtraByCompanyId/'+id + '/' + selectedDate);
   }
 
+  updateAvailableDate(availableDate: AvailableDate): Observable<void>{
+    return this.http.put<void>(environment.apiHost + '/availableDate/update', availableDate);
+  }
+
+  createAvailableDate(availableDate: AvailableDate): Observable<AvailableDate>{
+    return this.http.post<AvailableDate>(environment.apiHost + '/availableDate/new', availableDate);
+  }
+
 }
