@@ -52,6 +52,12 @@
     
       <xp-equipment-form *ngIf="shouldRenderEquipmentForm" (updateEquipmentClicked)="updateEquipmentClicked()" [equipment]="equipmentForUpdate" [company]="company" ></xp-equipment-form>
       
+      <button mat-raised-button color="primary" (click)="openDatePicker()">Add Pickup Date</button>
+      <mat-form-field *ngIf="showDatePicker">
+        <input matInput [matDatepicker]="picker" (dateInput)="onDateSelected($event)" placeholder="Select a date" [(ngModel)]="selectedDate">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
       
       <div *ngIf="
         company.adminsSet && company.adminsSet.length > 0;

@@ -8,10 +8,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { CompanyProfileComponent } from './company-profile/company-profile.component';
 import { EquipmentModule } from '../equipment/equipment.module';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AllCompanyPreviewComponent, CompanyFormComponent, CompanyProfileComponent],
-  imports: [CommonModule, MatInputModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatIconModule, EquipmentModule],
+  imports: [CommonModule, MatInputModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatIconModule, EquipmentModule, MatDatepickerModule, BrowserAnimationsModule],
   exports: [AllCompanyPreviewComponent],
 })
 export class CompanyModule {}

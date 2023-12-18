@@ -5,6 +5,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as L from 'leaflet';
 import { Equipment } from '../../equipment/model/equipmentModel';
 import { EquipmentService } from '../../equipment/equipment.service';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { AvailableDate } from '../model/availableDateModel';
+
 
 @Component({
   selector: 'xp-company-profile',
@@ -21,6 +24,10 @@ export class CompanyProfileComponent {
   shouldRenderEquipmentSelect: boolean = false;
   selectedEquipmentId: number;
   availableEquipment: Equipment[];
+  showDatePicker: boolean = false;
+  selectedDate: Date;
+  availableTimeSlots: AvailableDate[];
+  selectedTimeSlot: AvailableDate;
 
   
   //shouldRenderUpdateForm: boolean = false;
@@ -205,4 +212,44 @@ export class CompanyProfileComponent {
   updateEquipmentClicked(): void{
     this.shouldRenderEquipmentForm = false;
   }
+
+  openDatePicker() {
+    this.showDatePicker = true;
+  }
+
+  onDateSelected(event: MatDatepickerInputEvent<Date>): void {
+    if (event.value !== null) {
+      this.selectedDate = event.value;
+      const dateString: string = this.selectedDate.toISOString();
+  
+      // Call your method from the company service here
+      this.companyService.getExtraAvailableDates(this.company.name, 1, dateString).subscribe({
+        next: (result) => {
+          console.log('TIMESLOTS');
+          console.log(result);
+          this.availableTimeSlots = result;
+        },
+        error: (err:any) => {
+          console.error('Error getting the available dates', err);
+        }
+      })
+    }
+  }
+
+  createPickupTerm(): void {
+    if(this.selectedTimeSlot){
+      console.log(this.selectedTimeSlot);
+    }
+    // Call your company service method to create the pickup term using selectedTimeSlot
+    // You can use this.selectedTimeSlot to get the selected time slot ID or other information
+    // Reset the selectedTimeSlot after creating the pickup term
+  } 
+
+
+  
+  
+
+  
+
+
 }

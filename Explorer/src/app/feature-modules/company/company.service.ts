@@ -4,11 +4,18 @@ import { Observable } from 'rxjs';
 import { Company } from './model/companyModel';
 import { environment } from 'src/env/environment';
 import { CompanyIdName } from './model/companyIdName';
+import { AvailableDate } from './model/availableDateModel';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CompanyService {
+
+  
+
+  getExtraAvailableDates(companyName:string, adminId:number, selectedDate: string): Observable<AvailableDate[]> {
+    return this.http.get<AvailableDate[]>(environment.apiHost + '/availableDate/getExtraByCompanyIdAndAdminId/'+ companyName + '/' + adminId + '/' + selectedDate);
+  }
 
   addCompanyClicked: EventEmitter<void> = new EventEmitter<void>();
   constructor(private http: HttpClient) {}
