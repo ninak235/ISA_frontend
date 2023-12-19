@@ -67,7 +67,7 @@
               <h3>⏰ Time: {{ formatDateAndTime(timeSlot.startTime).time }}</h3>
             </div>
           </div>
-          <button class="button3" (click)="createPickupTerm()">Choose other date</button>
+          <button class="button3" (click)="createPickupTerm()" *ngIf="selectedTimeSlot">Choose</button>
         </div>
       
       <div *ngIf="

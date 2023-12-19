@@ -33,10 +33,24 @@ export class CompanyProfileComponent {
   selectedDate: Date;
   availableTimeSlots: AvailableDate[];
   selectedTimeSlot: AvailableDate;
+  existingTimeSlots: AvailableDate[];
 
   
   //shouldRenderUpdateForm: boolean = false;
   constructor(private companyService: CompanyService, private equipmentService: EquipmentService,  private router: Router, private route: ActivatedRoute) { }
+
+  ngOnInit(): void {
+    this.companyService.getAdminAvailableDates(1).subscribe({
+      next: (result) =>{
+        this.existingTimeSlots = result;
+        console.log('ADMINOVI DATUMMI');
+        console.log(this.existingTimeSlots);
+      },
+      error: (err) => {
+        console.log('Error while getting admins available dates', err);
+      }
+    })
+  }
 
   ngAfterViewInit(): void {
     this.route.paramMap.subscribe((params) => {
@@ -216,6 +230,7 @@ export class CompanyProfileComponent {
 
   updateEquipmentClicked(): void{
     this.shouldRenderEquipmentForm = false;
+    this.ngAfterViewInit();
   }
 
   openDatePicker() {
@@ -225,7 +240,14 @@ export class CompanyProfileComponent {
   onDateSelected(event: MatDatepickerInputEvent<Date>): void {
     if (event.value !== null) {
       this.selectedDate = event.value;
-      const dateString: string = this.selectedDate.toISOString();
+      const tempDate = new Date(this.selectedDate);
+      tempDate.setUTCDate(tempDate.getUTCDate() + 1);
+
+      console.log('Selected Date: ', this.selectedDate);
+  
+      // Format the date string with the corrected day
+      const dateString: string = tempDate.toISOString();
+  
   
       // Call your method from the company service here
       this.companyService.getExtraAdminAvailableDates(this.company.name, 1, dateString).subscribe({
@@ -242,6 +264,7 @@ export class CompanyProfileComponent {
   }
 
   createPickupTerm(): void {
+    console.log(this.selectedTimeSlot);
     if(this.selectedTimeSlot){
       this.companyService.createAvailableDate(this.selectedTimeSlot).subscribe({
         next: () => {
