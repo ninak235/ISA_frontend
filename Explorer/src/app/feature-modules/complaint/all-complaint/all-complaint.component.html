@@ -1,0 +1,25 @@
+<!-- all-complaint.component.html -->
+<div class="complaint-container" *ngIf="complaints && complaints.length > 0">
+  <div *ngFor="let singleComplaint of complaints" class="single-complaint">
+    <div class="complaint-content">
+      <strong>Content of complaint:</strong> <span>{{ singleComplaint.content }}</span>
+    </div>
+
+    <button
+      *ngIf="!singleComplaint.disabled"
+      (click)="onReplayOnComplaint(singleComplaint)"
+      class="replay-button"
+    >
+      Replay on complaint
+    </button>
+  </div>
+
+  <xp-replay-on-complaint
+    *ngIf="renderReplayOnComplaint"
+    [complaint]="selectedComplaint"
+    (replayOnComplaintClicked)="onReplayOnComplaintClicked()"
+    class="replay-component"
+  ></xp-replay-on-complaint>
+
+  <button class="done-button" (click)="navigateToUserProfile()">Done with replays</button>
+</div>

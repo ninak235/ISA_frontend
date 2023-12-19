@@ -17,6 +17,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatOptionModule } from '@angular/material/core';
+import { ComplaintModule } from './feature-modules/complaint/complaint.module';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { ReservationModule } from './feature-modules/reservation/reservation.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 
@@ -39,8 +42,11 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatNativeDateModule,
     MatOptionModule,
     EquipmentModule,
+    ComplaintModule,
+    FullCalendarModule,
     MatDatepickerModule,
-    MatDialogModule
+    MatDialogModule,
+    ReservationModule
   ],
   providers: [
     {

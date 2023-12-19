@@ -3,6 +3,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { Login } from '../model/login.model';
+import { User } from '../model/user.model';
+import { SystemUser } from 'src/app/feature-modules/user/model/user.model';
+import { UserService } from 'src/app/feature-modules/user/user.service';
 
 @Component({
   selector: 'xp-login',
@@ -10,7 +13,13 @@ import { Login } from '../model/login.model';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private userService: UserService
+  ) {}
+  user: User;
+  systemAdmin: SystemUser;
 
   loginForm = new FormGroup({
     userName: new FormControl('', [Validators.required]),
@@ -26,7 +35,30 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.authService.login(login).subscribe({
         next: () => {
-          this.router.navigate(['/']);
+          this.authService.user$.subscribe((user) => {
+            this.user = user;
+
+            // Set the current user in the UserService
+            //this.userService.setCurrentUser(this.user);
+
+            if(this.user.role.roles.includes("ROLE_ADMIN")){
+              this.userService.getUserById(this.user.id).subscribe((systemAdmin) => {
+                this.systemAdmin = systemAdmin;
+  
+                if (!this.systemAdmin.firstLogin && this.user.role.roles.includes("ROLE_ADMIN")) {
+                  this.router.navigate(['/changeSystemAdmin']);
+                } 
+              });
+            }else{
+              this.router.navigate(['/']);
+            }
+            // Continue with the rest of the logic
+            
+          });
+        },
+        error: (error) => {
+          console.error('Login failed:', error);
+          // Additional error handling logic if needed
         },
       });
     }
