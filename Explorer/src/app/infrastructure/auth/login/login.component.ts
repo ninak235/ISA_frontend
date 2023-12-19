@@ -41,11 +41,11 @@ export class LoginComponent {
             // Set the current user in the UserService
             //this.userService.setCurrentUser(this.user);
 
-            if(this.user.role.roles.includes("ROLE_ADMIN")){
+            if(this.user.role.roles.includes("ROLE_ADMIN") || this.user.role.roles.includes("ROLE_COMPANYADMIN")){
               this.userService.getUserById(this.user.id).subscribe((systemAdmin) => {
                 this.systemAdmin = systemAdmin;
   
-                if (!this.systemAdmin.firstLogin && this.user.role.roles.includes("ROLE_ADMIN")) {
+                if (!this.systemAdmin.firstLogin && (this.user.role.roles.includes("ROLE_ADMIN") || this.user.role.roles.includes("ROLE_COMPANYADMIN"))) {
                   this.router.navigate(['/changeSystemAdmin']);
                 } 
               });

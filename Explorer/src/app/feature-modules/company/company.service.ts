@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Company } from './model/companyModel';
+import { Company, CompanyAdmin } from './model/companyModel';
 import { environment } from 'src/env/environment';
 import { CompanyIdName } from './model/companyIdName';
 import { AvailableDate } from './model/availableDateModel';
+import { CompanyAdminRegistration } from '../user/model/companyAdminModel';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,10 @@ export class CompanyService {
 
   getExtraAdminAvailableDates(companyName:string, adminId:number, selectedDate: string): Observable<AvailableDate[]> {
     return this.http.get<AvailableDate[]>(environment.apiHost + '/availableDate/getExtraByCompanyIdAndAdminId/'+ companyName + '/' + adminId + '/' + selectedDate);
+  }
+
+  getAdmin(adminId: number): Observable<CompanyAdminRegistration> {
+    return this.http.get<CompanyAdminRegistration>(environment.apiHost + '/companyAdmin/'+ adminId);
   }
 
   addCompanyClicked: EventEmitter<void> = new EventEmitter<void>();
@@ -52,6 +57,10 @@ export class CompanyService {
 
   getCompanyAvailableDates(id: number): Observable<AvailableDate[]>{
     return this.http.get<AvailableDate[]>(environment.apiHost + '/availableDate/getByCompanyId/'+id);
+  }
+
+  getAdminAvailableDates(id: number): Observable<AvailableDate[]>{
+    return this.http.get<AvailableDate[]>(environment.apiHost + '/availableDate/getByAdminId/'+id);
   }
 
   /*createAvailableDate(date: AvailableDate) : Observable<void>{

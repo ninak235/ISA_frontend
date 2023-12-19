@@ -78,6 +78,7 @@ export class ChangePasswordSystemAdminComponent {
         this.userService.updateSystemAdminPassword(updatedAdmin).subscribe({
           next: () => {
                 // Step 6: Continue with any additional logic or navigation
+                this.registrationAdminForm.reset();
                 this.router.navigate(['/']);
           },
         });

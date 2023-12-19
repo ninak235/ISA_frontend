@@ -13,6 +13,11 @@ import { AddAvailabledateFormComponent } from '../add-availabledate-form/add-ava
 import { Reservation, ReservationStatus } from '../../reservation/model/reservation.model';
 import { ReservationService } from '../../reservation/reservation.service';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
+import { CalendarOptions } from '@fullcalendar/core'; // useful for typechecking
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import multiMonthPlugin from '@fullcalendar/multimonth';
+import { EventInput } from '@fullcalendar/core';
 
 @Component({
   selector: 'xp-company-profile',
@@ -33,10 +38,37 @@ export class CompanyProfileComponent {
   selectedDate: Date;
   availableTimeSlots: AvailableDate[];
   selectedTimeSlot: AvailableDate;
+  existingTimeSlots: AvailableDate[];
+  adminId: number;
+  equipmentReservationStatus: { [key: number]: boolean } = {};
 
   
   //shouldRenderUpdateForm: boolean = false;
-  constructor(private companyService: CompanyService, private equipmentService: EquipmentService,  private router: Router, private route: ActivatedRoute) { }
+  constructor(private companyService: CompanyService, private equipmentService: EquipmentService,  private router: Router, private route: ActivatedRoute, private authService: AuthService) { }
+
+  ngOnInit(): void {
+    this.authService.user$.subscribe(user => {
+      if (user) {
+        this.adminId = user.id;
+        this.loadAdminAvailableDates();
+      }
+    });
+  }
+  
+  private loadAdminAvailableDates() {
+    this.companyService.getAdminAvailableDates(this.adminId).subscribe({
+      next: (result) => {
+        this.existingTimeSlots = result;
+        console.log('ADMINOVI DATUMMI');
+        console.log(this.existingTimeSlots);
+        this.updateCalendarEvents();
+      },
+      error: (err) => {
+        console.log('Error while getting admins available dates', err);
+      }
+    });
+  }
+  
 
   ngAfterViewInit(): void {
     this.route.paramMap.subscribe((params) => {
@@ -47,6 +79,9 @@ export class CompanyProfileComponent {
             this.company = c;
             console.log('KOMPANIJA');
             console.log(this.company);
+            for (const equipment of this.company.equipmentSet) {
+              this.isItReserved(equipment);
+            }
             if (this.company && this.company.adress) {
               let DefaultIcon = L.icon({
                 iconUrl: 'https://unpkg.com/leaflet@1.6.0/dist/images/marker-icon.png',
@@ -65,7 +100,9 @@ export class CompanyProfileComponent {
                         companyEquipment.id === equipment.id
                       )
                     );
+                    
                     console.log(this.availableEquipment);
+
                   },
                   error: (error) => {
                     console.error('Error fetching equipment:', error);
@@ -135,6 +172,11 @@ export class CompanyProfileComponent {
       equipment.name.toLowerCase().includes(this.equipmentSearchValue.toLowerCase()) ||
       equipment.description.toLowerCase().includes(this.equipmentSearchValue.toLowerCase())
     );
+
+    for (const equipment of this.filteredEquipment) {
+      this.isItReserved(equipment);
+    }
+    
   }
 
   deleteEquipment(equipment: CompanyEquipment): void {
@@ -216,6 +258,7 @@ export class CompanyProfileComponent {
 
   updateEquipmentClicked(): void{
     this.shouldRenderEquipmentForm = false;
+    this.ngAfterViewInit();
   }
 
   openDatePicker() {
@@ -225,10 +268,17 @@ export class CompanyProfileComponent {
   onDateSelected(event: MatDatepickerInputEvent<Date>): void {
     if (event.value !== null) {
       this.selectedDate = event.value;
-      const dateString: string = this.selectedDate.toISOString();
+      const tempDate = new Date(this.selectedDate);
+      tempDate.setUTCDate(tempDate.getUTCDate() + 1);
+
+      console.log('Selected Date: ', this.selectedDate);
+  
+      // Format the date string with the corrected day
+      const dateString: string = tempDate.toISOString();
+  
   
       // Call your method from the company service here
-      this.companyService.getExtraAdminAvailableDates(this.company.name, 1, dateString).subscribe({
+      this.companyService.getExtraAdminAvailableDates(this.company.name, this.adminId, dateString).subscribe({
         next: (result) => {
           console.log('TIMESLOTS');
           console.log(result);
@@ -242,6 +292,7 @@ export class CompanyProfileComponent {
   }
 
   createPickupTerm(): void {
+    console.log(this.selectedTimeSlot);
     if(this.selectedTimeSlot){
       this.companyService.createAvailableDate(this.selectedTimeSlot).subscribe({
         next: () => {
@@ -276,6 +327,76 @@ export class CompanyProfileComponent {
   
     return { date: dateString, time: timeString };
   }
+
+  calendarOptions: CalendarOptions = {
+    plugins: [dayGridPlugin, timeGridPlugin],
+    initialView: 'dayGridMonth', // Set initial view to dayGridMonth
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek'
+    },
+    views: {
+      timeGrid: {
+        dayMaxEvents: 4
+      }
+    },
+  
+    eventClick: (info) => {
+      // Your eventClick logic
+    },
+  
+    events: [] as EventInput[]
+  };
+  
+
+  updateCalendarEvents(): void {
+    // Assuming your FullCalendar events should have 'id', 'title', 'start', 'end', etc.
+    const events: EventInput[] = this.existingTimeSlots.map((timeSlot) => {
+      const dateTimeArray = timeSlot.startTime;
+      
+      // Use the Date constructor to create a Date object from the array
+      const dateObject = new Date(+dateTimeArray[0], +dateTimeArray[1] - 1, +dateTimeArray[2], +dateTimeArray[3], +dateTimeArray[4]);
+  
+      return {
+        id: String(timeSlot.id), // Convert id to string
+        title: `Duration: ${timeSlot.duration / 60} minutes`,
+        start: dateObject, // Use the Date object for the 'start' property
+      };
+    });
+  
+    // Update the calendar events
+    this.calendarOptions.events = events;
+  }
+
+  
+
+  isItReserved(eq: CompanyEquipment): void {
+    console.log('Provera za');
+    console.log(eq);
+    if (this.company.id !== undefined && eq.id !== undefined) {
+      this.equipmentService.checkIfEquipmentIsReserved(eq.id, this.company.id).subscribe({
+        next: (result: boolean) => {
+          if(eq.id !== undefined)
+          this.equipmentReservationStatus[eq.id] = result;
+        },
+        error: (error: any) => {
+          console.error('Error checking reservation status', error);
+          if(eq.id !== undefined)
+          this.equipmentReservationStatus[eq.id] = false; // or handle the error case accordingly
+        },
+      });
+    } else {
+      // Handle the case where either eq or eq.id is undefined
+      // You might want to log an error or handle this case appropriately
+    }
+  }
+
+  isEquipmentReserved(equipment: CompanyEquipment): boolean {
+    return equipment?.id !== undefined && this.equipmentReservationStatus[equipment.id];
+  }
+  
+  
 
 
   

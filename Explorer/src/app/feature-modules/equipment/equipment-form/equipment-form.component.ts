@@ -73,7 +73,6 @@ export class EquipmentFormComponent {
           },
         });
 
-        this.updateEquipmentClicked.emit();
         this.equipmentForm.reset();
   
         this.renderUpdateEquipment = false;

@@ -18,11 +18,12 @@ import { CompanyReserveComponent } from './company-reserve/company-reserve.compo
 import { ReservationCreatedComponent } from './reservation-created/reservation-created.component';
 import { EquipmentModule } from '../equipment/equipment.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 @NgModule({
   declarations: [AllCompanyPreviewComponent, CompanyFormComponent, CompanyProfileComponent, AddAvailabledateFormComponent, CompanyReserveComponent, ReservationCreatedComponent],
   imports: [CommonModule, MatInputModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatIconModule, MatCheckboxModule,
-    MatCardModule, MatDatepickerModule, MatNativeDateModule, MatDialogModule, EquipmentModule, BrowserAnimationsModule],
+    MatCardModule, MatDatepickerModule, MatNativeDateModule, MatDialogModule, EquipmentModule, BrowserAnimationsModule, FullCalendarModule],
   exports: [AllCompanyPreviewComponent],
   providers: [
     DatePipe, 
