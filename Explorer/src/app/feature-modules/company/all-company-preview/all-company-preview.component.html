@@ -48,10 +48,10 @@
         <br />
         Coming soon!
       </ng-template>
-      <button (click)="onEditCompanyClicked(company)" color="primary" mat-icon-button>
+      <button (click)="onEditCompanyClicked(company)" *ngIf="companyAdmin.companyId == company.id" color="primary" mat-icon-button>
         <mat-icon>edit</mat-icon>
       </button>
-      <button (click)="onCompanyNameClicked(company)" color="primary" mat-icon-button>
+      <button (click)="onCompanyNameClicked(company)" *ngIf="companyAdmin.companyId == company.id" color="primary" mat-icon-button>
         <mat-icon>details</mat-icon>
       </button>
     </div>

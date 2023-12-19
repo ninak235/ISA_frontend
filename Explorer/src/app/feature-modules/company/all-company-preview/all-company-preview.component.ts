@@ -1,7 +1,10 @@
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Company } from '../model/companyModel';
+import { Company, CompanyAdmin } from '../model/companyModel';
 import { CompanyService } from '../company.service';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/infrastructure/auth/auth.service';
+import { CompanyAdminBasicModel } from '../../user/model/companyAdminBasicModel';
+import { CompanyAdminRegistration } from '../../user/model/companyAdminModel';
 
 @Component({
   selector: 'xp-all-company-preview',
@@ -17,15 +20,37 @@ export class AllCompanyPreviewComponent implements OnInit {
   selectedCompany: Company;
   shouldEdit: boolean;
   oldCompanyName: string;
+  companyAdmin: CompanyAdminBasicModel = {id: 0, companyId: 0};
 
-  constructor(private companyService: CompanyService, private router: Router) {}
+  constructor(private companyService: CompanyService, private router: Router, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.refreshCompanyList(); // Initial load of companies
 
+    this.authService.user$.subscribe(user => {
+      if(user){
+        this.companyService.getAdmin(user.id).subscribe({
+          next: (admin : CompanyAdminRegistration) => {
+            if (admin.id !== undefined) {
+              this.companyAdmin.id = admin.id;
+            } else {
+              // Handle the case where admin.id is undefined, e.g., provide a default value or throw an error.
+              console.log('CANNOT FIND THE ID');
+            }
+            this.companyAdmin.companyId = admin.companyId;
+            console.log(this.companyAdmin);
+          }, 
+          error: (err: any) => {
+            console.log('Looks like you arent logged in as an company admin', err);
+         },
+        });
+      }
+    });
+
     // Subscribe to the addCompanyClicked event
     this.companyService.addCompanyClicked.subscribe(() => {
       this.refreshCompanyList(); // Refresh the list of companies
+      
     });
   }
   refreshCompanyList(): void {

@@ -5,16 +5,18 @@
       
       <p><strong>Description:</strong>{{ company.description }}</p>
       <p><strong>Grade:</strong>{{ company.grade }}</p>
+      <h3><strong>Equipment:</strong></h3>
+      <button mat-icon-button color="primary" (click)="showEquipmentSelect()" >
+        <mat-icon>add</mat-icon>
+      </button>
       <div *ngIf="
           company.equipmentSet && company.equipmentSet.length > 0;
           else noEquipment
         ">
-        <h3><strong>Equipment:</strong></h3>
+        
         
         <input type="text" class="search-input" placeholder="Search equipment..." [(ngModel)]="equipmentSearchValue" (ngModelChange)="onEquipmentSearchChange()">
-        <button mat-icon-button color="primary" (click)="showEquipmentSelect()" >
-          <mat-icon>add</mat-icon>
-        </button>
+        
         <ul>
           <li *ngFor="let equipment of filteredEquipment || company.equipmentSet" class="equipment-item">
             <strong>Name: </strong>{{ equipment.name }}<br />
@@ -22,7 +24,7 @@
             <strong>Type: </strong> {{ equipment.typeOfEquipment }}<br />
             <strong>Grade: </strong> {{ equipment.grade }}<br />
             <strong>Price: </strong> {{ equipment.price }}<br />
-            <button mat-icon-button color="warn" (click)="deleteEquipment(equipment)">
+            <button mat-icon-button color="warn" (click)="deleteEquipment(equipment)" [disabled]="isEquipmentReserved(equipment)">
               <mat-icon>delete</mat-icon>
             </button>
             <button mat-icon-button color="primary" (click)="openUpdateEquipmentForm(equipment)">
@@ -58,7 +60,7 @@
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
-      <h2>AVAILABLE DATES:</h2>
+      <h2 *ngIf="availableTimeSlots">AVAILABLE TIME SLOTS:</h2>
         <div class="date-cards-container">
           <div class="date-card" *ngFor="let timeSlot of availableTimeSlots">
             <div class="card-content">
@@ -90,4 +92,6 @@
     <div class="map-frame">
       <div id="leafletMap" class="map-wrap"></div>
     </div>
+    <h2>Your scheduled deliveries</h2>
+    <full-calendar [options]="calendarOptions"></full-calendar>
 <div>

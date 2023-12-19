@@ -9,6 +9,9 @@ import { CompanyEquipment, TypeOfEquipment } from '../company/model/companyModel
   providedIn: 'root'
 })
 export class EquipmentService {
+  checkIfEquipmentIsReserved(equipmentId: number, companyId: number) {
+    return this.http.get<boolean>(environment.apiHost + '/equipment/checkIfReserved/'+equipmentId+'/'+companyId);
+  }
 
   constructor(private http: HttpClient) { }
 
