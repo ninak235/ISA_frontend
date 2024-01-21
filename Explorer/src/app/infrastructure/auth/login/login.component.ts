@@ -44,10 +44,14 @@ export class LoginComponent {
             if(this.user.role.roles.includes("ROLE_ADMIN") || this.user.role.roles.includes("ROLE_COMPANYADMIN")){
               this.userService.getUserById(this.user.id).subscribe((systemAdmin) => {
                 this.systemAdmin = systemAdmin;
-  
+                console.log(this.systemAdmin);
+                console.log(this.user.role);
                 if (!this.systemAdmin.firstLogin && (this.user.role.roles.includes("ROLE_ADMIN") || this.user.role.roles.includes("ROLE_COMPANYADMIN"))) {
                   this.router.navigate(['/changeSystemAdmin']);
                 } 
+                else{
+                  this.router.navigate(['/']);
+                }
               });
             }else{
               this.router.navigate(['/']);
