@@ -134,7 +134,7 @@ export class CompanyReserveComponent {
       const [year, month, day, hour, minute] = this.selectedDate.startTime;
 
       const startDate = new Date(parseInt(year,10), parseInt(month,10)-1, parseInt(day, 10), parseInt(hour, 10), parseInt(minute,10));
-
+      startDate.setHours(startDate.getHours() + 1);
     
       const reservation: Reservation = {
         dateTime: startDate,
