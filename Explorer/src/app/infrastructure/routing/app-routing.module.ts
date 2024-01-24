@@ -17,6 +17,7 @@ import { AllComplaintComponent } from 'src/app/feature-modules/complaint/all-com
 import { AllReservationsComponent } from 'src/app/feature-modules/reservation/all-reservations/all-reservations.component';
 import { ChangePasswordSystemAdminComponent } from 'src/app/feature-modules/user/change-password-system-admin/change-password-system-admin.component';
 import { CompanyReserveComponent } from 'src/app/feature-modules/company/company-reserve/company-reserve.component';
+import { DefineLoyalityProgramComponent } from 'src/app/feature-modules/loyality-program/define-loyality-program/define-loyality-program.component';
 
 const routes: Routes = [
   { path: '', component: AllCompanyPreviewComponent },
@@ -46,7 +47,8 @@ const routes: Routes = [
   { path: 'allCompaints', component: AllComplaintComponent },
   { path: 'allReservations', component: AllReservationsComponent },
   { path: 'changeSystemAdmin', component: ChangePasswordSystemAdminComponent },
-  { path: 'comapnyProfileReserve/:companyName', component: CompanyReserveComponent }
+  { path: 'comapnyProfileReserve/:companyName', component: CompanyReserveComponent },
+  { path: 'defineLoyalityProgram', component: DefineLoyalityProgramComponent }
 ];
 
 @NgModule({

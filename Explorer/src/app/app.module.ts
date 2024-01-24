@@ -22,6 +22,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { ReservationModule } from './feature-modules/reservation/reservation.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
+import { LoyalityProgramModule } from './feature-modules/loyality-program/loyality-program.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -46,7 +47,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     FullCalendarModule,
     MatDatepickerModule,
     MatDialogModule,
-    ReservationModule
+    ReservationModule,
+    LoyalityProgramModule
   ],
   providers: [
     {
