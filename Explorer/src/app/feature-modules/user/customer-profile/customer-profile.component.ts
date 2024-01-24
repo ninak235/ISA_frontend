@@ -13,7 +13,8 @@ import { ApplicationRef } from '@angular/core';
 import { Role } from 'src/app/infrastructure/auth/model/user.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ReservationInfoDialogComponent } from '../../reservation/reservation-info-dialog/reservation-info-dialog.component';
-import { CompanyEquipment } from '../../company/model/companyModel';
+import { CompanyAdmin, CompanyEquipment } from '../../company/model/companyModel';
+import { CompanyAdminRegistration } from '../model/companyAdminModel';
 
 interface ExtendedReservation extends Reservation {
   isPast? : boolean;
@@ -37,6 +38,9 @@ export class CustomerProfileComponent implements OnInit {
   pastReservations: ExtendedReservation[] = [];
   futureReservations: ExtendedReservation[] = [];
   allReservations: ExtendedReservation[] = [];
+  complaintContent: string = '';
+  selectedCompanyAdmin: CompanyAdminRegistration;
+  companyAdmins: CompanyAdminRegistration[] = [];
 
   //shouldRenderUpdateForm: boolean = false;
   constructor(
@@ -234,6 +238,7 @@ export class CustomerProfileComponent implements OnInit {
     return reservationInfo;
   }
 
+
   seeQR(reservation: Reservation): void{
     const reservationInfo = this.createReservationInfoString(reservation);
 
@@ -241,6 +246,14 @@ export class CustomerProfileComponent implements OnInit {
       width: '500px', // Set the width as needed
       data: { reservationInfo: reservationInfo },
     });
+  }
+
+  submitComplaint(): void{
+
+  }
+
+  makeComplaint(): void{
+    
   }
 
   cancelReservation(reservation: Reservation): void {

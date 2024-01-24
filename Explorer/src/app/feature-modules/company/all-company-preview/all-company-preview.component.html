@@ -28,7 +28,7 @@
 
   <div class="available-company-container" *ngIf="companies">
     <div class="company-container" *ngFor="let company of filteredCompanies">
-      <button (click)="onReserve(company)" color="primary" mat-icon-button>
+      <button *ngIf="!tooManyPenaltyPoints && isCustomer" (click)="onReserve(company)" color="primary" mat-icon-button>
         <mat-icon>add_shopping_cart</mat-icon>
       </button>
       <h2>{{ company.name }}</h2>
