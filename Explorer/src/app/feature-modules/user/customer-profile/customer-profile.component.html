@@ -33,19 +33,35 @@
     </div>
     <mat-icon class="edit" (click)="editProfile()">edit</mat-icon>
   </div>
-  <h2>Reservations:</h2>
-  <div class="date-cards-container">
-    <div class="date-card" *ngFor="let reserv of reservations">
-      <div class="card-content">
-        <h3>📆 Date: {{ formatDateAndTime(reserv.dateTime).date }}</h3>
-        <h3>⏰ Time: {{ formatDateAndTime(reserv.dateTime).time }}</h3>
-        <h3>Status : {{ reserv.status }}</h3>
-        <button
-          *ngIf="reserv.status !== 'Cancelled'"
-          (click)="cancelReservation(reserv)"
-        >
-          Cancel Reservation
-        </button>
+  <h2 style="text-align: center;">All reservations</h2>
+  <select class="sortReservationSelect" [(ngModel)]="sortReservationCriterium" (change)="onSortReservationChange()">
+    <option *ngIf="!sortReservationCriterium" value="" disabled selected>Select sort parameter</option>
+    <option value="sortDateN">Reservation date (from newest)</option>
+    <option value="sortDateO">Reservation date (from oldest)</option>
+    <option value="sortPriceH">Price (from highest)</option>
+    <option value="sortPriceL">Price (from lowest)</option>
+    <option value="sortDurationL">Duration (from longest)</option>
+    <option value="sortDurationS">Duration (from shortest)</option>
+  </select>
+
+  <select class="sortReservationSelect" [(ngModel)]="reservationTypeSelected" (change)="onTypeReservationChange()">
+    <option *ngIf="!reservationTypeSelected" value="" disabled selected>Select past/incoming reservations</option>
+    <option value="past">Just past reservations</option>
+    <option value="incoming">Just incoming reservations</option>
+    <option value="both">Both</option>
+  </select>
+
+
+  <div class="past-reservation-container" *ngIf="isCustomer">
+    <div class="pastReservations-container" *ngFor="let res of allReservations">
+      <div class="reservation-item"  [ngStyle]="{'background-color': res.isPast ? '#f7564a' : '#8de675'}">
+        <p><strong>📆 Date:</strong> {{ formatDateAndTime(res.dateTime).date }}</p>
+        <p><strong>⏰ Time: </strong>{{ formatDateAndTime(res.dateTime).time }}</p>
+        <p><strong>Num of days:</strong> {{ res.duration }}</p>
+        <p><strong>Grade:</strong> {{ res.grade }}</p>
+        
+        <!-- Display "Cancel Reservation" button only for past reservations -->
+        <button *ngIf="!res.isPast && res.isCancelEnabled" (click)="cancelReservation(res)">Cancel Reservation</button>
       </div>
     </div>
   </div>
