@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import { CompanyAdminBasicModel } from '../../user/model/companyAdminBasicModel';
 import { CompanyAdminRegistration } from '../../user/model/companyAdminModel';
+import { Role } from 'src/app/infrastructure/auth/model/user.model';
+import { ReservationService } from '../../reservation/reservation.service';
+import { Reservation } from '../../reservation/model/reservation.model';
 
 @Component({
   selector: 'xp-all-company-preview',
@@ -17,16 +20,28 @@ export class AllCompanyPreviewComponent implements OnInit {
   searchValue: String;
   filteredCompanies: Company[] = [];
   selectedGrade: string = ''; 
+  sortCriteriumSelected: string = '';
+  sortReservationCriterium: string = '';
   selectedCompany: Company;
   shouldEdit: boolean;
   oldCompanyName: string;
   companyAdmin: CompanyAdminBasicModel = {id: 0, companyId: 0};
-
-  constructor(private companyService: CompanyService, private router: Router, private authService: AuthService) {}
+  role: Role;
+  isCustomer: boolean = false;
+  userId: number;
+  pastReservations: Reservation[] = [];
+  constructor(private companyService: CompanyService, private router: Router, private authService: AuthService, private reservationService: ReservationService) {}
 
   ngOnInit(): void {
     this.refreshCompanyList(); // Initial load of companies
 
+    this.userId = this.authService.user$.getValue().id;
+    this.role = this.authService.user$.getValue().role;
+    if (this.role.roles[0] == "ROLE_CUSTOMER"){
+      this.isCustomer = true;
+    }
+
+    this.getPastReservations();
     this.authService.user$.subscribe(user => {
       if(user){
         this.companyService.getAdmin(user.id).subscribe({
@@ -62,6 +77,30 @@ export class AllCompanyPreviewComponent implements OnInit {
     });
   }
 
+  getPastReservations(): void {
+    this.reservationService.getPastUserReservations(this.userId).subscribe({
+      next: (reservations: Reservation[]) => {
+        this.pastReservations = reservations;
+      }
+    })
+  }
+
+  formatDateAndTime(localDateTime: string | object): { date: string, time: string } {
+    if (typeof localDateTime === 'object' && localDateTime !== null) {
+      localDateTime = localDateTime.toString(); 
+    }
+  
+    const dateTimeParts = localDateTime.split(',');
+  
+    const [year, month, day, hours, minutes] = dateTimeParts;
+    const dateString = `${year}-${month}-${day}`;
+    var timeString = '';
+    
+    timeString = `${hours}:${minutes}` + '0';
+  
+    return { date: dateString, time: timeString };
+  }
+
   onAddCompany(): void {
     this.renderCreateCompany = true;
 
@@ -95,6 +134,78 @@ export class AllCompanyPreviewComponent implements OnInit {
         this.filteredCompanies = result;
       }
     })
+  }
+
+  onCriteriumChange(): void{
+    switch (this.sortCriteriumSelected) {
+      case 'sortName':
+        this.filteredCompanies.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'sortCity':
+        this.filteredCompanies.sort((a, b) => a.adress.localeCompare(b.adress));
+        break;
+      case 'sortGradeH':
+        this.filteredCompanies.sort((a, b) => a.grade.localeCompare(b.grade));
+        break;
+      case 'sortGradeL':
+        this.filteredCompanies.sort((a, b) => b.grade.localeCompare(a.grade));
+        break;
+      default:
+        break;
+    }
+  }
+
+  parseDateTime(localDateTime: string | object): Date {
+    if (typeof localDateTime === 'object' && localDateTime !== null) {
+        localDateTime = localDateTime.toString(); 
+    }
+    const dateArray = localDateTime.split(',').map(Number);
+    const parsedDate = new Date(dateArray[0], dateArray[1] - 1, dateArray[2], dateArray[3], dateArray[4]);
+    return parsedDate;
+}
+
+  onSortReservationChange(): void{
+    switch (this.sortReservationCriterium) {
+      case 'sortDateN':
+        this.pastReservations.sort((a, b) => {
+          const dateA = this.parseDateTime(a.dateTime);
+          const dateB = this.parseDateTime(b.dateTime);
+  
+          return dateB.getTime() - dateA.getTime();
+      });
+      break;
+
+      case 'sortDateO':
+        this.pastReservations.sort((a, b) => {
+          const dateA = this.parseDateTime(a.dateTime);
+          const dateB = this.parseDateTime(b.dateTime);
+  
+          return dateA.getTime() - dateB.getTime();
+      });
+      break;
+   
+      case 'sortPriceH':
+        //this.pastReservations.sort((a, b) => a.grade - b.grade);
+        break;
+      case 'sortPriceL':
+        //this.pastReservations.sort((a, b) => a. - b.someNumber);
+        break;
+      case 'sortDurationS':
+        this.pastReservations.sort((a, b) => a.duration - b.duration);
+        break;
+      case 'sortDurationL':
+        this.pastReservations.sort((a, b) => b.duration - a.duration);
+        break;
+      default:
+        break;
+    }
+  }
+
+  compareDates(dateA: Date, dateB: Date): number {
+    const timeA = dateA.getTime();
+    const timeB = dateB.getTime();
+  
+    return timeA - timeB;
   }
 
   onEditCompanyClicked(company: Company): void{

@@ -30,4 +30,8 @@ export class ReservationService {
   getUserReservations(userId: number): Observable<Reservation[]>{
     return this.http.get<Reservation[]>(environment.apiHost + '/reservations/byUserId/' + userId);
   }
+
+  getPastUserReservations(userId: number): Observable<Reservation[]>{
+    return this.http.get<Reservation[]>(environment.apiHost + '/reservations/pastByUserId/' + userId);
+  }
 }
