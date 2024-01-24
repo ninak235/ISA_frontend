@@ -14,6 +14,13 @@
       <option value="E">E</option>
       <option value="F">F</option>
     </select>
+    <select id="sortCriteriumSelect" [(ngModel)]="sortCriteriumSelected" (change)="onCriteriumChange()">
+      <option *ngIf="!sortCriteriumSelected" value="" disabled selected>Select sort parameter</option>
+      <option value="sortName">Company name A-Z</option>
+      <option value="sortCity">City A-Z</option>
+      <option value="sortGradeH">Grade (from highest)</option>
+      <option value="sortGradeL">Grade (from lowest)</option>
+    </select>
   </div>
   <div>
 
@@ -55,11 +62,6 @@
         <mat-icon>details</mat-icon>
       </button>
     </div>
-  </div>
-  <div>
-    
-
-    
   </div>
 
 </div>

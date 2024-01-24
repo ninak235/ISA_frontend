@@ -91,6 +91,17 @@ li.equipment-item {
   height: 30px;
  }
 
+ #sortCriteriumSelect{
+  margin-left: 30px;
+  width:fit-content;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  height: 30px;
+ }
+
  .formAdding {
   display: flex;
   flex-wrap: wrap;
