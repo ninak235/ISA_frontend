@@ -1,44 +1,52 @@
-<div *ngIf="customer" >
-    <div class="customer-card">
-    <img src="../../../../assets/user.png" height="100px" alt="user info"/>
-    <div class="customer-info">
-        <div class="info-item">
-            <strong>First Name:</strong> <span>{{ customer.firstName }}</span>
-        </div>
-        <div class="info-item">
-            <strong>Last Name:</strong> <span>{{ customer.lastName }}</span>
-        </div>
-        <div class="info-item">
-            <strong>Email:</strong> <span>{{ customer.email }}</span>
-        </div>
-        <div class="info-item">
-            <strong>Country:</strong> <span>{{ customer.country }}</span>
-        </div>
-        <div class="info-item">
-            <strong>City:</strong> <span>{{ customer.city }}</span>
-        </div>
-        <div class="info-item">
-            <strong>Number:</strong> <span>{{ customer.number }}</span>
-        </div>
-        <div class="info-item">
-            <strong>Occupation:</strong> <span>{{ customer.occupation }}</span>
-        </div>
-        <div class="info-item">
-            <strong>Company Info:</strong> <span>{{ customer.companyInfo }}</span>
-        </div>
-        <div class="info-item2">
-            <strong>Penalty points:</strong> <span>{{ penaltyPoints }}</span>
-        </div>
+<div *ngIf="customer">
+  <div class="customer-card">
+    <img src="../../../../assets/user.png" height="100px" alt="user info" />
+    <div *ngIf="customer" class="customer-info">
+      <div class="info-item">
+        <strong>First Name:</strong> <span>{{ customer.firstName }}</span>
+      </div>
+      <div class="info-item">
+        <strong>Last Name:</strong> <span>{{ customer.lastName }}</span>
+      </div>
+      <div class="info-item">
+        <strong>Email:</strong> <span>{{ customer.email }}</span>
+      </div>
+      <div class="info-item">
+        <strong>Country:</strong> <span>{{ customer.country }}</span>
+      </div>
+      <div class="info-item">
+        <strong>City:</strong> <span>{{ customer.city }}</span>
+      </div>
+      <div class="info-item">
+        <strong>Number:</strong> <span>{{ customer.number }}</span>
+      </div>
+      <div class="info-item">
+        <strong>Occupation:</strong> <span>{{ customer.occupation }}</span>
+      </div>
+      <div class="info-item">
+        <strong>Company Info:</strong> <span>{{ customer.companyInfo }}</span>
+      </div>
+      <div class="info-item2">
+        <strong>Penalty points:</strong>
+        <span>{{ customer.penaltyPoints }}</span>
+      </div>
     </div>
-        <mat-icon class="edit" (click)="editProfile()">edit</mat-icon>
+    <mat-icon class="edit" (click)="editProfile()">edit</mat-icon>
+  </div>
+  <h2>Reservations:</h2>
+  <div class="date-cards-container">
+    <div class="date-card" *ngFor="let reserv of reservations">
+      <div class="card-content">
+        <h3>📆 Date: {{ formatDateAndTime(reserv.dateTime).date }}</h3>
+        <h3>⏰ Time: {{ formatDateAndTime(reserv.dateTime).time }}</h3>
+        <h3>Status : {{ reserv.status }}</h3>
+        <button
+          *ngIf="reserv.status !== 'Cancelled'"
+          (click)="cancelReservation(reserv)"
+        >
+          Cancel Reservation
+        </button>
+      </div>
     </div>
-    <h2>Reservations:</h2>
-    <div class="date-cards-container">
-    <div class="date-card"  *ngFor="let reserv of reservations">
-        <div class="card-content">
-            <h3>📆 Date: {{ formatDateAndTime(reserv.dateTime).date }}</h3>
-            <h3>⏰ Time: {{ formatDateAndTime(reserv.dateTime).time }}</h3>
-          </div>
-    </div>
-    </div>
+  </div>
 </div>

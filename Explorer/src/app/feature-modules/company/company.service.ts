@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Company, CompanyAdmin } from './model/companyModel';
@@ -11,15 +11,26 @@ import { CompanyAdminRegistration } from '../user/model/companyAdminModel';
   providedIn: 'root',
 })
 export class CompanyService {
-
-  
-
-  getExtraAdminAvailableDates(companyName:string, adminId:number, selectedDate: string): Observable<AvailableDate[]> {
-    return this.http.get<AvailableDate[]>(environment.apiHost + '/availableDate/getExtraByCompanyIdAndAdminId/'+ companyName + '/' + adminId + '/' + selectedDate);
+  getExtraAdminAvailableDates(
+    companyName: string,
+    adminId: number,
+    selectedDate: string
+  ): Observable<AvailableDate[]> {
+    return this.http.get<AvailableDate[]>(
+      environment.apiHost +
+        '/availableDate/getExtraByCompanyIdAndAdminId/' +
+        companyName +
+        '/' +
+        adminId +
+        '/' +
+        selectedDate
+    );
   }
 
   getAdmin(adminId: number): Observable<CompanyAdminRegistration> {
-    return this.http.get<CompanyAdminRegistration>(environment.apiHost + '/companyAdmin/'+ adminId);
+    return this.http.get<CompanyAdminRegistration>(
+      environment.apiHost + '/companyAdmin/' + adminId
+    );
   }
 
   addCompanyClicked: EventEmitter<void> = new EventEmitter<void>();
@@ -29,16 +40,23 @@ export class CompanyService {
     return this.http.get<Company[]>(environment.apiHost + '/company/getAll');
   }
 
-  getAllCompaniesIdName(): Observable<CompanyIdName[]>{
-    return this.http.get<CompanyIdName[]>(environment.apiHost + '/company/getIdNameAll')
+  getAllCompaniesIdName(): Observable<CompanyIdName[]> {
+    return this.http.get<CompanyIdName[]>(
+      environment.apiHost + '/company/getIdNameAll'
+    );
   }
 
-  addCompany(company: Company): Observable<Company>{
+  addCompany(company: Company): Observable<Company> {
     this.addCompanyClicked.emit();
-    return this.http.post<Company>(environment.apiHost + '/company/registerCompany', company);
+    return this.http.post<Company>(
+      environment.apiHost + '/company/registerCompany',
+      company
+    );
   }
   getByGradeCompanies(grade: string): Observable<Company[]> {
-    return this.http.get<Company[]>(`${environment.apiHost}/company/byGrade?grade=${grade}`);
+    return this.http.get<Company[]>(
+      `${environment.apiHost}/company/byGrade?grade=${grade}`
+    );
   }
 
   getById(id: number): Observable<Company> {
@@ -46,59 +64,103 @@ export class CompanyService {
   }
 
   getByName(companyName: string): Observable<Company> {
-    return this.http.get<Company>(environment.apiHost + '/company/name/' + companyName);
+    return this.http.get<Company>(
+      environment.apiHost + '/company/name/' + companyName
+    );
   }
 
-  updateCompany(oldCompanyName: string, updatedCompany: Company): Observable<void> {
+  updateCompany(
+    oldCompanyName: string,
+    updatedCompany: Company
+  ): Observable<void> {
     console.log(oldCompanyName);
     console.log(updatedCompany);
-    return this.http.put<void>(environment.apiHost + '/company/update/' + oldCompanyName, updatedCompany)
+    return this.http.put<void>(
+      environment.apiHost + '/company/update/' + oldCompanyName,
+      updatedCompany
+    );
   }
 
-  getCompanyAvailableDates(id: number): Observable<AvailableDate[]>{
-    return this.http.get<AvailableDate[]>(environment.apiHost + '/availableDate/getByCompanyId/'+id);
+  getCompanyAvailableDates(
+    companyId: number,
+    userId: number
+  ): Observable<AvailableDate[]> {
+    const params = new HttpParams()
+      .set('companyId', companyId.toString())
+      .set('userId', userId.toString());
+    return this.http.get<AvailableDate[]>(
+      environment.apiHost + '/availableDate/getByCompanyId/',
+      { params }
+    );
   }
 
-  getAdminAvailableDates(id: number): Observable<AvailableDate[]>{
-    return this.http.get<AvailableDate[]>(environment.apiHost + '/availableDate/getByAdminId/'+id);
+  getAdminAvailableDates(id: number): Observable<AvailableDate[]> {
+    return this.http.get<AvailableDate[]>(
+      environment.apiHost + '/availableDate/getByAdminId/' + id
+    );
   }
 
   /*createAvailableDate(date: AvailableDate) : Observable<void>{
     return this.http.post<void>(environment.apiHost + '/availableDate/create', date);
   }*/
 
-  getExtraAvailableDates(id:number, selectedDate: string): Observable<AvailableDate[]> {
-    return this.http.get<AvailableDate[]>(environment.apiHost + '/availableDate/getExtraByCompanyId/'+id + '/' + selectedDate);
-  }
-
-  updateAvailableDate(availableDate: AvailableDate): Observable<void>{
-    return this.http.put<void>(environment.apiHost + '/availableDate/update', availableDate);
-  }
-
-  createAvailableDate(availableDate: AvailableDate): Observable<AvailableDate>{
-    return this.http.post<AvailableDate>(environment.apiHost + '/availableDate/new', availableDate);
-  }
-  updateCompanyEquipment(updatedCompany: Company, oldId: number, newId: number): Observable<void> {
-    console.log(updatedCompany);
-    return this.http.put<void>(
-        `${environment.apiHost}/company/update/equipment/change/${updatedCompany.name}?oldId=${oldId}&newId=${newId}`,
-        updatedCompany
+  getExtraAvailableDates(
+    id: number,
+    selectedDate: string,
+    userId: number
+  ): Observable<AvailableDate[]> {
+    return this.http.get<AvailableDate[]>(
+      environment.apiHost +
+        '/availableDate/getExtraByCompanyId/' +
+        id +
+        '/' +
+        selectedDate +
+        '/' +
+        userId
     );
   }
 
-  deleteCompanyEquipment(updatedCompany: Company, oldId: number): Observable<void> {
-    console.log(updatedCompany);
+  updateAvailableDate(availableDate: AvailableDate): Observable<void> {
     return this.http.put<void>(
-        `${environment.apiHost}/company/update/equipment/delete/${updatedCompany.name}?oldId=${oldId}`,
-        updatedCompany
+      environment.apiHost + '/availableDate/update',
+      availableDate
     );
   }
 
-  addEquipmentToCompany(companyName: string, equipmentId: number): Observable<any> {
+  createAvailableDate(availableDate: AvailableDate): Observable<AvailableDate> {
+    return this.http.post<AvailableDate>(
+      environment.apiHost + '/availableDate/new',
+      availableDate
+    );
+  }
+  updateCompanyEquipment(
+    updatedCompany: Company,
+    oldId: number,
+    newId: number
+  ): Observable<void> {
+    console.log(updatedCompany);
+    return this.http.put<void>(
+      `${environment.apiHost}/company/update/equipment/change/${updatedCompany.name}?oldId=${oldId}&newId=${newId}`,
+      updatedCompany
+    );
+  }
+
+  deleteCompanyEquipment(
+    updatedCompany: Company,
+    oldId: number
+  ): Observable<void> {
+    console.log(updatedCompany);
+    return this.http.put<void>(
+      `${environment.apiHost}/company/update/equipment/delete/${updatedCompany.name}?oldId=${oldId}`,
+      updatedCompany
+    );
+  }
+
+  addEquipmentToCompany(
+    companyName: string,
+    equipmentId: number
+  ): Observable<any> {
     const url = `${environment.apiHost}/company/add-equipment/${companyName}/${equipmentId}`;
     return this.http.post<void>(url, null); // Assuming you just need to send a POST request
   }
-  
-
-
 }
