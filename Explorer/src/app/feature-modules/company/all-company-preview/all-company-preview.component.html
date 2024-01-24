@@ -63,26 +63,5 @@
       </button>
     </div>
   </div>
-  <h3>Past reservations</h3>
-  <select id="sortReservationSelect" [(ngModel)]="sortReservationCriterium" (change)="onSortReservationChange()">
-    <option *ngIf="!sortReservationCriterium" value="" disabled selected>Select sort parameter</option>
-    <option value="sortDateN">Reservation date (from newest)</option>
-    <option value="sortDateO">Reservation date (from oldest)</option>
-    <option value="sortPriceH">Price (from highest)</option>
-    <option value="sortPriceL">Price (from lowest)</option>
-    <option value="sortDurationL">Duration (from longest)</option>
-    <option value="sortDurationS">Duration (from shortest)</option>
-  </select>
-  <div class="past-reservation-container" *ngIf="isCustomer">
-    <div class="pastReservations-container" *ngFor="let res of pastReservations">
-      <div class="reservation-item">
-        <p><strong>📆 Date:</strong> {{ formatDateAndTime(res.dateTime).date }}</p>
-        <p><strong>⏰ Time: </strong>{{ formatDateAndTime(res.dateTime).time }}</p>
-        <p><strong>Num of days:</strong> {{ res.duration }}</p>
-        <p><strong>Grade:</strong> {{ res.grade }}</p>
-      </div>
-    </div>
-  </div>
-  
 
 </div>
