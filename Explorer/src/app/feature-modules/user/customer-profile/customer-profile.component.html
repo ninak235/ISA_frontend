@@ -1,38 +1,62 @@
 <div *ngIf="customer">
-  <div class="customer-card">
-    <img src="../../../../assets/user.png" height="100px" alt="user info" />
-    <div *ngIf="customer" class="customer-info">
-      <div class="info-item">
-        <strong>First Name:</strong> <span>{{ customer.firstName }}</span>
+  
+    <div class="customer-card">
+      <img src="../../../../assets/user.png" height="100px" alt="user info" />
+
+      <div *ngIf="customer" class="customer-info">
+        <div class="info-item">
+          <strong>First Name:</strong> <span>{{ customer.firstName }}</span>
+        </div>
+        <div class="info-item">
+          <strong>Last Name:</strong> <span>{{ customer.lastName }}</span>
+        </div>
+        <div class="info-item">
+          <strong>Email:</strong> <span>{{ customer.email }}</span>
+        </div>
+        <div class="info-item">
+          <strong>Country:</strong> <span>{{ customer.country }}</span>
+        </div>
+        <div class="info-item">
+          <strong>City:</strong> <span>{{ customer.city }}</span>
+        </div>
+        <div class="info-item">
+          <strong>Number:</strong> <span>{{ customer.number }}</span>
+        </div>
+        <div class="info-item">
+          <strong>Occupation:</strong> <span>{{ customer.occupation }}</span>
+        </div>
+        <div class="info-item">
+          <strong>Company Info:</strong> <span>{{ customer.companyInfo }}</span>
+        </div>
+        <div class="info-item2">
+          <strong>Penalty points:</strong>
+          <span>{{ customer.penaltyPoints }}</span>
+        </div>
       </div>
-      <div class="info-item">
-        <strong>Last Name:</strong> <span>{{ customer.lastName }}</span>
-      </div>
-      <div class="info-item">
-        <strong>Email:</strong> <span>{{ customer.email }}</span>
-      </div>
-      <div class="info-item">
-        <strong>Country:</strong> <span>{{ customer.country }}</span>
-      </div>
-      <div class="info-item">
-        <strong>City:</strong> <span>{{ customer.city }}</span>
-      </div>
-      <div class="info-item">
-        <strong>Number:</strong> <span>{{ customer.number }}</span>
-      </div>
-      <div class="info-item">
-        <strong>Occupation:</strong> <span>{{ customer.occupation }}</span>
-      </div>
-      <div class="info-item">
-        <strong>Company Info:</strong> <span>{{ customer.companyInfo }}</span>
-      </div>
-      <div class="info-item2">
-        <strong>Penalty points:</strong>
-        <span>{{ customer.penaltyPoints }}</span>
-      </div>
+      <mat-icon class="edit" (click)="editProfile()">edit</mat-icon>
+      <mat-icon class="report_problem" (click)="makeComplaint()"></mat-icon>
     </div>
-    <mat-icon class="edit" (click)="editProfile()">edit</mat-icon>
-  </div>
+
+    <div class="complaint-form">
+      <h2 style="text-align: center;">Fill a Complaint</h2>
+      <form (ngSubmit)="submitComplaint()">
+        <div class="form-group">
+          <label for="complaintContent">Complaint Content:</label>
+          <textarea id="complaintContent" [(ngModel)]="complaintContent" name="complaintContent" rows="5" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="companyAdmin">Select Company Admin:</label>
+          <select id="companyAdmin" [(ngModel)]="selectedCompanyAdmin" name="companyAdmin" required>
+            <option *ngFor="let admin of companyAdmins" [value]="admin.id">{{ admin.firstName }}</option>
+          </select>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit">Submit Complaint</button>
+      </form>
+ </div>
+
   <h2 style="text-align: center;">All reservations</h2>
   <select class="sortReservationSelect" [(ngModel)]="sortReservationCriterium" (change)="onSortReservationChange()">
     <option *ngIf="!sortReservationCriterium" value="" disabled selected>Select sort parameter</option>
@@ -50,6 +74,8 @@
     <option value="incoming">Just incoming reservations</option>
     <option value="both">Both</option>
   </select>
+
+
 
 
   <div class="past-reservation-container" *ngIf="isCustomer">
