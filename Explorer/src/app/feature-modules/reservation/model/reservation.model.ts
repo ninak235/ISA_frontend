@@ -18,6 +18,6 @@ export enum ReservationStatus {
 }
 
 export interface CancelationModel {
-  ReservationId: number;
-  UpdatedPoints: number;
+  reservationId: number;
+  updatedPoints: number;
 }

@@ -33,7 +33,7 @@ export class ReservationService {
     );
   }
 
-  cancelReservation(reservation: Reservation): Observable<any> {
+  cancelReservation(reservation: Reservation): Observable<CancelationModel> {
     return this.http.put<CancelationModel>(
       environment.apiHost + '/reservations/cancelReservation',
       reservation

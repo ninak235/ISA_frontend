@@ -6,8 +6,10 @@ import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import {
   CancelationModel,
   Reservation,
+  ReservationStatus,
 } from '../../reservation/model/reservation.model';
 import { ReservationService } from '../../reservation/reservation.service';
+import { ApplicationRef } from '@angular/core';
 
 @Component({
   selector: 'xp-customer-profile',
@@ -16,7 +18,6 @@ import { ReservationService } from '../../reservation/reservation.service';
 })
 export class CustomerProfileComponent implements OnInit {
   customer: Customer;
-  penaltyPoints: number;
   userId: number;
   reservations: Reservation[] = [];
   //shouldRenderUpdateForm: boolean = false;
@@ -24,7 +25,8 @@ export class CustomerProfileComponent implements OnInit {
     private service: UserService,
     private router: Router,
     private authService: AuthService,
-    private reservationService: ReservationService
+    private reservationService: ReservationService,
+    private appRef: ApplicationRef
   ) {}
 
   ngOnInit(): void {
@@ -32,7 +34,6 @@ export class CustomerProfileComponent implements OnInit {
     this.service.getCustomerById(this.userId).subscribe({
       next: (c: Customer) => {
         this.customer = c;
-        this.penaltyPoints = c.penaltyPoints;
         this.reservationService.getUserReservations(this.userId).subscribe({
           next: (result: Reservation[]) => {
             this.reservations = result;
@@ -68,7 +69,6 @@ export class CustomerProfileComponent implements OnInit {
   }
 
   cancelReservation(reservation: Reservation): void {
-    // Možete dodati i potvrdu korisnika pre nego što pozovete otkazivanje
     const confirmCancel = confirm(
       'Are you sure you want to cancel this reservation?'
     );
@@ -77,12 +77,13 @@ export class CustomerProfileComponent implements OnInit {
       this.reservationService.cancelReservation(reservation).subscribe({
         next: (result: CancelationModel) => {
           console.log(result);
-          this.penaltyPoints = result.UpdatedPoints;
+          this.customer.penaltyPoints = result.updatedPoints;
           const index = this.reservations.findIndex(
-            (r) => r.id === result.ReservationId
+            (r) => r.id === result.reservationId
           );
           if (index !== -1) {
-            this.reservations.splice(index, 1);
+            this.reservations[index].status = ReservationStatus.Cancelled;
+            this.appRef.tick();
           }
         },
         error: (error: any) => {

@@ -1,7 +1,7 @@
 <div *ngIf="customer">
   <div class="customer-card">
     <img src="../../../../assets/user.png" height="100px" alt="user info" />
-    <div class="customer-info">
+    <div *ngIf="customer" class="customer-info">
       <div class="info-item">
         <strong>First Name:</strong> <span>{{ customer.firstName }}</span>
       </div>
@@ -27,7 +27,8 @@
         <strong>Company Info:</strong> <span>{{ customer.companyInfo }}</span>
       </div>
       <div class="info-item2">
-        <strong>Penalty points:</strong> <span>{{ penaltyPoints }}</span>
+        <strong>Penalty points:</strong>
+        <span>{{ customer.penaltyPoints }}</span>
       </div>
     </div>
     <mat-icon class="edit" (click)="editProfile()">edit</mat-icon>
@@ -38,7 +39,13 @@
       <div class="card-content">
         <h3>📆 Date: {{ formatDateAndTime(reserv.dateTime).date }}</h3>
         <h3>⏰ Time: {{ formatDateAndTime(reserv.dateTime).time }}</h3>
-        <button (click)="cancelReservation(reserv)">Cancel Reservation</button>
+        <h3>Status : {{ reserv.status }}</h3>
+        <button
+          *ngIf="reserv.status !== 'Cancelled'"
+          (click)="cancelReservation(reserv)"
+        >
+          Cancel Reservation
+        </button>
       </div>
     </div>
   </div>
