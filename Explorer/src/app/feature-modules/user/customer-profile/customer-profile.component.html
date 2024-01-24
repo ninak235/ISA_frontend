@@ -62,6 +62,7 @@
         
         <!-- Display "Cancel Reservation" button only for past reservations -->
         <button *ngIf="!res.isPast && res.isCancelEnabled" (click)="cancelReservation(res)">Cancel Reservation</button>
+        <button *ngIf="!res.isPending" (click)="seeQR(res)">▌│█║▌║▌║See QR</button>
       </div>
     </div>
   </div>

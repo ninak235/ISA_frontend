@@ -22,6 +22,8 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { ReservationModule } from './feature-modules/reservation/reservation.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
+import { QRCodeModule } from 'angularx-qrcode';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -46,7 +48,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     FullCalendarModule,
     MatDatepickerModule,
     MatDialogModule,
-    ReservationModule
+    ReservationModule,
+    QRCodeModule
   ],
   providers: [
     {
