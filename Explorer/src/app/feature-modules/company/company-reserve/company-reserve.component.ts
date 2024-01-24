@@ -157,7 +157,7 @@ export class CompanyReserveComponent {
 
       const reservation: Reservation = {
         dateTime: startDate,
-        duration: 2000,
+        duration: this.selectedDate.duration,
         grade: 4,
         status: ReservationStatus.Pending,
         customerId: this.userId,
