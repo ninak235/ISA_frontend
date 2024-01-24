@@ -23,6 +23,8 @@ import { ReservationModule } from './feature-modules/reservation/reservation.mod
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { LoyalityProgramModule } from './feature-modules/loyality-program/loyality-program.module';
+import { QRCodeModule } from 'angularx-qrcode';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -48,7 +50,8 @@ import { LoyalityProgramModule } from './feature-modules/loyality-program/loyali
     MatDatepickerModule,
     MatDialogModule,
     ReservationModule,
-    LoyalityProgramModule
+    LoyalityProgramModule,
+    QRCodeModule
   ],
   providers: [
     {

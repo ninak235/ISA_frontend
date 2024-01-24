@@ -38,7 +38,7 @@ export class CompanyProfileComponent {
   selectedDate: Date;
   availableTimeSlots: AvailableDate[];
   selectedTimeSlot: AvailableDate;
-  existingTimeSlots: AvailableDate[];
+existingTimeSlots: AvailableDate[];
   adminId: number;
   equipmentReservationStatus: { [key: number]: boolean } = {};
 
@@ -79,7 +79,7 @@ export class CompanyProfileComponent {
             this.company = c;
             console.log('KOMPANIJA');
             console.log(this.company);
-            for (const equipment of this.company.equipmentSet) {
+for (const equipment of this.company.equipmentSet) {
               this.isItReserved(equipment);
             }
             if (this.company && this.company.adress) {
@@ -100,7 +100,7 @@ export class CompanyProfileComponent {
                         companyEquipment.id === equipment.id
                       )
                     );
-                    
+
                     console.log(this.availableEquipment);
 
                   },
@@ -258,7 +258,7 @@ export class CompanyProfileComponent {
 
   updateEquipmentClicked(): void{
     this.shouldRenderEquipmentForm = false;
-    this.ngAfterViewInit();
+this.ngAfterViewInit();
   }
 
   openDatePicker() {
@@ -275,7 +275,7 @@ export class CompanyProfileComponent {
   
       // Format the date string with the corrected day
       const dateString: string = tempDate.toISOString();
-  
+
   
       // Call your method from the company service here
       this.companyService.getExtraAdminAvailableDates(this.company.name, this.adminId, dateString).subscribe({
@@ -292,7 +292,7 @@ export class CompanyProfileComponent {
   }
 
   createPickupTerm(): void {
-    console.log(this.selectedTimeSlot);
+console.log(this.selectedTimeSlot);
     if(this.selectedTimeSlot){
       this.companyService.createAvailableDate(this.selectedTimeSlot).subscribe({
         next: () => {
@@ -328,7 +328,7 @@ export class CompanyProfileComponent {
     return { date: dateString, time: timeString };
   }
 
-  calendarOptions: CalendarOptions = {
+calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, timeGridPlugin],
     initialView: 'dayGridMonth', // Set initial view to dayGridMonth
     headerToolbar: {
