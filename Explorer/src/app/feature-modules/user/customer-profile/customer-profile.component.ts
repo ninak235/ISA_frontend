@@ -11,10 +11,14 @@ import {
 import { ReservationService } from '../../reservation/reservation.service';
 import { ApplicationRef } from '@angular/core';
 import { Role } from 'src/app/infrastructure/auth/model/user.model';
+import { MatDialog } from '@angular/material/dialog';
+import { ReservationInfoDialogComponent } from '../../reservation/reservation-info-dialog/reservation-info-dialog.component';
+import { CompanyEquipment } from '../../company/model/companyModel';
 
 interface ExtendedReservation extends Reservation {
   isPast? : boolean;
   isCancelEnabled?: boolean;
+  isPending?: boolean;
 }
 
 @Component({
@@ -40,7 +44,8 @@ export class CustomerProfileComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private reservationService: ReservationService,
-    private appRef: ApplicationRef
+    private appRef: ApplicationRef,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -80,6 +85,13 @@ export class CustomerProfileComponent implements OnInit {
         this.pastReservations.forEach(res => {
           res.isPast = true;
           res.isCancelEnabled = true;
+
+          if(res.status == ReservationStatus.Pending){
+            res.isPending = true;
+          }
+          else{
+            res.isPending = false;
+          }
         });
         this.combineReservations();
       }
@@ -89,6 +101,14 @@ export class CustomerProfileComponent implements OnInit {
         this.futureReservations = reservations;
         this.futureReservations.forEach(res => {
           res.isPast = false;
+
+          if(res.status == ReservationStatus.Pending){
+            res.isPending = true;
+          }
+          else{
+            res.isPending = false;
+          }
+
           const reservationDate = this.parseDateTime(res.dateTime);
           const currentDate = new Date();
           const timeDifferenceInHours = (reservationDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60);
@@ -201,6 +221,27 @@ export class CustomerProfileComponent implements OnInit {
     return timeA - timeB;
   }
 
+  createReservationInfoString(reservation: Reservation): string{
+    let reservationInfo: string = `Reservation ID: ${reservation.id}, DateTime: ${reservation.dateTime}, Duration: ${reservation.duration}, Grade: ${reservation.grade}, Status: ${reservation.status}, Customer ID: ${reservation.customerId}, Company Admin ID: ${reservation.companyAdminId}`;
+
+    const reservationEquipments: CompanyEquipment[] = reservation.reservationEquipments;
+    reservationInfo += ', Reservation Equipments: ';
+    
+    for (const equipment of reservationEquipments) {
+      reservationInfo += `[ID: ${equipment.id}, Name: ${equipment.name}, Description: ${equipment.description}, Grade: ${equipment.grade}, Price: ${equipment.price}]`;
+    }
+
+    return reservationInfo;
+  }
+
+  seeQR(reservation: Reservation): void{
+    const reservationInfo = this.createReservationInfoString(reservation);
+
+    const dialogRef = this.dialog.open(ReservationInfoDialogComponent, {
+      width: '500px', // Set the width as needed
+      data: { reservationInfo: reservationInfo },
+    });
+  }
 
   cancelReservation(reservation: Reservation): void {
     const confirmCancel = confirm(
