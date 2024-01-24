@@ -1,6 +1,7 @@
 <div *ngIf="customer">
   <div class="customer-card">
     <img src="../../../../assets/user.png" height="100px" alt="user info" />
+    
     <div *ngIf="customer" class="customer-info">
       <div class="info-item">
         <strong>First Name:</strong> <span>{{ customer.firstName }}</span>
@@ -32,7 +33,10 @@
       </div>
     </div>
     <mat-icon class="edit" (click)="editProfile()">edit</mat-icon>
+
+    
   </div>
+
   <h2 style="text-align: center;">All reservations</h2>
   <select class="sortReservationSelect" [(ngModel)]="sortReservationCriterium" (change)="onSortReservationChange()">
     <option *ngIf="!sortReservationCriterium" value="" disabled selected>Select sort parameter</option>
@@ -57,19 +61,25 @@
       <div class="reservation-item"  [ngStyle]="{'background-color': res.isPast ? '#f7564a' : '#8de675'}">
         <p><strong>📆 Date:</strong> {{ formatDateAndTime(res.dateTime).date }}</p>
         <p><strong>⏰ Time: </strong>{{ formatDateAndTime(res.dateTime).time }}</p>
-        <p><strong>Num of days:</strong> {{ res.duration }}</p>
+        <p><strong>Duration:</strong> {{ res.duration }}</p>
         <p><strong>Grade:</strong> {{ res.grade }}</p>
-        <p *ngIf="res.status === 'Confirmed'">
-          <strong>Reservation confirmed!</strong>
+        <p *ngIf="res.status === 'PickedUp'">
+          <strong>Reservation picked up!</strong>
+        </p>
+
+        <p *ngIf="res.status === 'Cancelled'">
+          <strong>Reservation cancelled!</strong>
         </p>
         
         
         <!-- Display "Cancel Reservation" button only for past reservations -->
         <button *ngIf="!res.isPast && res.isCancelEnabled" (click)="cancelReservation(res)">Cancel Reservation</button>
 
-        <!-- Display "Take Reservation" button only for future reservations -->
-        <button *ngIf="!res.isPast" (click)="takeReservation(res)">Take Reservation</button>
+        
       </div>
     </div>
+
+    
   </div>
+  
 </div>

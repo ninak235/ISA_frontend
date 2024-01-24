@@ -15,6 +15,7 @@ import { Role } from 'src/app/infrastructure/auth/model/user.model';
 interface ExtendedReservation extends Reservation {
   isPast? : boolean;
   isCancelEnabled?: boolean;
+  isCurrentReservation?: boolean;
 }
 
 @Component({
@@ -33,6 +34,8 @@ export class CustomerProfileComponent implements OnInit {
   pastReservations: ExtendedReservation[] = [];
   futureReservations: ExtendedReservation[] = [];
   allReservations: ExtendedReservation[] = [];
+  isCurrentReservation: boolean = false;
+  shouldRenderForm: boolean = false;
 
   //shouldRenderUpdateForm: boolean = false;
   constructor(
@@ -91,6 +94,10 @@ export class CustomerProfileComponent implements OnInit {
           res.isPast = false;
           const reservationDate = this.parseDateTime(res.dateTime);
           const currentDate = new Date();
+
+          if (reservationDate.getMonth() == currentDate.getMonth() && reservationDate.getDay() == currentDate.getDay() && reservationDate.getHours() <= currentDate.getHours() && currentDate.getHours() <= reservationDate.getHours()+res.duration){ //&& reservationDate.getHours() <= currentDate.getHours() && currentDate.getHours() <= reservationDate.getHours()+res.duration){
+            res.isCurrentReservation = true;
+          }
           const timeDifferenceInHours = (reservationDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60);
           
           if (timeDifferenceInHours <= 24) {
@@ -105,13 +112,13 @@ export class CustomerProfileComponent implements OnInit {
     })
   }
 
+
   private combineReservations(): void {
     if (this.pastReservations && this.futureReservations) {
       this.allReservations = this.pastReservations.concat(this.futureReservations);
       // Alternatively: this.allReservations = [...this.pastReservations, ...this.futureReservations];
     }
   }
-
 
   formatDateAndTime(localDateTime: string | object): {
     date: string;
@@ -130,6 +137,12 @@ export class CustomerProfileComponent implements OnInit {
 
     return { date: dateString, time: timeString };
   }
+  
+  private getDaysInMonth(year: number, month: number): number {
+    return new Date(year, month, 0).getDate();
+  }
+  
+  
 
 
   parseDateTime(localDateTime: string | object): Date {
@@ -227,5 +240,12 @@ export class CustomerProfileComponent implements OnInit {
     }
   }
 
-  takeReservation(reservation: Reservation): void {}
+  closeForm(): void{
+    this.shouldRenderForm = false;
+  }
+
+  apply(): void {
+    //this.router.navigate(['/apply/', this.competitionId]);
+    this.shouldRenderForm = true;
+  }
 }
