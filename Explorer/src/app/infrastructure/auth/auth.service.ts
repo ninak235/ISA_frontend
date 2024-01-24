@@ -16,7 +16,7 @@ export class AuthService {
   user$ = new BehaviorSubject<User>({
     id: 0,
     username: '',
-    role: { roles: [] }
+    role: { roles: [] },
   });
 
   constructor(
@@ -36,20 +36,18 @@ export class AuthService {
       );
   }
 
-
   logout(): void {
     console.log('Logout initiated...');
-  
+
     this.tokenStorage.clear();
-      this.user$.next({ username: '', id: 0, role: { roles: [] }});
-  
+    this.user$.next({ username: '', id: 0, role: { roles: [] } });
+
     console.log('Before navigate to login');
     this.router.navigate(['/login']).then(() => {
       console.log('Navigate to login successful.');
     });
     console.log('After navigate to login');
   }
-  
 
   checkIfUserExists(): void {
     const accessToken = this.tokenStorage.getAccessToken();
@@ -68,7 +66,7 @@ export class AuthService {
     const user: User = {
       id: +jwtHelperService.decodeToken(accessToken).id,
       username: jwtHelperService.decodeToken(accessToken).sub,
-      role: { roles: rolesArray }
+      role: { roles: rolesArray },
     };
     this.user$.next(user);
   }

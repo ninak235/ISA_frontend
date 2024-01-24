@@ -17,6 +17,7 @@ import { AllComplaintComponent } from 'src/app/feature-modules/complaint/all-com
 import { AllReservationsComponent } from 'src/app/feature-modules/reservation/all-reservations/all-reservations.component';
 import { ChangePasswordSystemAdminComponent } from 'src/app/feature-modules/user/change-password-system-admin/change-password-system-admin.component';
 import { CompanyReserveComponent } from 'src/app/feature-modules/company/company-reserve/company-reserve.component';
+import { CustomerGuard } from '../auth/customer.guard';
 
 const routes: Routes = [
   { path: '', component: AllCompanyPreviewComponent },
@@ -35,18 +36,25 @@ const routes: Routes = [
     path: 'registerCompanyAdmin',
     component: CompanyAdminRegistrationComponent,
   },
-  { path: 'customerProfile', component: CustomerProfileComponent },
-  { path: 'updateCustomerProfile/:id', component: UpdateProfileComponent},
-  { path: 'allEquipments', component: AllEquipmentPreviewComponent},
+  {
+    path: 'customerProfile',
+    component: CustomerProfileComponent,
+    canActivate: [CustomerGuard],
+  },
+  { path: 'updateCustomerProfile/:id', component: UpdateProfileComponent },
+  { path: 'allEquipments', component: AllEquipmentPreviewComponent },
   { path: 'adminProfile', component: CompanyAdminProfileComponent },
-  { path: 'updateAdminProfile/:id', component: UpdateAdminProfileComponent},
+  { path: 'updateAdminProfile/:id', component: UpdateAdminProfileComponent },
   { path: 'companyProfile/:companyName', component: CompanyProfileComponent },
   { path: 'createSystemAdmin', component: SystemAdminCreateComponent },
   { path: 'userProfile', component: UserProfileComponent },
   { path: 'allCompaints', component: AllComplaintComponent },
   { path: 'allReservations', component: AllReservationsComponent },
   { path: 'changeSystemAdmin', component: ChangePasswordSystemAdminComponent },
-  { path: 'comapnyProfileReserve/:companyName', component: CompanyReserveComponent }
+  {
+    path: 'comapnyProfileReserve/:companyName',
+    component: CompanyReserveComponent,
+  },
 ];
 
 @NgModule({
