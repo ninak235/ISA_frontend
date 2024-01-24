@@ -59,9 +59,16 @@
         <p><strong>⏰ Time: </strong>{{ formatDateAndTime(res.dateTime).time }}</p>
         <p><strong>Num of days:</strong> {{ res.duration }}</p>
         <p><strong>Grade:</strong> {{ res.grade }}</p>
+        <p *ngIf="res.status === 'Confirmed'">
+          <strong>Reservation confirmed!</strong>
+        </p>
+        
         
         <!-- Display "Cancel Reservation" button only for past reservations -->
         <button *ngIf="!res.isPast && res.isCancelEnabled" (click)="cancelReservation(res)">Cancel Reservation</button>
+
+        <!-- Display "Take Reservation" button only for future reservations -->
+        <button *ngIf="!res.isPast" (click)="takeReservation(res)">Take Reservation</button>
       </div>
     </div>
   </div>

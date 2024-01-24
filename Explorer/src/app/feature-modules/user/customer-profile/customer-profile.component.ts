@@ -226,4 +226,6 @@ export class CustomerProfileComponent implements OnInit {
       });
     }
   }
+
+  takeReservation(reservation: Reservation): void {}
 }
