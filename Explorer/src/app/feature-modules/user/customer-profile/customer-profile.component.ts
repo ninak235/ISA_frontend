@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef  } from '@angular/core';
 import { Customer } from '../model/customer.model';
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
@@ -18,7 +18,8 @@ import { CompanyAdminRegistration } from '../model/companyAdminModel';
 import { ComplaintService } from '../../complaint/complaint.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Complaint } from '../../complaint/model/complaintModel';
-import * as jsQR from 'jsqr';
+import readQRCode  from 'jsqr';
+import jsQR from 'jsqr';
 
 interface ExtendedReservation extends Reservation {
   isPast? : boolean;
@@ -50,6 +51,8 @@ export class CustomerProfileComponent implements OnInit {
   selectedCompanyAdmin: CompanyAdminRegistration;
   companyAdmins: CompanyAdminRegistration[] = [];
   complaintForm: FormGroup;
+  decodedText: string = '';
+
 
   //shouldRenderUpdateForm: boolean = false;
   constructor(
@@ -60,7 +63,8 @@ export class CustomerProfileComponent implements OnInit {
     private reservationService: ReservationService,
     private appRef: ApplicationRef,
     private dialog: MatDialog,
-  private fb: FormBuilder
+    private fb: FormBuilder,
+    private cdr: ChangeDetectorRef
   ) {
     this.complaintForm = this.fb.group({
       complaintContent: ['', Validators.required],
@@ -315,5 +319,56 @@ createReservationInfoString(reservation: Reservation): string{
     }
   }
 
+  async handleFileSelect(event: any) {
+    const file = event.target.files[0];
+
+    if (file) {
+      const imageUrl = await this.readFileAsDataURL(file);
+
+      // Dekodiranje QR koda
+      this.decodeQRCode(imageUrl);
+    }
+  }
+
+  async readFileAsDataURL(file: File): Promise<string> {
+    return new Promise<string>((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e: any) => resolve(e.target.result);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async decodeQRCode(imageUrl: string): Promise<void> {
+    const image = new Image();
+  
+    // Postavljanje funkcije koja će se izvršiti nakon učitavanja slike
+    image.onload = () => {
+      // Kreiranje ImageData objekta
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+  
+      if (context) {
+        canvas.width = image.width;
+        canvas.height = image.height;
+        context.drawImage(image, 0, 0, image.width, image.height);
+        const imageData = context.getImageData(0, 0, image.width, image.height);
+  
+        // Dekodiranje QR koda kroz jsqr
+        const code = jsQR(imageData.data, imageData.width, imageData.height);
+  
+        // Postavljanje rezultata
+        this.decodedText = code ? code.data : 'Nije pronađen QR kod.';
+        this.cdr.detectChanges();
+        console.log("Text qr koda: ", this.decodedText)
+      } else {
+        console.error('getContext returned null');
+      }
+    };
+  
+    // Postavljanje izvora slike
+    image.src = imageUrl;
+  }
+  
+  
   
 }

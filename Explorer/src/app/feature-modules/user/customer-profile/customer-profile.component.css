@@ -1,6 +1,6 @@
 
 .customer-card {
-  max-width: 400px;
+  max-width: 650px;
   margin: 0 auto;
   margin-top: 70px;
   padding: 20px;
@@ -16,8 +16,10 @@
 .uploadQR{
   width: 200px;
   height: 30px;
-  margin-top: 280px;
+  margin-top: 220px;
+  font-size: medium;
 }
+
 
 .customer-info {
   text-align: center;
