@@ -1,6 +1,8 @@
 export interface Complaint {
-    id: number;
+    id?: number;
     content: string;
     replay: string;
-    disabled: boolean;
+    disabled?: boolean;
+    companyAdminId?: number;
+    customerId?:number;
   }

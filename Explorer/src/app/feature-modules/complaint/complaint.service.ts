@@ -19,5 +19,9 @@ export class ComplaintService {
   updateComplaint(complaint: Complaint): Observable<void> {
     return this.http.put<void>(environment.apiHost + '/complaint/update', complaint);
   }
+
+  createCompaint(complaint: Complaint): Observable<Complaint>{
+    return this.http.post<Complaint>(environment.apiHost + '/complaint/new', complaint)
+  }
   
 }

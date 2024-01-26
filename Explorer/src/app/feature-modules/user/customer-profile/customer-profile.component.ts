@@ -15,6 +15,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ReservationInfoDialogComponent } from '../../reservation/reservation-info-dialog/reservation-info-dialog.component';
 import { CompanyAdmin, CompanyEquipment } from '../../company/model/companyModel';
 import { CompanyAdminRegistration } from '../model/companyAdminModel';
+import { ComplaintService } from '../../complaint/complaint.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Complaint } from '../../complaint/model/complaintModel';
 
 interface ExtendedReservation extends Reservation {
   isPast? : boolean;
@@ -41,16 +44,24 @@ export class CustomerProfileComponent implements OnInit {
   complaintContent: string = '';
   selectedCompanyAdmin: CompanyAdminRegistration;
   companyAdmins: CompanyAdminRegistration[] = [];
+  complaintForm: FormGroup;
 
   //shouldRenderUpdateForm: boolean = false;
   constructor(
     private service: UserService,
+    private compaintService: ComplaintService,
     private router: Router,
     private authService: AuthService,
     private reservationService: ReservationService,
     private appRef: ApplicationRef,
-    private dialog: MatDialog
-  ) {}
+    private dialog: MatDialog,
+    private fb: FormBuilder
+  ) {
+    this.complaintForm = this.fb.group({
+      complaintContent: ['', Validators.required],
+      selectedCompanyAdmin: [null, Validators.required]
+    });
+  }
 
   ngOnInit(): void {
     this.userId = this.authService.user$.getValue().id;
@@ -249,11 +260,19 @@ export class CustomerProfileComponent implements OnInit {
   }
 
   submitComplaint(): void{
+        let compl: Complaint = {
+          content: this.complaintForm.value.complaintContent || '',
+          replay: '',
+          companyAdminId: 3,
+          customerId: this.userId
+        }
 
-  }
-
-  makeComplaint(): void{
-    
+        console.log(compl);
+        this.compaintService.createCompaint(compl).subscribe(() => {
+          alert('Complaint created successfully!');
+          
+        });
+      
   }
 
   cancelReservation(reservation: Reservation): void {
