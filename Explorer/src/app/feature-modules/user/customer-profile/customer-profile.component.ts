@@ -13,7 +13,12 @@ import { ApplicationRef } from '@angular/core';
 import { Role } from 'src/app/infrastructure/auth/model/user.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ReservationInfoDialogComponent } from '../../reservation/reservation-info-dialog/reservation-info-dialog.component';
-import { CompanyEquipment } from '../../company/model/companyModel';
+import { CompanyAdmin, CompanyEquipment } from '../../company/model/companyModel';
+import { CompanyAdminRegistration } from '../model/companyAdminModel';
+import { ComplaintService } from '../../complaint/complaint.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Complaint } from '../../complaint/model/complaintModel';
+import * as jsQR from 'jsqr';
 
 interface ExtendedReservation extends Reservation {
   isPast? : boolean;
@@ -41,15 +46,27 @@ export class CustomerProfileComponent implements OnInit {
   isCurrentReservation: boolean = false;
   shouldRenderForm: boolean = false;
   
+  complaintContent: string = '';
+  selectedCompanyAdmin: CompanyAdminRegistration;
+  companyAdmins: CompanyAdminRegistration[] = [];
+  complaintForm: FormGroup;
+
   //shouldRenderUpdateForm: boolean = false;
   constructor(
     private service: UserService,
+    private compaintService: ComplaintService,
     private router: Router,
     private authService: AuthService,
     private reservationService: ReservationService,
     private appRef: ApplicationRef,
-    private dialog: MatDialog
-  ) {}
+    private dialog: MatDialog,
+  private fb: FormBuilder
+  ) {
+    this.complaintForm = this.fb.group({
+      complaintContent: ['', Validators.required],
+      selectedCompanyAdmin: [null, Validators.required]
+    });
+  }
 
   ngOnInit(): void {
     this.userId = this.authService.user$.getValue().id;
@@ -247,6 +264,7 @@ createReservationInfoString(reservation: Reservation): string{
     return reservationInfo;
   }
 
+
   seeQR(reservation: Reservation): void{
     const reservationInfo = this.createReservationInfoString(reservation);
 
@@ -254,6 +272,22 @@ createReservationInfoString(reservation: Reservation): string{
       width: '500px', // Set the width as needed
       data: { reservationInfo: reservationInfo },
     });
+  }
+
+  submitComplaint(): void{
+        let compl: Complaint = {
+          content: this.complaintForm.value.complaintContent || '',
+          replay: '',
+          companyAdminId: 3,
+          customerId: this.userId
+        }
+
+        console.log(compl);
+        this.compaintService.createCompaint(compl).subscribe(() => {
+          alert('Complaint created successfully!');
+          
+        });
+      
   }
 
   cancelReservation(reservation: Reservation): void {
@@ -281,12 +315,5 @@ createReservationInfoString(reservation: Reservation): string{
     }
   }
 
-  closeForm(): void{
-    this.shouldRenderForm = false;
-  }
-
-  apply(): void {
-    //this.router.navigate(['/apply/', this.competitionId]);
-    this.shouldRenderForm = true;
-  }
+  
 }

@@ -1,15 +1,16 @@
+
 .customer-card {
-    max-width: 550px;
-    margin: 0 auto;
-    margin-top: 70px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    font-family: 'Arial', sans-serif;
-    font-size: large;
-    background-color: lightsteelblue;
-    display: flex;
+  max-width: 400px;
+  margin: 0 auto;
+  margin-top: 70px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+  font-size: large;
+  background-color: lightsteelblue;
+  display: flex;
 }
 
 .uploadQR{
@@ -19,82 +20,136 @@
 }
 
 .customer-info {
-    text-align: center;
+  text-align: center;
 }
 
+
 .info-item {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 strong {
-    color: #333;
-    font-size: 16px;
+  color: #333;
+  font-size: 16px;
 }
 
 span {
-    font-style: italic;
-    color: #555;
+  font-style: italic;
+  color: #555;
 }
 
 
 .date-cards-container {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-  
-   .date-card {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease-in-out;
-    width: 300px;
-  }
-  
-  .date-card:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  }
-  
-  .card-content {
-    padding: 10px;
-  }
-
-  h2{
-    text-align: center;
-    margin-top: 20px;
-    font-family: 'Courier New', Courier, monospace;
-    font-weight: 1000;
-  }
-  
-  
- .sortReservationSelect{
-  margin-left: 30px;
-  width:fit-content;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  height: 30px;
- }
-
- 
- .past-reservation-container {
+  margin-top: 20px;
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
+  gap: 20px;
+}
+
+ .date-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+  width: 300px;
+}
+
+.date-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-content {
+  padding: 10px;
+}
+
+h2{
+  text-align: center;
+  margin-top: 20px;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 1000;
+}
+
+.column{
+  display: flex;
+  flex-direction: column;
+}
+
+.sortReservationSelect{
+margin-left: 30px;
+width:fit-content;
+background-color: #4CAF50;
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+height: 30px;
+}
+
+
+.past-reservation-container {
+display: flex;
+flex-wrap: wrap;
 }
 
 .reservation-item {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin: 10px;
-  width: 200px;
+border: 1px solid #ccc;
+padding: 10px;
+margin: 10px;
+width: 200px;
 }
 
 h3{
-  text-align: center;
+text-align: center;
 }
 
+.complaint-form {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+}
+
+.form-container {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+max-width: 400px; /* Adjust as needed */
+width: 100%;
+padding: 20px;
+border: 1px solid #ccc;
+border-radius: 8px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+font-family: 'Arial', sans-serif;
+font-size: large;
+}
+
+.form-group {
+margin-bottom: 15px;
+}
+
+label {
+margin-bottom: 5px;
+}
+
+textarea,
+button {
+width: 100%;
+padding: 10px;
+margin-top: 5px;
+border: 1px solid #ccc;
+border-radius: 4px;
+box-sizing: border-box;
+}
+
+button {
+background-color: #4CAF50;
+color: white;
+cursor: pointer;
+}
+
+button:hover {
+background-color: #45a049;
+}

@@ -8,6 +8,9 @@ import { CompanyAdminRegistration } from '../../user/model/companyAdminModel';
 import { Role } from 'src/app/infrastructure/auth/model/user.model';
 import { ReservationService } from '../../reservation/reservation.service';
 import { CancelationModel, Reservation } from '../../reservation/model/reservation.model';
+import { UserService } from '../../user/user.service';
+import { Customer } from '../../user/model/customer.model';
+
 
 
 @Component({
@@ -27,39 +30,69 @@ export class AllCompanyPreviewComponent implements OnInit {
   shouldEdit: boolean;
   oldCompanyName: string;
   companyAdmin: CompanyAdminBasicModel = {id: 0, companyId: 0};
+  tooManyPenaltyPoints: boolean = false;
+  role: Role;
+  isCustomer: boolean = false;
+  isAdmin: boolean = false;
  
-  constructor(private companyService: CompanyService, private router: Router, private authService: AuthService, private reservationService: ReservationService) {}
+  constructor(private companyService: CompanyService, private router: Router, private authService: AuthService, private reservationService: ReservationService, private userService: UserService) {}
 
   ngOnInit(): void {
     this.refreshCompanyList(); // Initial load of companies
 
+    this.role = this.authService.user$.getValue().role;
+    if (this.role.roles[0] == "ROLE_CUSTOMER"){
+      this.isCustomer = true;
+    }
+    else if (this.role.roles[0] = "ROLE_COMPANYADMIN"){
+      this.isAdmin = true;
+    }
     this.userId = this.authService.user$.getValue().id;
     this.authService.user$.subscribe(user => {
       if(user){
-        this.companyService.getAdmin(user.id).subscribe({
-          next: (admin : CompanyAdminRegistration) => {
-            if (admin.id !== undefined) {
-              this.companyAdmin.id = admin.id;
-            } else {
-              // Handle the case where admin.id is undefined, e.g., provide a default value or throw an error.
-              console.log('CANNOT FIND THE ID');
-            }
-            this.companyAdmin.companyId = admin.companyId;
-            console.log(this.companyAdmin);
-          }, 
-          error: (err: any) => {
-            console.log('Looks like you arent logged in as an company admin', err);
-         },
-        });
+
+        if(this.isAdmin){
+          this.companyService.getAdmin(user.id).subscribe({
+            next: (admin : CompanyAdminRegistration) => {
+              if (admin.id !== undefined) {
+                this.companyAdmin.id = admin.id;
+              } else {
+                 console.log('CANNOT FIND THE ID');
+              }
+              this.companyAdmin.companyId = admin.companyId;
+              console.log(this.companyAdmin);
+            }, 
+            error: (err: any) => {
+              console.log('Looks like you arent logged in as an company admin', err);
+           },
+          });
+        }
       }
     });
 
+    this.checkPenaltyPoints();
+  
     // Subscribe to the addCompanyClicked event
     this.companyService.addCompanyClicked.subscribe(() => {
       this.refreshCompanyList(); // Refresh the list of companies
       
     });
   }
+
+  checkPenaltyPoints(): void {
+    if (this.isCustomer) {
+      this.userService.getCustomerById(this.userId).subscribe({
+        next: (c: Customer) => {
+          if (c.penaltyPoints >= 3) {
+            this.tooManyPenaltyPoints = true;
+            alert('You have too many penalty points. Cannot reserve anything new until next month.');
+          } 
+        },
+      });
+    }
+  }
+  
+  
   refreshCompanyList(): void {
     this.companyService.getAllCompanise().subscribe({
       next: (result: Company[]) => {
