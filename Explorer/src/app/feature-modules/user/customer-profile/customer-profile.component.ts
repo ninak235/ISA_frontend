@@ -46,7 +46,6 @@ export class CustomerProfileComponent implements OnInit {
   allReservations: ExtendedReservation[] = [];
   isCurrentReservation: boolean = false;
   shouldRenderForm: boolean = false;
-  
   complaintContent: string = '';
   selectedCompanyAdmin: CompanyAdminRegistration;
   companyAdmins: CompanyAdminRegistration[] = [];
@@ -357,18 +356,87 @@ createReservationInfoString(reservation: Reservation): string{
         const code = jsQR(imageData.data, imageData.width, imageData.height);
   
         // Postavljanje rezultata
-        this.decodedText = code ? code.data : 'Nije pronađen QR kod.';
-        this.cdr.detectChanges();
-        console.log("Text qr koda: ", this.decodedText)
+        if (code) {
+          const slicedText = this.sliceTextFrom17th(code.data);
+          this.decodedText = slicedText;
+          this.cdr.detectChanges();
+          //console.log(this.decodedText)
+        } else {
+          this.decodedText = 'Nije pronađen QR kod.';
+          this.cdr.detectChanges();
+        }
       } else {
         console.error('getContext returned null');
       }
+
+      const idQR = parseInt(this.decodedText)
+
+      this.pastReservations.forEach(pastRes => {
+        if (pastRes.id === idQR) {
+          // Dodavanje alert poruke
+          alert(`The deadline for picking up equipment has passed! ${this.customer.firstName} ${this.customer.lastName} receives 2 penalty points.`);
+      
+          this.reservationService.cancelReservationQR(pastRes).subscribe({
+            next: (result: CancelationModel) => {
+              console.log(result);
+              this.customer.penaltyPoints += 2;
+              const index = this.reservations.findIndex(
+                (r) => r.id === result.reservationId
+              );
+              if (index !== -1) {
+                this.reservations[index].status = ReservationStatus.Cancelled;
+                this.appRef.tick();
+                
+              }
+            },
+            error: (error: any) => {
+              console.error('Error canceling reservation:', error);
+            },
+          });
+        }
+      });
+
+      this.futureReservations.forEach(futureRes => {
+        if (futureRes.id === idQR) {
+      
+          this.reservationService.pickUpReservation(futureRes).subscribe({
+            next: (result: CancelationModel) => {
+              console.log(result);
+              const index = this.reservations.findIndex(
+                (r) => r.id === result.reservationId
+              );
+              if (index !== -1 && futureRes.status != ReservationStatus.PickedUp) {
+                alert(`${this.customer.firstName} ${this.customer.lastName} has succesfully picked up his equipment !`);
+                  this.reservations[index].status = ReservationStatus.PickedUp;
+                  this.appRef.tick();
+              }
+              else{
+                alert(`Already picked up!`);
+              }
+            },
+            error: (error: any) => {
+              console.error('Error canceling reservation:', error);
+            },
+          });
+        }
+      });
+      
     };
   
     // Postavljanje izvora slike
     image.src = imageUrl;
   }
   
+  sliceTextFrom17th(text: string): string {
+    const startIndex = 16;
+    const commaIndex = text.indexOf(',');
+
+    if (commaIndex !== -1 && commaIndex > startIndex) {
+      return text.slice(startIndex, commaIndex);
+    } else {
+      return text.slice(startIndex);
+    }
+  }
   
   
 }

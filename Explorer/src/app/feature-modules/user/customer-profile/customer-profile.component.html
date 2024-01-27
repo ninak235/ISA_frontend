@@ -74,7 +74,9 @@
       <p><strong>Grade:</strong> {{ res.grade }}</p>
       
       <!-- Display "Cancel Reservation" button only for past reservations -->
-      <button *ngIf="!res.isPast && res.isCancelEnabled" (click)="cancelReservation(res)">Cancel Reservation</button>
+      <button *ngIf="!res.isPast && res.isCancelEnabled && res.status != 'PickedUp' && res.status != 'Cancelled'" (click)="cancelReservation(res)">Cancel Reservation</button>
+      <p *ngIf="res.status == 'PickedUp'">Picked up reservation!</p>
+      <p *ngIf="res.status == 'Cancelled'">Cancelled reservation!</p>
       <button *ngIf="!res.isPending" (click)="seeQR(res)">▌│█║▌║▌║See QR</button>
     </div>
 
