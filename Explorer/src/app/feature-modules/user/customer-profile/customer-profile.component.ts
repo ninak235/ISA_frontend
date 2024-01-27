@@ -52,7 +52,6 @@ export class CustomerProfileComponent implements OnInit {
   complaintForm: FormGroup;
   decodedText: string = '';
 
-
   //shouldRenderUpdateForm: boolean = false;
   constructor(
     private service: UserService,
@@ -372,7 +371,7 @@ createReservationInfoString(reservation: Reservation): string{
       const idQR = parseInt(this.decodedText)
 
       this.pastReservations.forEach(pastRes => {
-        if (pastRes.id === idQR) {
+        if (pastRes.id === idQR && pastRes.status!=ReservationStatus.Cancelled) {
           // Dodavanje alert poruke
           alert(`The deadline for picking up equipment has passed! ${this.customer.firstName} ${this.customer.lastName} receives 2 penalty points.`);
       
@@ -394,32 +393,47 @@ createReservationInfoString(reservation: Reservation): string{
             },
           });
         }
+        else if(pastRes.status==ReservationStatus.Cancelled){
+          alert(`The reservation is already cancelled!`);
+        }
       });
 
       this.futureReservations.forEach(futureRes => {
-        if (futureRes.id === idQR) {
+        if (futureRes.id === idQR && futureRes.status != ReservationStatus.PickedUp) {
+          const reservationDate = this.parseDateTime(futureRes.dateTime);
+          const futureDate = this.parseDateTime(futureRes.dateTime);
       
-          this.reservationService.pickUpReservation(futureRes).subscribe({
-            next: (result: CancelationModel) => {
-              console.log(result);
-              const index = this.reservations.findIndex(
-                (r) => r.id === result.reservationId
-              );
-              if (index !== -1 && futureRes.status != ReservationStatus.PickedUp) {
-                alert(`${this.customer.firstName} ${this.customer.lastName} has succesfully picked up his equipment !`);
+          const additionalHours = futureRes.duration;
+          futureDate.setHours(futureDate.getHours() + additionalHours);
+      
+          const currentDate = new Date();
+      
+          if (reservationDate <= currentDate && currentDate <= futureDate) {
+            this.reservationService.pickUpReservation(futureRes).subscribe({
+              next: (result: CancelationModel) => {
+                console.log(result);
+                const index = this.reservations.findIndex(
+                  (r) => r.id === result.reservationId
+                );
+      
+                if (index !== -1) {
+                  alert(`${this.customer.firstName} ${this.customer.lastName} has successfully picked up their equipment!`);
                   this.reservations[index].status = ReservationStatus.PickedUp;
                   this.appRef.tick();
+                }
+              },
+              error: (error: any) => {
+                console.error('Error picking up reservation:', error);
               }
-              else{
-                alert(`Already picked up!`);
-              }
-            },
-            error: (error: any) => {
-              console.error('Error canceling reservation:', error);
-            },
-          });
+            });
+          } else {
+            alert(`Now you can't pick up this equipment, check again your date!`);
+          }
+        } else if(futureRes.status == ReservationStatus.PickedUp) {
+          alert(`Already picked up!`);
         }
       });
+      
       
     };
   
