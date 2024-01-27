@@ -40,6 +40,20 @@ export class ReservationService {
     );
   }
 
+  cancelReservationQR(reservation: Reservation): Observable<CancelationModel> {
+    return this.http.put<CancelationModel>(
+      environment.apiHost + '/reservations/cancelReservationQR',
+      reservation
+    );
+  }
+
+  pickUpReservation(reservation: Reservation): Observable<CancelationModel> {
+    return this.http.put<CancelationModel>(
+      environment.apiHost + '/reservations/pickUpReservation',
+      reservation
+    );
+  }
+
   getPastUserReservations(userId: number): Observable<Reservation[]>{
     return this.http.get<Reservation[]>(environment.apiHost + '/reservations/pastByUserId/' + userId);
   }

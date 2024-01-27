@@ -33,6 +33,10 @@
         Register Company Admin
       </button>
 
+      <button mat-raised-button *ngIf="systemAdmin" [routerLink]="['defineLoyalityProgram']">
+        Define Loyality program
+      </button>
+
       <button mat-raised-button *ngIf="companyAdmin" [routerLink]="['adminProfile']">
         Comapny Admin Profile
       </button>
