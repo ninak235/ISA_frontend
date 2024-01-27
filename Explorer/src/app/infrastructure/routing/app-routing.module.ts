@@ -18,6 +18,7 @@ import { AllReservationsComponent } from 'src/app/feature-modules/reservation/al
 import { ChangePasswordSystemAdminComponent } from 'src/app/feature-modules/user/change-password-system-admin/change-password-system-admin.component';
 import { CompanyReserveComponent } from 'src/app/feature-modules/company/company-reserve/company-reserve.component';
 import { CustomerGuard } from '../auth/customer.guard';
+import { PositionSimulatorComponent } from 'src/app/feature-modules/administration/position-simulator/position-simulator.component';
 
 const routes: Routes = [
   { path: '', component: AllCompanyPreviewComponent },
@@ -55,6 +56,7 @@ const routes: Routes = [
     path: 'comapnyProfileReserve/:companyName',
     component: CompanyReserveComponent,
   },
+  { path: 'positionSimulator', component: PositionSimulatorComponent },
 ];
 
 @NgModule({
