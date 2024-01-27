@@ -19,6 +19,7 @@ import { ChangePasswordSystemAdminComponent } from 'src/app/feature-modules/user
 import { CompanyReserveComponent } from 'src/app/feature-modules/company/company-reserve/company-reserve.component';
 import { DefineLoyalityProgramComponent } from 'src/app/feature-modules/loyality-program/define-loyality-program/define-loyality-program.component';
 import { CustomerGuard } from '../auth/customer.guard';
+import { PositionSimulatorComponent } from 'src/app/feature-modules/administration/position-simulator/position-simulator.component';
 
 const routes: Routes = [
   { path: '', component: AllCompanyPreviewComponent },
@@ -58,6 +59,7 @@ const routes: Routes = [
     path: 'comapnyProfileReserve/:companyName',
     component: CompanyReserveComponent,
   },
+  { path: 'positionSimulator', component: PositionSimulatorComponent },
 ];
 
 @NgModule({
