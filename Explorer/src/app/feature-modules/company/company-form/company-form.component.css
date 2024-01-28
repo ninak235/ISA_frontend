@@ -9,6 +9,14 @@
   cursor: pointer;
 }
 
+.map-frame {
+  border: 2px solid black;
+  width: 1000px;
+  height: 300px;
+}
+
+
+
 .label{
     color: #4CAF50;
     font-size: medium;

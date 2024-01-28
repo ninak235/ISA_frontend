@@ -61,38 +61,28 @@ export class CompanyFormComponent implements OnChanges {
       adminsSet: []
     };
 
-    const address = `${company.locationDto.address}, ${company.locationDto.city}, ${company.locationDto.country}`;
     
-    // Pozovi Geocoding API i postavi geografske podatke
-    this.service.geocodeAddress(address).subscribe({
-      next: (result: any) => {
-        company.locationDto.latitude = result.geometry.location.lat;
-        company.locationDto.longitude = result.geometry.location.lng;
-  
-        // Nastavi sa dodavanjem ili ažuriranjem kompanije
-        this.service.addCompany(company).subscribe({
-          next: () => {
-            this.addCompanyClicked.emit();
-            this.companyForm.reset();
-      
-            this.service.getAllCompanise().subscribe({
-              next: (result: Company[]) => {
-                this.companies = result;
-              },
-              error: (error: any) => {
-                console.error('Error loading companies', error);
-              },
-            });
-      
-            this.renderCreateCompany = false;
+    
+
+    this.service.addCompany(company).subscribe({
+      next: () => {
+        this.addCompanyClicked.emit();
+        this.companyForm.reset();
+
+        // Osvežite listu kompanija
+        this.service.getAllCompanise().subscribe({
+          next: (result: Company[]) => {
+            this.companies = result;
           },
           error: (error: any) => {
-            console.error('Error adding company', error);
+            console.error('Error loading companies', error);
           },
         });
+
+        this.renderCreateCompany = false;
       },
       error: (error: any) => {
-        console.error('Error geocoding address', error);
+        console.error('Error adding company', error);
       },
     });
   
@@ -115,16 +105,7 @@ export class CompanyFormComponent implements OnChanges {
       adminsSet: this.company.adminsSet
     };
 
-    const address = `${updatedCompany.locationDto.address}, ${updatedCompany.locationDto.city}, ${updatedCompany.locationDto.country}`;
-    
-    // Pozovi Geocoding API i postavi geografske podatke
-    this.service.geocodeAddress(address).subscribe({
-      next: (result: any) => {
-        updatedCompany.locationDto.latitude = result.geometry.location.lat;
-        updatedCompany.locationDto.longitude = result.geometry.location.lng;
-  
-        // Nastavi sa dodavanjem ili ažuriranjem kompanije
-        this.service.updateCompany(this.oldCompanyName, updatedCompany).subscribe({
+    this.service.updateCompany(this.oldCompanyName, updatedCompany).subscribe({
           next: () => {
             this.addCompanyClicked.emit();
             this.companyForm.reset();
@@ -144,13 +125,6 @@ export class CompanyFormComponent implements OnChanges {
             console.error('Error adding company', error);
           },
         });
-      },
-      error: (error: any) => {
-        console.error('Error geocoding address', error);
-      },
-    });
-  
-    
-  }
+      }
   
 }

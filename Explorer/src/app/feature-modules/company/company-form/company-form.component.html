@@ -7,21 +7,6 @@
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Address</mat-label>
-        <input matInput formControlName="address" type="text" />
-      </mat-form-field>
-      
-      <mat-form-field>
-        <mat-label>City</mat-label>
-        <input matInput formControlName="city" type="text" />
-      </mat-form-field>
-      
-      <mat-form-field>
-        <mat-label>Country</mat-label>
-        <input matInput formControlName="country" type="text" />
-      </mat-form-field>
-  
-      <mat-form-field>
         <mat-label>Description</mat-label>
         <textarea
           matInput
@@ -36,7 +21,7 @@
         <mat-label>Grade</mat-label>
             <input matInput formControlName="grade" type="text" />
       </mat-form-field>
-  
+
       <button *ngIf="!shouldEdit"
         class="button"
         mat-raised-button
@@ -56,4 +41,9 @@
       Update
     </button>
     </div>
+
+      <div class="map-frame">
+        <div id="leafletMap" class="map-wrap"></div>
+      </div>
+  
 </form>

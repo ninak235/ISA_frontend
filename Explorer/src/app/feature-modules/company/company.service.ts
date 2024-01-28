@@ -12,7 +12,7 @@ import { CompanyAdminRegistration } from '../user/model/companyAdminModel';
 })
 export class CompanyService {
   private backendUrl = 'http://localhost:8080';
-  
+
   getExtraAdminAvailableDates(
     companyName: string,
     adminId: number,
@@ -54,6 +54,7 @@ export class CompanyService {
       environment.apiHost + '/company/registerCompany',
       company
     );
+    
   }
   getByGradeCompanies(grade: string): Observable<Company[]> {
     return this.http.get<Company[]>(
@@ -166,8 +167,5 @@ export class CompanyService {
     return this.http.post<void>(url, null); // Assuming you just need to send a POST request
   }
 
-  geocodeAddress(address: string): Observable<any> {
-    const geocodeUrl = `${this.backendUrl}/geocode?address=${encodeURIComponent(address)}`;
-    return this.http.get(geocodeUrl);
-  }
+  
 }
