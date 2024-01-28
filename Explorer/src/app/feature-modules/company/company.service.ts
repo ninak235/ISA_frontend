@@ -11,6 +11,8 @@ import { CompanyAdminRegistration } from '../user/model/companyAdminModel';
   providedIn: 'root',
 })
 export class CompanyService {
+  private backendUrl = 'http://localhost:8080';
+  
   getExtraAdminAvailableDates(
     companyName: string,
     adminId: number,
@@ -162,5 +164,10 @@ export class CompanyService {
   ): Observable<any> {
     const url = `${environment.apiHost}/company/add-equipment/${companyName}/${equipmentId}`;
     return this.http.post<void>(url, null); // Assuming you just need to send a POST request
+  }
+
+  geocodeAddress(address: string): Observable<any> {
+    const geocodeUrl = `${this.backendUrl}/geocode?address=${encodeURIComponent(address)}`;
+    return this.http.get(geocodeUrl);
   }
 }

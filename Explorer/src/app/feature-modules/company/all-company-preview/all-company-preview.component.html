@@ -32,7 +32,7 @@
         <mat-icon>add_shopping_cart</mat-icon>
       </button>
       <h2>{{ company.name }}</h2>
-      <p><strong>Adress:</strong>{{ company.adress }}</p>
+      <p><strong>Location:</strong>{{ company?.locationDto?.address }}, {{ company?.locationDto?.city }}, {{ company?.locationDto?.country }}</p>
       <p><strong>Description:</strong>{{ company.description }}</p>
       <p><strong>Grade:</strong>{{ company.grade }}</p>
       <div *ngIf="

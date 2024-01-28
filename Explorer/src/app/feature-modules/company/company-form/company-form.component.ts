@@ -26,7 +26,9 @@ export class CompanyFormComponent implements OnChanges {
   
   companyForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
-    adress: new FormControl('', [Validators.required]),
+    address: new FormControl('', [Validators.required]),
+    city: new FormControl('', [Validators.required]),
+    country: new FormControl('', [Validators.required]),
     description: new FormControl('', [Validators.required]),
     grade: new FormControl('', [Validators.required])
   });
@@ -46,67 +48,109 @@ export class CompanyFormComponent implements OnChanges {
   addCompany(): void {
     const company: Company = {
       name: this.companyForm.value.name || '',
-      adress: this.companyForm.value.adress || '',
+      locationDto: {  // Create a nested location object
+        address: this.companyForm.value.address || '',
+        city: this.companyForm.value.city || '',
+        country: this.companyForm.value.country || '',
+        longitude: 0,  // Provide default values or adjust as needed
+        latitude: 0,
+      },
       description: this.companyForm.value.description || '',
       grade: this.companyForm.value.grade || '',
       equipmentSet: [],
       adminsSet: []
     };
+
+    const address = `${company.locationDto.address}, ${company.locationDto.city}, ${company.locationDto.country}`;
+    
+    // Pozovi Geocoding API i postavi geografske podatke
+    this.service.geocodeAddress(address).subscribe({
+      next: (result: any) => {
+        company.locationDto.latitude = result.geometry.location.lat;
+        company.locationDto.longitude = result.geometry.location.lng;
   
-    this.service.addCompany(company).subscribe({
-      next: () => {
-        this.addCompanyClicked.emit();
-        this.companyForm.reset();
-  
-        this.service.getAllCompanise().subscribe({
-          next: (result: Company[]) => {
-            this.companies = result;
+        // Nastavi sa dodavanjem ili ažuriranjem kompanije
+        this.service.addCompany(company).subscribe({
+          next: () => {
+            this.addCompanyClicked.emit();
+            this.companyForm.reset();
+      
+            this.service.getAllCompanise().subscribe({
+              next: (result: Company[]) => {
+                this.companies = result;
+              },
+              error: (error: any) => {
+                console.error('Error loading companies', error);
+              },
+            });
+      
+            this.renderCreateCompany = false;
           },
           error: (error: any) => {
-            console.error('Error loading companies', error);
+            console.error('Error adding company', error);
           },
         });
-  
-        this.renderCreateCompany = false;
       },
       error: (error: any) => {
-        console.error('Error adding company', error);
+        console.error('Error geocoding address', error);
       },
     });
+  
+    
   }
 
   updateCompany(): void {
     const updatedCompany: Company = {
       name: this.companyForm.value.name || '',
-      adress: this.companyForm.value.adress || '',
+      locationDto: {  // Create a nested location object
+        address: this.companyForm.value.address || '',
+        city: this.companyForm.value.city || '',
+        country: this.companyForm.value.country || '',
+        longitude: 0,  // Provide default values or adjust as needed
+        latitude: 0,
+      },
       description: this.companyForm.value.description || '',
       grade: this.companyForm.value.grade || '',
       equipmentSet: this.company.equipmentSet,
       adminsSet: this.company.adminsSet
     };
+
+    const address = `${updatedCompany.locationDto.address}, ${updatedCompany.locationDto.city}, ${updatedCompany.locationDto.country}`;
+    
+    // Pozovi Geocoding API i postavi geografske podatke
+    this.service.geocodeAddress(address).subscribe({
+      next: (result: any) => {
+        updatedCompany.locationDto.latitude = result.geometry.location.lat;
+        updatedCompany.locationDto.longitude = result.geometry.location.lng;
   
-    this.service.updateCompany(this.oldCompanyName, updatedCompany).subscribe({
-      next: () => {
-        this.addCompanyClicked.emit();
-        this.companyForm.reset();
-  
-        this.service.getAllCompanise().subscribe({
-          next: (result: Company[]) => {
-            this.companies = result;
+        // Nastavi sa dodavanjem ili ažuriranjem kompanije
+        this.service.updateCompany(this.oldCompanyName, updatedCompany).subscribe({
+          next: () => {
+            this.addCompanyClicked.emit();
+            this.companyForm.reset();
+      
+            this.service.getAllCompanise().subscribe({
+              next: (result: Company[]) => {
+                this.companies = result;
+              },
+              error: (error: any) => {
+                console.error('Error loading companies', error);
+              },
+            });
+      
+            this.renderCreateCompany = false;
           },
           error: (error: any) => {
-            console.error('Error loading companies', error);
+            console.error('Error adding company', error);
           },
         });
-  
-        this.renderCreateCompany = false;
       },
       error: (error: any) => {
-        console.error('Error adding company', error);
+        console.error('Error geocoding address', error);
       },
     });
+  
+    
   }
-
-
   
 }
