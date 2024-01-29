@@ -64,11 +64,10 @@ export class PositionSimulatorComponent implements OnInit {
   }
 */
   handleResult(message: { body: string }) {
-    console.log(message);
     if (message.body) {
       let location: Location = JSON.parse(message.body);
-      console.log(location);
       this.locations.push(location);
     }
+    console.log(this.locations);
   }
 }
