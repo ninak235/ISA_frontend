@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Company, CompanyAdmin } from './model/companyModel';
+import { Observable, catchError } from 'rxjs';
+import { Company, CompanyAdmin, LocationDto } from './model/companyModel';
 import { environment } from 'src/env/environment';
 import { CompanyIdName } from './model/companyIdName';
 import { AvailableDate } from './model/availableDateModel';
@@ -50,12 +50,24 @@ export class CompanyService {
 
   addCompany(company: Company): Observable<Company> {
     this.addCompanyClicked.emit();
-    return this.http.post<Company>(
-      environment.apiHost + '/company/registerCompany',
-      company
-    );
-    
+    console.log(company)
+    console.log("LocaionId:", company.locationDto.id)
+    return this.http.post<Company>(environment.apiHost + '/company/registerCompany', company)
+      .pipe(
+        catchError((error: any) => {
+          console.error('Error adding company', error);
+          throw error; // Rethrow the error so it can be caught by the component
+        })
+      );
   }
+
+  addLocation(locationDto: LocationDto): Observable<LocationDto>{
+    return this.http.post<LocationDto>(
+      environment.apiHost + '/location/createLocation',
+      locationDto
+    );
+  }
+  
   getByGradeCompanies(grade: string): Observable<Company[]> {
     return this.http.get<Company[]>(
       `${environment.apiHost}/company/byGrade?grade=${grade}`

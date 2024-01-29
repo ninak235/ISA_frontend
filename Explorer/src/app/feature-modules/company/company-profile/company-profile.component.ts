@@ -38,7 +38,7 @@ export class CompanyProfileComponent {
   selectedDate: Date;
   availableTimeSlots: AvailableDate[];
   selectedTimeSlot: AvailableDate;
-existingTimeSlots: AvailableDate[];
+  existingTimeSlots: AvailableDate[];
   adminId: number;
   equipmentReservationStatus: { [key: number]: boolean } = {};
 
