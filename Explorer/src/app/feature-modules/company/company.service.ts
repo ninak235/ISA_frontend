@@ -63,6 +63,10 @@ export class CompanyService {
     return this.http.get<Company>(environment.apiHost + '/company/' + id);
   }
 
+  getAllCompanyAdmins(id: number): Observable<CompanyAdminRegistration[]> {
+    return this.http.get<CompanyAdminRegistration[]>(environment.apiHost+ '/companyAdmin/company/' + id);
+  }
+
   getByName(companyName: string): Observable<Company> {
     return this.http.get<Company>(
       environment.apiHost + '/company/name/' + companyName
