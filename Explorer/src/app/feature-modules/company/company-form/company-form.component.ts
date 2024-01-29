@@ -56,7 +56,7 @@ export class CompanyFormComponent implements OnChanges, AfterViewInit  {
   }
 
   private initializeMap(): void {
-    const initialCoordinates: L.LatLngExpression = [0, 0];
+    const initialCoordinates: L.LatLngExpression = [45.245018, 19.837681];
     const initialZoomLevel: number = 10;
 
     this.map = L.map('map').setView(initialCoordinates, initialZoomLevel);
