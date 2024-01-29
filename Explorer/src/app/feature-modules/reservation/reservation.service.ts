@@ -19,6 +19,12 @@ export class ReservationService {
     );
   }
 
+  getAllReservations(): Observable<ReservationCalendar[]>{
+    return this.http.get<ReservationCalendar[]>(
+      environment.apiHost+ '/reservations/getAll'
+    );
+  }
+
   getAllReservationsByCompanyAdminId(
     companyAdminId: number
   ): Observable<ReservationCalendar[]> {

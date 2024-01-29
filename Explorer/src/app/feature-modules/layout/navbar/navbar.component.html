@@ -18,13 +18,15 @@
       >
         Logout
       </button>
-      <button color="primary" mat-raised-button [routerLink]="['']">
+      <button color="primary" *ngIf="customer || systemAdmin" mat-raised-button [routerLink]="['']">
+        Home
+      </button>
+      <button color="primary" *ngIf="companyAdmin" mat-raised-button [routerLink]="['companyAdminHome']">
         Home
       </button>
       <button mat-raised-button *ngIf="customer" [routerLink]="['customerProfile']">
         Customer Profile
       </button>
-
       <button mat-raised-button *ngIf="systemAdmin" [routerLink]="['userProfile']">
         System Admin Profile
       </button>
@@ -38,7 +40,7 @@
       </button>
 
       <button mat-raised-button *ngIf="companyAdmin" [routerLink]="['adminProfile']">
-        Comapny Admin Profile
+        Company Admin Profile
       </button>
     </div>
   </div>
