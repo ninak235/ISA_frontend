@@ -108,7 +108,7 @@
             <div class="card-content">
               <input type="radio" name="selectedTimeSlot" [(ngModel)]="selectedTimeSlot" [value]="timeSlot" class="custom-radio" />
               <h3>📆 Date: {{ formatDateAndTime(timeSlot.startTime).date }}</h3>
-              <!--h3>⏰ Time: {{ formatDateAndTime(timeSlot.startTime).time }}</h3-->
+              <h3>⏰ Time: {{ formatDateAndTime(timeSlot.startTime).time }}</h3>
             </div>
           </div>
           <button class="button3" (click)="createPickupTerm()" *ngIf="selectedTimeSlot">Choose</button>
