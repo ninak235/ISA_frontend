@@ -12,6 +12,9 @@
         <button (click)="toggleAdminsVisibility()">
           <mat-icon>{{ shouldShowDatesComponent ?  'exit_to_app' : 'calendar_today' }}</mat-icon>
         </button>
+        <button (click)="toggleReservationsVisibility()">
+          <mat-icon>{{ shouldShowReservations ?  'remove' : 'add' }}</mat-icon>
+        </button>
       </div>
       <div *ngIf="company.adminsSet && company.adminsSet.length > 0; else noAdmins">
         <h3 class="section-title"><strong>Company Admins:</strong></h3>
@@ -73,6 +76,23 @@
         </div>
       
         <xp-equipment-form *ngIf="shouldRenderEquipmentForm" (updateEquipmentClicked)="updateEquipmentClicked()" [equipment]="equipmentForUpdate" [company]="company" ></xp-equipment-form>
+      </div>
+      <div *ngIf="shouldShowReservations">
+        <h2>All reservations</h2>
+        <div class="past-reservation-container">
+          <div class="pastReservations-container" *ngFor="let res of allReservations">
+            <div class="reservation-item"  [ngStyle]="{'background-color': res.isPast ? '#E35193' : '#68A06B'}">
+              <p><strong>📆 Date:</strong> {{ formatDateAndTime(res.dateTime).date }}</p>
+              <p><strong>⏰ Time: </strong>{{ formatDateAndTime(res.dateTime).time }}</p>
+              <p><strong>Num of hours:</strong> {{ res.duration }}</p>
+              <p><strong>Grade:</strong> {{ res.grade }}</p>
+              
+              <!-- Display "Cancel Reservation" button only for past reservations -->
+              <button *ngIf="!res.isPast && res.isCancelEnabled && res.status != 'PickedUp' && res.status != 'Cancelled'" (click)="cancelReservation()">Give Equipment</button>
+              <p *ngIf="res.status == 'Cancelled'">Expired reservation!</p>
+            </div>
+          </div>
+        </div>
       </div>
       
       <div *ngIf="shouldShowDatesComponent">

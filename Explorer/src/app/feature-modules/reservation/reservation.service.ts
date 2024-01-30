@@ -39,6 +39,12 @@ export class ReservationService {
     );
   }
 
+  getCompanyAdminReservations(adminId: number): Observable<Reservation[]> {
+    return this.http.get<Reservation[]>(
+      environment.apiHost + '/reservations/byAdminId/' + adminId
+    );
+  }
+
   cancelReservation(reservation: Reservation): Observable<CancelationModel> {
     return this.http.put<CancelationModel>(
       environment.apiHost + '/reservations/cancelReservation',
@@ -63,4 +69,10 @@ export class ReservationService {
   getPastUserReservations(userId: number): Observable<Reservation[]>{
     return this.http.get<Reservation[]>(environment.apiHost + '/reservations/pastByUserId/' + userId);
   }
+
+  getPastAdminReservations(adminId: number): Observable<Reservation[]>{
+    return this.http.get<Reservation[]>(environment.apiHost + '/reservations/pastByAdminId/' + adminId);
+  }
+
+
 }

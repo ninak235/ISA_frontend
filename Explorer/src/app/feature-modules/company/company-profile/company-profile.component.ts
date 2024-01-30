@@ -20,6 +20,13 @@ import multiMonthPlugin from '@fullcalendar/multimonth';
 import { EventInput } from '@fullcalendar/core';
 import { ReservationCalendar } from '../../reservation/model/reservationCalendar';
 
+interface ExtendedReservation extends Reservation {
+  isPast? : boolean;
+  isCancelEnabled?: boolean;
+  isCurrentReservation?: boolean;
+  isPending?: boolean;
+}
+
 @Component({
   selector: 'xp-company-profile',
   templateUrl: './company-profile.component.html',
@@ -45,9 +52,12 @@ export class CompanyProfileComponent {
   adminId: number;  
   equipmentReservationStatus: { [key: number]: boolean } = {}; //mapa za svaku opremu da li postoji rezervacija unutar te firme sa njom, ------------------- TREBA IZMENITI TAKO DA UCITAVA I KOLICINU OPREME 
   shouldShowDatesComponent: boolean = false;
-  reservations: ReservationCalendar[];
-  
-  //shouldRenderUpdateForm: boolean = false;
+
+  pastReservations: ExtendedReservation[] = [];
+  futureReservations: ExtendedReservation[] = [];
+  allReservations: ExtendedReservation[] = [];
+  shouldShowReservations: boolean = false;
+
   constructor(private companyService: CompanyService, private equipmentService: EquipmentService, private reservationService: ReservationService,  private router: Router, private route: ActivatedRoute, private authService: AuthService) { }
 
   ngOnInit(): void {
@@ -55,25 +65,72 @@ export class CompanyProfileComponent {
       if (user) {
         this.adminId = user.id;
         this.loadAdminAvailableDates();
-        this.reservationService.getAllReservations().subscribe({
-          next: (reservations: ReservationCalendar[]) => {
-            this.reservations = reservations;
-            console.log('Preuzeo je sve rezervacije');
-            this.filterReservations();
-            console.log(this.reservations);
-          },
-          error: (err: any) =>
-          {
-            console.log('Error accured while gathering reservations information', err);
-          }
-        })
+        this.getReservations();
       }
     });
   }
 
-  filterReservations() {
-    this.reservations = this.reservations.filter(reservation => reservation.companyAdminId === this.adminId);
-    // Now, this.reservations only contains reservations with the specified adminId
+  getReservations(): void {
+    this.reservationService.getPastAdminReservations(this.adminId).subscribe({
+      next: (reservations: ExtendedReservation[]) => {
+        this.pastReservations = reservations;
+        this.pastReservations.forEach(res => {
+          res.isPast = true;
+          res.isCancelEnabled = true;
+
+          if(res.status == ReservationStatus.Pending){
+            res.isPending = true;
+          }
+          else{
+            res.isPending = false;
+          }
+        });
+        this.combineReservations();
+      }
+    })
+    this.reservationService.getCompanyAdminReservations(this.adminId).subscribe({
+      next: (reservations: ExtendedReservation[]) => {
+        this.futureReservations = reservations;
+        this.futureReservations.forEach(res => {
+          res.isPast = false;
+
+          if(res.status == ReservationStatus.Pending){
+            res.isPending = true;
+          }
+          else{
+            res.isPending = false;
+          }
+
+          const reservationDate = this.parseDateTime(res.dateTime);
+          const currentDate = new Date();
+
+          if (reservationDate.getMonth() == currentDate.getMonth() && reservationDate.getDay() == currentDate.getDay() && reservationDate.getHours() <= currentDate.getHours() && currentDate.getHours() <= reservationDate.getHours()+res.duration){ //&& reservationDate.getHours() <= currentDate.getHours() && currentDate.getHours() <= reservationDate.getHours()+res.duration){
+            res.isCurrentReservation = true;
+          }
+          const timeDifferenceInHours = (reservationDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60);
+          
+          if (timeDifferenceInHours <= 24) {
+            res.isCancelEnabled = false;
+          }
+          else {
+            res.isCancelEnabled = true;
+          }
+        });
+        this.combineReservations();
+      }
+    })
+  }
+
+
+  private combineReservations(): void {
+    if (this.pastReservations && this.futureReservations) {
+      this.allReservations = this.pastReservations.concat(this.futureReservations);
+      // Alternatively: this.allReservations = [...this.pastReservations, ...this.futureReservations];
+    }
+  }
+
+  cancelReservation(): void {
+    
   }
   
   private loadAdminAvailableDates() {
@@ -418,6 +475,21 @@ calendarOptions: CalendarOptions = {
   toggleAdminsVisibility() {
     this.shouldShowDatesComponent = !this.shouldShowDatesComponent;
   }
+
+  toggleReservationsVisibility() {
+    this.shouldShowReservations = !this.shouldShowReservations;
+  }
+
+  parseDateTime(localDateTime: string | object): Date {
+    if (typeof localDateTime === 'object' && localDateTime !== null) {
+        localDateTime = localDateTime.toString(); 
+    }
+    const dateArray = localDateTime.split(',').map(Number);
+    const parsedDate = new Date(dateArray[0], dateArray[1] - 1, dateArray[2], dateArray[3], dateArray[4]);
+    return parsedDate;
+  }
+
+
 
   //OVA FUNKCIJA MOZE DA SE BRISE?
   isEquipmentReserved(equipment: CompanyEquipment): boolean {
