@@ -140,11 +140,12 @@ export class CompanyService {
   updateCompanyEquipment(
     updatedCompany: Company,
     oldId: number,
-    newId: number
+    newId: number,
+    updatedQuantity: number
   ): Observable<void> {
     console.log(updatedCompany);
     return this.http.put<void>(
-      `${environment.apiHost}/company/update/equipment/change/${updatedCompany.name}?oldId=${oldId}&newId=${newId}`,
+      `${environment.apiHost}/company/update/equipment/change/${updatedCompany.name}?oldId=${oldId}&newId=${newId}&updatedQuantity=${updatedQuantity}`,
       updatedCompany
     );
   }

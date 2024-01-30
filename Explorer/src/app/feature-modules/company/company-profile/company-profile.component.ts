@@ -18,6 +18,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import multiMonthPlugin from '@fullcalendar/multimonth';
 import { EventInput } from '@fullcalendar/core';
+import { ReservationCalendar } from '../../reservation/model/reservationCalendar';
 
 @Component({
   selector: 'xp-company-profile',
@@ -25,34 +26,54 @@ import { EventInput } from '@fullcalendar/core';
   styleUrls: ['./company-profile.component.css']
 })
 export class CompanyProfileComponent {
-  company: Company;
-  filteredEquipment: CompanyEquipment[];
-  equipmentSearchValue: string;
-  map: L.Map;
-  shouldRenderEquipmentForm: boolean = false;
-  equipmentForUpdate: CompanyEquipment;
-  shouldRenderEquipmentSelect: boolean = false;
-  selectedEquipmentId: number;
-  availableEquipment: Equipment[];
-  showDatePicker: boolean = false;
-  selectedDate: Date;
-  availableTimeSlots: AvailableDate[];
-  selectedTimeSlot: AvailableDate;
-existingTimeSlots: AvailableDate[];
-  adminId: number;
-  equipmentReservationStatus: { [key: number]: boolean } = {};
-
+  company: Company;                               //kompanija
+  map: L.Map;                                     //mapa
+  shouldShowEquipmentComponent = false;
+  filteredEquipment: CompanyEquipment[];          //pretrazena oprema
+  equipmentSearchValue: string;                   //searchbox za pretragu equipmenta
+  
+  shouldRenderEquipmentForm: boolean = false;     //da li da otvori formu za izmenu opreme
+  equipmentForUpdate: CompanyEquipment;           //oprema koju smo krenuli da izmenimo
+  shouldRenderEquipmentSelect: boolean = false;   //plus za dodavanje nove opreme
+  selectedEquipmentId: number;          //selektovan equipment iz liste za dodavanje nove opreme
+  availableEquipment: Equipment[];      //oprema koju firma ima u ponudi -----------------------------DODAJ DA SE PROVERI I DA LI IMA DOVOLJAN QUANTITY >= 1
+  showDatePicker: boolean = false;      //prikazivanje date pickera za kreiranje novog termina
+  selectedDate: Date;                   //selektovan datum za kreiranje novog termina
+  availableTimeSlots: AvailableDate[]; //ponudjeni termini za admina za datum koji je izabrao
+  selectedTimeSlot: AvailableDate;    //prototip napravljenog termina koji selektujem da bih napravio slobodan termin
+  existingTimeSlots: AvailableDate[]; //vec napravljeni slobodni termini admina
+  adminId: number;  
+  equipmentReservationStatus: { [key: number]: boolean } = {}; //mapa za svaku opremu da li postoji rezervacija unutar te firme sa njom, ------------------- TREBA IZMENITI TAKO DA UCITAVA I KOLICINU OPREME 
+  shouldShowDatesComponent: boolean = false;
+  reservations: ReservationCalendar[];
   
   //shouldRenderUpdateForm: boolean = false;
-  constructor(private companyService: CompanyService, private equipmentService: EquipmentService,  private router: Router, private route: ActivatedRoute, private authService: AuthService) { }
+  constructor(private companyService: CompanyService, private equipmentService: EquipmentService, private reservationService: ReservationService,  private router: Router, private route: ActivatedRoute, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.authService.user$.subscribe(user => {
       if (user) {
         this.adminId = user.id;
         this.loadAdminAvailableDates();
+        this.reservationService.getAllReservations().subscribe({
+          next: (reservations: ReservationCalendar[]) => {
+            this.reservations = reservations;
+            console.log('Preuzeo je sve rezervacije');
+            this.filterReservations();
+            console.log(this.reservations);
+          },
+          error: (err: any) =>
+          {
+            console.log('Error accured while gathering reservations information', err);
+          }
+        })
       }
     });
+  }
+
+  filterReservations() {
+    this.reservations = this.reservations.filter(reservation => reservation.companyAdminId === this.adminId);
+    // Now, this.reservations only contains reservations with the specified adminId
   }
   
   private loadAdminAvailableDates() {
@@ -79,7 +100,7 @@ existingTimeSlots: AvailableDate[];
             this.company = c;
             console.log('KOMPANIJA');
             console.log(this.company);
-for (const equipment of this.company.equipmentSet) {
+            for (const equipment of this.company.equipmentSet) {
               this.isItReserved(equipment);
             }
             if (this.company && this.company.adress) {
@@ -126,9 +147,6 @@ for (const equipment of this.company.equipmentSet) {
     if (this.map){
       this.map.remove();
     }
-    
-    
-
     const apiKey = '0c7c0190d392458da8694650a0641bcd';
     const geocodingUrl = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(address)}&key=${apiKey}`;
   
@@ -292,7 +310,8 @@ this.ngAfterViewInit();
   }
 
   createPickupTerm(): void {
-console.log(this.selectedTimeSlot);
+    console.log('SELECTED TIME SLOT');
+    console.log(this.selectedTimeSlot);
     if(this.selectedTimeSlot){
       this.companyService.createAvailableDate(this.selectedTimeSlot).subscribe({
         next: () => {
@@ -392,6 +411,15 @@ calendarOptions: CalendarOptions = {
     }
   }
 
+  toggleEquipmentComponent() {
+    this.shouldShowEquipmentComponent = !this.shouldShowEquipmentComponent;
+  }
+
+  toggleAdminsVisibility() {
+    this.shouldShowDatesComponent = !this.shouldShowDatesComponent;
+  }
+
+  //OVA FUNKCIJA MOZE DA SE BRISE?
   isEquipmentReserved(equipment: CompanyEquipment): boolean {
     return equipment?.id !== undefined && this.equipmentReservationStatus[equipment.id];
   }

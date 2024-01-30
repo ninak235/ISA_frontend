@@ -24,9 +24,10 @@ import { RouterModule } from '@angular/router';
 import { CompanyCustomersComponent } from './company-customers/company-customers.component';
 import { UserModule } from '../user/user.module';
 import { ManagePickupsComponent } from './manage-pickups/manage-pickups.component';
+import { CompanyInfoComponent } from './company-info/company-info.component';
 
 @NgModule({
-  declarations: [AllCompanyPreviewComponent, CompanyFormComponent, CompanyProfileComponent, AddAvailabledateFormComponent, CompanyReserveComponent, ReservationCreatedComponent, CompanyAdminHomeComponent, CompanyCustomersComponent, ManagePickupsComponent],
+  declarations: [AllCompanyPreviewComponent, CompanyFormComponent, CompanyProfileComponent, AddAvailabledateFormComponent, CompanyReserveComponent, ReservationCreatedComponent, CompanyAdminHomeComponent, CompanyCustomersComponent, ManagePickupsComponent, CompanyInfoComponent],
   imports: [CommonModule, MatInputModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatIconModule, MatCheckboxModule,
     MatCardModule, MatDatepickerModule, MatNativeDateModule, MatDialogModule, EquipmentModule, BrowserAnimationsModule, FullCalendarModule, RouterModule, UserModule],
   exports: [AllCompanyPreviewComponent],

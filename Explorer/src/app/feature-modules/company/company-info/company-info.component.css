@@ -1,0 +1,27 @@
+/* company-info-card.component.css */
+/* company-info-card.component.css */
+/* company-info-card.component.css */
+.card-container {
+    border: 1px solid rgb(0, 0, 0);
+    height: 370px;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+  }
+  
+  h2 {
+    margin-bottom: 40px; /* Increase the margin for better separation */
+    font-size: 24px; /* Adjust the font size as needed */
+  }
+  
+  p {
+    margin-bottom: 8px; /* Increase the margin for better separation */
+    font-size: 16px; /* Adjust the font size as needed */
+  }
+  
+  
+  
