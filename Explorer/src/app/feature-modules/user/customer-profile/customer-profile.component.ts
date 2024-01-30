@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef  } from '@angular/core';
 import { Customer } from '../model/customer.model';
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
@@ -18,10 +18,13 @@ import { CompanyAdminRegistration } from '../model/companyAdminModel';
 import { ComplaintService } from '../../complaint/complaint.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Complaint } from '../../complaint/model/complaintModel';
+import readQRCode  from 'jsqr';
+import jsQR from 'jsqr';
 
 interface ExtendedReservation extends Reservation {
   isPast? : boolean;
   isCancelEnabled?: boolean;
+  isCurrentReservation?: boolean;
   isPending?: boolean;
 }
 
@@ -41,11 +44,13 @@ export class CustomerProfileComponent implements OnInit {
   pastReservations: ExtendedReservation[] = [];
   futureReservations: ExtendedReservation[] = [];
   allReservations: ExtendedReservation[] = [];
+  isCurrentReservation: boolean = false;
+  shouldRenderForm: boolean = false;
   complaintContent: string = '';
   selectedCompanyAdmin: CompanyAdminRegistration;
   companyAdmins: CompanyAdminRegistration[] = [];
   complaintForm: FormGroup;
-  
+  decodedText: string = '';
 
   //shouldRenderUpdateForm: boolean = false;
   constructor(
@@ -56,7 +61,8 @@ export class CustomerProfileComponent implements OnInit {
     private reservationService: ReservationService,
     private appRef: ApplicationRef,
     private dialog: MatDialog,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private cdr: ChangeDetectorRef
   ) {
     this.complaintForm = this.fb.group({
       complaintContent: ['', Validators.required],
@@ -129,6 +135,10 @@ export class CustomerProfileComponent implements OnInit {
 
           const reservationDate = this.parseDateTime(res.dateTime);
           const currentDate = new Date();
+
+          if (reservationDate.getMonth() == currentDate.getMonth() && reservationDate.getDay() == currentDate.getDay() && reservationDate.getHours() <= currentDate.getHours() && currentDate.getHours() <= reservationDate.getHours()+res.duration){ //&& reservationDate.getHours() <= currentDate.getHours() && currentDate.getHours() <= reservationDate.getHours()+res.duration){
+            res.isCurrentReservation = true;
+          }
           const timeDifferenceInHours = (reservationDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60);
           
           if (timeDifferenceInHours <= 24) {
@@ -143,13 +153,13 @@ export class CustomerProfileComponent implements OnInit {
     })
   }
 
+
   private combineReservations(): void {
     if (this.pastReservations && this.futureReservations) {
       this.allReservations = this.pastReservations.concat(this.futureReservations);
       // Alternatively: this.allReservations = [...this.pastReservations, ...this.futureReservations];
     }
   }
-
 
   formatDateAndTime(localDateTime: string | object): {
     date: string;
@@ -168,6 +178,12 @@ export class CustomerProfileComponent implements OnInit {
 
     return { date: dateString, time: timeString };
   }
+  
+  private getDaysInMonth(year: number, month: number): number {
+    return new Date(year, month, 0).getDate();
+  }
+  
+  
 
 
   parseDateTime(localDateTime: string | object): Date {
@@ -239,7 +255,7 @@ export class CustomerProfileComponent implements OnInit {
     return timeA - timeB;
   }
 
-  createReservationInfoString(reservation: Reservation): string{
+createReservationInfoString(reservation: Reservation): string{
     let reservationInfo: string = `Reservation ID: ${reservation.id}, DateTime: ${reservation.dateTime}, Duration: ${reservation.duration}, Grade: ${reservation.grade}, Status: ${reservation.status}, Customer ID: ${reservation.customerId}, Company Admin ID: ${reservation.companyAdminId}`;
 
     const reservationEquipments: CompanyEquipment[] = reservation.reservationEquipments;
@@ -314,4 +330,141 @@ export class CustomerProfileComponent implements OnInit {
       });
     }
   }
+
+  async handleFileSelect(event: any) {
+    const file = event.target.files[0];
+
+    if (file) {
+      const imageUrl = await this.readFileAsDataURL(file);
+
+      // Dekodiranje QR koda
+      this.decodeQRCode(imageUrl);
+    }
+  }
+
+  async readFileAsDataURL(file: File): Promise<string> {
+    return new Promise<string>((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e: any) => resolve(e.target.result);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async decodeQRCode(imageUrl: string): Promise<void> {
+    const image = new Image();
+  
+    // Postavljanje funkcije koja će se izvršiti nakon učitavanja slike
+    image.onload = () => {
+      // Kreiranje ImageData objekta
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+  
+      if (context) {
+        canvas.width = image.width;
+        canvas.height = image.height;
+        context.drawImage(image, 0, 0, image.width, image.height);
+        const imageData = context.getImageData(0, 0, image.width, image.height);
+  
+        // Dekodiranje QR koda kroz jsqr
+        const code = jsQR(imageData.data, imageData.width, imageData.height);
+  
+        // Postavljanje rezultata
+        if (code) {
+          const slicedText = this.sliceTextFrom17th(code.data);
+          this.decodedText = slicedText;
+          this.cdr.detectChanges();
+          //console.log(this.decodedText)
+        } else {
+          this.decodedText = 'Nije pronađen QR kod.';
+          this.cdr.detectChanges();
+        }
+      } else {
+        console.error('getContext returned null');
+      }
+
+      const idQR = parseInt(this.decodedText)
+
+      this.pastReservations.forEach(pastRes => {
+        if (pastRes.id === idQR && pastRes.status!=ReservationStatus.Cancelled) {
+          // Dodavanje alert poruke
+          alert(`The deadline for picking up equipment has passed! ${this.customer.firstName} ${this.customer.lastName} receives 2 penalty points.`);
+      
+          this.reservationService.cancelReservationQR(pastRes).subscribe({
+            next: (result: CancelationModel) => {
+              console.log(result);
+              this.customer.penaltyPoints += 2;
+              const index = this.reservations.findIndex(
+                (r) => r.id === result.reservationId
+              );
+              if (index !== -1) {
+                this.reservations[index].status = ReservationStatus.Cancelled;
+                this.appRef.tick();
+                
+              }
+            },
+            error: (error: any) => {
+              console.error('Error canceling reservation:', error);
+            },
+          });
+        }
+        else if(pastRes.status==ReservationStatus.Cancelled){
+          alert(`The reservation is already cancelled!`);
+        }
+      });
+
+      this.futureReservations.forEach(futureRes => {
+        if (futureRes.id === idQR && futureRes.status != ReservationStatus.PickedUp) {
+          const reservationDate = this.parseDateTime(futureRes.dateTime);
+          const futureDate = this.parseDateTime(futureRes.dateTime);
+      
+          const additionalHours = futureRes.duration;
+          futureDate.setHours(futureDate.getHours() + additionalHours);
+      
+          const currentDate = new Date();
+      
+          if (reservationDate <= currentDate && currentDate <= futureDate) {
+            this.reservationService.pickUpReservation(futureRes).subscribe({
+              next: (result: CancelationModel) => {
+                console.log(result);
+                const index = this.reservations.findIndex(
+                  (r) => r.id === result.reservationId
+                );
+      
+                if (index !== -1) {
+                  alert(`${this.customer.firstName} ${this.customer.lastName} has successfully picked up their equipment!`);
+                  this.reservations[index].status = ReservationStatus.PickedUp;
+                  this.appRef.tick();
+                }
+              },
+              error: (error: any) => {
+                console.error('Error picking up reservation:', error);
+              }
+            });
+          } else {
+            alert(`Now you can't pick up this equipment, check again your date!`);
+          }
+        } else if(futureRes.status == ReservationStatus.PickedUp) {
+          alert(`Already picked up!`);
+        }
+      });
+      
+      
+    };
+  
+    // Postavljanje izvora slike
+    image.src = imageUrl;
+  }
+  
+  sliceTextFrom17th(text: string): string {
+    const startIndex = 16;
+    const commaIndex = text.indexOf(',');
+
+    if (commaIndex !== -1 && commaIndex > startIndex) {
+      return text.slice(startIndex, commaIndex);
+    } else {
+      return text.slice(startIndex);
+    }
+  }
+  
+  
 }

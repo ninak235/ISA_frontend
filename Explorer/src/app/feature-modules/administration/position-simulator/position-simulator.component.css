@@ -1,0 +1,21 @@
+/* position-simulator.component.css */
+:host {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  #map {
+    flex: 1;
+    height: 560px;
+  }
+
+  h2{
+    text-align: center;
+  }
+
+  .heigh{
+    height: 100px;
+  }
+
+  
+  

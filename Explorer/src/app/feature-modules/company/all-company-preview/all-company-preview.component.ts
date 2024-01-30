@@ -31,7 +31,7 @@ export class AllCompanyPreviewComponent implements OnInit {
   sortCriteriumSelected: string = '';
   shouldEdit: boolean;
   oldCompanyName: string;
-  companyAdmin: CompanyAdminBasicModel = {id: 0, companyId: 0};
+  companyAdmin: CompanyAdminBasicModel = { id: 0, companyId: 0 };
   tooManyPenaltyPoints: boolean = false;
   role: Role;
   isCustomer: boolean = false;
@@ -99,6 +99,7 @@ export class AllCompanyPreviewComponent implements OnInit {
     this.companyService.getAllCompanise().subscribe({
       next: (result: Company[]) => {
         this.companies = result;
+        console.log(this.companies);
         this.filteredCompanies = this.companies;
       },
     });
@@ -144,7 +145,7 @@ export class AllCompanyPreviewComponent implements OnInit {
   private filterCompanies(): void {
     this.filteredCompanies = this.companies.filter((c) =>
       c.name.toLowerCase().match(this.searchValue.toLowerCase()) ||
-      c.adress.toLowerCase().match(this.searchValue.toLowerCase())
+      c.locationDto.address.toLowerCase().match(this.searchValue.toLowerCase())
     );
   }
   onGradeChange(): void{
@@ -162,7 +163,7 @@ export class AllCompanyPreviewComponent implements OnInit {
         this.filteredCompanies.sort((a, b) => a.name.localeCompare(b.name));
         break;
       case 'sortCity':
-        this.filteredCompanies.sort((a, b) => a.adress.localeCompare(b.adress));
+        this.filteredCompanies.sort((a, b) => a.locationDto.city.localeCompare(b.locationDto.city));
         break;
       case 'sortGradeH':
         this.filteredCompanies.sort((a, b) => a.grade.localeCompare(b.grade));

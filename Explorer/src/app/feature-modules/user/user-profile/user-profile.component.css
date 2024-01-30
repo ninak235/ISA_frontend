@@ -1,42 +1,205 @@
+
 .customer-card {
-    max-width: 600px;
+    display: flex;
+    flex-direction: row;
+    max-width: 500px;
     margin: 0 auto;
-    margin-top: 70px;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     font-family: 'Arial', sans-serif;
     font-size: large;
-    background-color: lightsteelblue;
+    background-color: rgb(12, 73, 153);
     display: flex;
-}
-
-.customer-info {
-    text-align: center;
-}
-
-.info-item {
+    margin-bottom: 50px;
+  }
+  
+  .buttonSubmit{
+    background-color: rgb(12, 73, 153);
+    color: white;
+    cursor: pointer;
+    width: 100px;
+  }
+  
+  .uploadQR{
+    width: 200px;
+    height: 30px;
+    margin-top: 220px;
+    font-size: medium;
+    color: white;
+  }
+  
+  
+  .customer-info {
+    margin-left: 25px;
+    text-align: start;
+  }
+  
+  .edit{
+    color: white;
+    cursor: pointer;
+  }
+  
+  .info-item {
     margin-bottom: 10px;
-}
-
-strong {
-    color: #333;
+  }
+  
+  strong {
+    color: #bcb9b9;
     font-size: 16px;
-}
-
-span {
+  }
+  
+  span {
     font-style: italic;
-    color: #555;
-}
-
-.buttons{
+    color: #ffffff;
+  }
+  
+  .buttons{
     display: flex;
     flex-direction: row;
-    gap: 10px;
-}
+  }
+  
+  .date-cards-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+   .date-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+    width: 300px;
+  }
+  
+  .date-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card-content {
+    padding: 10px;
+  }
+  
+  h2{
+    text-align: start;
+    margin-left: 40px;
+    margin-top: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    text-decoration: underline;
+    text-underline-offset: initial;
+    text-underline-position: below;
+  }
+  
+  .column{
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sortReservationSelect{
+  margin-left: 30px;
+  width:fit-content;
+  background-color: rgb(12, 73, 153);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  height: 30px;
+  }
+  
+  
+  .past-reservation-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 10px;
+  }
+  
+  .reservation-item {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px;
+  width: 200px;
+  color: black;
+  }
+  
+  .parameter{
+    color: black;
+  }
+  
+  h3{
+  text-align: center;
+  }
+  
+  .complaint-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+  }
+  
+  .form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  max-width: 400px; /* Adjust as needed */
+  width: 100%;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+  font-size: large;
+  margin-right: 190px;
+  }
+  
+  .form-group {
+  margin-bottom: 15px;
+  }
+  
+  label {
+  margin-bottom: 5px;
+  }
+  
+  textarea,
+  button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  }
+  
+  button {
+  background-color: rgb(12, 73, 153);
+  color: white;
+  border-color: rgb(12, 73, 153);
+  cursor: pointer;
+  }
+  
+  button:hover {
+  background-color: rgb(4, 41, 89);
+  }
+  
+  
+  .customerComplaint {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: start;
+  }
 
-.button {
-    width: 200px;
-    height: 20px;
-}
+  .form-container1 {
+    background-image: url('/assets/back2.png'); /* Zamijenite ovu vrednost sa putanjom do vaše slike */
+    background-size: cover; /* Podešavanje da slika pokriva čitavu površinu kontejnera */
+    width: 1950px;
+    height: 770px; 
+  }

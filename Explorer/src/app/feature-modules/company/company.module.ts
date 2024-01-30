@@ -21,10 +21,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CompanyContractsComponent } from './company-contracts/company-contracts.component';
 
+import { CompanyAdminHomeComponent } from './company-admin-home/company-admin-home.component';
+import { RouterModule } from '@angular/router';
+import { CompanyCustomersComponent } from './company-customers/company-customers.component';
+import { UserModule } from '../user/user.module';
+import { ManagePickupsComponent } from './manage-pickups/manage-pickups.component';
+import { CompanyInfoComponent } from './company-info/company-info.component';
+
 @NgModule({
-  declarations: [AllCompanyPreviewComponent, CompanyFormComponent, CompanyProfileComponent, AddAvailabledateFormComponent, CompanyReserveComponent, ReservationCreatedComponent, CompanyContractsComponent],
+  declarations: [AllCompanyPreviewComponent, CompanyFormComponent, CompanyProfileComponent, AddAvailabledateFormComponent, CompanyReserveComponent, ReservationCreatedComponent, CompanyAdminHomeComponent, CompanyCustomersComponent, ManagePickupsComponent, CompanyInfoComponent, CompanyContractsComponent],
   imports: [CommonModule, MatInputModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatIconModule, MatCheckboxModule,
-    MatCardModule, MatDatepickerModule, MatNativeDateModule, MatDialogModule, EquipmentModule, BrowserAnimationsModule, FullCalendarModule],
+    MatCardModule, MatDatepickerModule, MatNativeDateModule, MatDialogModule, EquipmentModule, BrowserAnimationsModule, FullCalendarModule, RouterModule, UserModule],
   exports: [AllCompanyPreviewComponent],
   providers: [
     DatePipe, 

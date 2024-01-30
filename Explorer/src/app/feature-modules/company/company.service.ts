@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Company, CompanyAdmin } from './model/companyModel';
+import { Observable, catchError } from 'rxjs';
+import { Company, CompanyAdmin, LocationDto } from './model/companyModel';
 import { environment } from 'src/env/environment';
 import { CompanyIdName } from './model/companyIdName';
 import { AvailableDate } from './model/availableDateModel';
@@ -12,6 +12,8 @@ import { Contract } from './model/contract';
   providedIn: 'root',
 })
 export class CompanyService {
+  private backendUrl = 'http://localhost:8080';
+
   getExtraAdminAvailableDates(
     companyName: string,
     adminId: number,
@@ -49,11 +51,24 @@ export class CompanyService {
 
   addCompany(company: Company): Observable<Company> {
     this.addCompanyClicked.emit();
-    return this.http.post<Company>(
-      environment.apiHost + '/company/registerCompany',
-      company
+    console.log(company)
+    console.log("LocaionId:", company.locationDto.id)
+    return this.http.post<Company>(environment.apiHost + '/company/registerCompany', company)
+      .pipe(
+        catchError((error: any) => {
+          console.error('Error adding company', error);
+          throw error; // Rethrow the error so it can be caught by the component
+        })
+      );
+  }
+
+  addLocation(locationDto: LocationDto): Observable<LocationDto>{
+    return this.http.post<LocationDto>(
+      environment.apiHost + '/location/createLocation',
+      locationDto
     );
   }
+  
   getByGradeCompanies(grade: string): Observable<Company[]> {
     return this.http.get<Company[]>(
       `${environment.apiHost}/company/byGrade?grade=${grade}`
@@ -62,6 +77,10 @@ export class CompanyService {
 
   getById(id: number): Observable<Company> {
     return this.http.get<Company>(environment.apiHost + '/company/' + id);
+  }
+
+  getAllCompanyAdmins(id: number): Observable<CompanyAdminRegistration[]> {
+    return this.http.get<CompanyAdminRegistration[]>(environment.apiHost+ '/companyAdmin/company/' + id);
   }
 
   getByName(companyName: string): Observable<Company> {
@@ -137,11 +156,12 @@ export class CompanyService {
   updateCompanyEquipment(
     updatedCompany: Company,
     oldId: number,
-    newId: number
+    newId: number,
+    updatedQuantity: number
   ): Observable<void> {
     console.log(updatedCompany);
     return this.http.put<void>(
-      `${environment.apiHost}/company/update/equipment/change/${updatedCompany.name}?oldId=${oldId}&newId=${newId}`,
+      `${environment.apiHost}/company/update/equipment/change/${updatedCompany.name}?oldId=${oldId}&newId=${newId}&updatedQuantity=${updatedQuantity}`,
       updatedCompany
     );
   }
@@ -169,8 +189,8 @@ export class CompanyService {
     return this.http.get<Contract[]>(environment.apiHost + '/contract/getAllByCompanyName/'+ name);
   }
 
-  cancelDelivery(hospitalName: String): Observable<void>{
-    const url = 'http://localhost:8082/api/delivery/canceled/' + hospitalName;
-    return this.http.post<void>(url, null);
+  cancelDelivery(hospitalName: String): Observable<String>{
+    return this.http.post<String>('http://localhost:8080/api/contract/exchange2/response',hospitalName)
   }
+
 }

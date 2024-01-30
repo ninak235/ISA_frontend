@@ -1,42 +1,67 @@
 .customer-card {
+    display: flex;
+    flex-direction: row;
     max-width: 400px;
     margin: 0 auto;
-    margin-top: 70px;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     font-family: 'Arial', sans-serif;
     font-size: large;
-    background-color: lightsteelblue;
+    background-color: rgb(12, 73, 153);
     display: flex;
+    margin-bottom: 50px;
 }
 
 .customer-info {
     text-align: center;
 }
 
-.info-item {
+.customer-info {
+    margin-left: 25px;
+    text-align: start;
+  }
+  
+  .edit{
+    color: white;
+    cursor: pointer;
+  }
+  
+  .info-item {
     margin-bottom: 10px;
-}
-
-strong {
-    color: #333;
+  }
+  
+  strong {
+    color: #bcb9b9;
     font-size: 16px;
-}
-
-span {
+  }
+  
+  span {
     font-style: italic;
-    color: #555;
-}
-
-.buttons{
+    color: #ffffff;
+  }
+  
+  .buttons{
     display: flex;
     flex-direction: row;
-    gap: 10px;
-}
+    gap: 20px;
+  }
+  
+  button {
+    background-color: rgb(12, 73, 153);
+    color: white;
+    border-color: rgb(12, 73, 153);
+    cursor: pointer;
+    }
+    
+    button:hover {
+    background-color: rgb(4, 41, 89);
+    }
 
-.button {
-    width: 200px;
-    height: 20px;
-}
+.form-container1 {
+    background-image: url('/assets/back2.png'); /* Zamijenite ovu vrednost sa putanjom do vaše slike */
+    background-size: cover; /* Podešavanje da slika pokriva čitavu površinu kontejnera */
+    width: 1950px;
+    height: 770px; 
+  }

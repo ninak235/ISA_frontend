@@ -1,7 +1,8 @@
+<div class="form-container">
 <div *ngIf="company" class="company-info">
     <div class="company-details">
       <h2>{{ company.name }}</h2>
-      <p><strong>Address:</strong> {{ company.adress }}</p>
+      <p><strong>📍 </strong> {{ company.locationDto.address }}, {{ company.locationDto.city }}, {{ company.locationDto.country }}</p>
       <p><strong>Description:</strong> {{ company.description }}</p>
       <p><strong>Grade:</strong> {{ company.grade }}</p>
     </div>
@@ -22,7 +23,7 @@
               </div>
             </div>
             
-          <button class="button"  (click)="doneChoosing()">Done</button>
+          <button class="button" color="accent" (click)="doneChoosing()">Done</button>
           </div>
         </div>
       </div>
@@ -44,6 +45,8 @@
               <h3>⏰ Time: {{ formatDateAndTime(date.startTime).time }}</h3>
             </div>
           </div>
+        </div>
+        <div class="buttonReserve">
           <button class="button3" (click)="addDate()">Choose other date</button>
           <button class="button2" (click)="reserve()">Reserve</button>
         </div>
@@ -53,4 +56,4 @@
       
       
   </div>
-  
+</div> 

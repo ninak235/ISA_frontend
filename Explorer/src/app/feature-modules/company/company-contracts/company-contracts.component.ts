@@ -1,8 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Contract } from '../model/contract';
 import { CompanyService } from '../company.service';
 import { DatePipe } from '@angular/common';
+import { LongLatModel } from '../model/longLatModel';
+import { Company } from '../model/companyModel';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -13,8 +16,21 @@ import { DatePipe } from '@angular/common';
 export class CompanyContractsComponent implements OnInit {
 
   contracts: Contract[] = [];
+   hospitalLocation: LongLatModel = {
+    longitude: 0, 
+    latitude: 0    
+  };
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private service: CompanyService, private datePipe: DatePipe) {
+  companyLocation: LongLatModel = {
+    longitude: 0,
+    latitude: 0   
+  };
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, 
+              private service: CompanyService, 
+              private datePipe: DatePipe, 
+              private router: Router,
+              private dialogRef: MatDialogRef<CompanyContractsComponent>) {
   }
 
   ngOnInit(): void {
@@ -48,11 +64,31 @@ export class CompanyContractsComponent implements OnInit {
   cancelDelivery(contract: Contract) {
     if (this.isCancellationAllowed(contract)) {
       this.service.cancelDelivery(contract.hospitalName).subscribe(() => {
-        this.contracts = this.contracts.filter(c => c !== contract);
       });
     } else {
       console.log("Delivery cannot be canceled because it's within 24 hours.");
     }
   }
-  
+
+  goToMapDelivery(contract: Contract){
+     this.hospitalLocation.latitude = contract.hospitalAddressLat;
+     this.hospitalLocation.longitude = contract.hospitalAddressLong;
+     console.log("HOSPITALLLL: ", this.hospitalLocation)
+     this.service.getByName(contract.companyName).subscribe({
+      next: (company: Company) =>{
+        this.companyLocation.latitude = company.locationDto.latitude;
+        this.companyLocation.longitude = company.locationDto.longitude;
+        
+        console.log("COMPANYYY: ", this.hospitalLocation)
+        const dataToSend = {
+          hospitalLocation: JSON.stringify(this.hospitalLocation),
+          companyLocation: JSON.stringify(this.companyLocation),
+          day: JSON.stringify(contract.exactDeliveryTime)
+        }
+        console.log(dataToSend);
+        this.dialogRef.close(); // Close the dialog
+        this.router.navigate(['/positionSimulator'], { queryParams: dataToSend});
+      }
+     })
+  }
 }

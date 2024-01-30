@@ -25,12 +25,21 @@
   }
   
   .button {
-    background-color: #3498db;
-    color: #fff;
+    color: rgb(12, 73, 153);
+    background-color: transparent;
     border: none;
     padding: 8px 15px;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 10px;
+    margin-bottom: 20px;
+    width: 60px;
+    height: 50px;
   }
+
+  button:hover {
+    background-color: #acb6d5; /* Boja koja će se prikazati kada korisnik pređe mišem */
+    color: white; /* Opciono, možete postaviti i boju teksta na belu ili drugu vidljivu boju */
+  }
+
+
   

@@ -1,4 +1,6 @@
-<form [formGroup]="profileForm">
+<div class="form-container1">
+<form class="customer-card" [formGroup]="profileForm">
+    <img src="../../../../assets/girl3.png" color="white" height="80px" alt="user info" />
     <mat-form-field>
         <mat-label>First Name</mat-label>
         <input matInput formControlName="firstName" placeholder="Enter your first name">
@@ -41,6 +43,7 @@
     </mat-form-field>
 
     <button class="button" (click)="updateProfile()">
-        Update profile
+        ✔
     </button>
 </form>
+</div>

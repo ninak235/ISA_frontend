@@ -1,0 +1,72 @@
+form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 20px;
+    align-items: center; /* Postavlja vertikalno centriranje */
+    height: 100%; /* Popunjava celu visinu ekrana */
+  }
+  
+  div {
+    width: 700px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .mat-form-field {
+    margin-bottom: 15px;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  button {
+    margin-top: 20px;
+  }
+  
+  .row-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    gap: 10px;
+    width: 328px;
+  }
+
+  .customer-card {
+    display: flex;
+    flex-direction: column;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+    font-size: large;
+    background-color: rgb(12, 73, 153);
+    display: flex;
+    margin-bottom: 50px;
+  }
+
+  .widthInput{
+    width: 40px;
+  }
+  
+  button {
+    margin-top: 20px;
+    transition: background-color 0.3s ease; /* Dodaje glatki prelaz za boju pozadine */
+  }
+  
+  button:hover {
+    background-color: #4169e1; /* Boja koja će se prikazati kada korisnik pređe mišem */
+    color: white; /* Opciono, možete postaviti i boju teksta na belu ili drugu vidljivu boju */
+  }
+
+  .form-container1 {
+    background-image: url('/assets/back2.png'); /* Zamijenite ovu vrednost sa putanjom do vaše slike */
+    background-size: cover; /* Podešavanje da slika pokriva čitavu površinu kontejnera */
+    width: 1950px;
+    height: 770px;
+    color: white; 
+  }
+  

@@ -8,3 +8,20 @@ div {
     width: auto;
     margin-left: auto;
 }
+
+.mat{
+    background-color: transparent;
+    border-bottom: 2px solid rgb(7, 7, 117); 
+}
+
+  
+  .title {
+    margin: 0; /* Postavite margin na 0 kako biste eliminisali podrazumevani margin */
+  }
+  
+.title{
+    color: rgb(7, 7, 117);
+    font-weight: bold;
+    font-style: oblique;
+    
+}

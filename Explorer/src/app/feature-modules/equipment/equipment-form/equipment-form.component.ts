@@ -28,7 +28,8 @@ export class EquipmentFormComponent {
     description: new FormControl('', [Validators.required]),
     typeOfEquipment: new FormControl('', [Validators.required]),
     grade: new FormControl('', [Validators.required]),
-    price: new FormControl(0, [Validators.required])
+    price: new FormControl(0, [Validators.required]),
+    quantity: new FormControl(0, [Validators.required])
   });
 
   ngOnChanges(changes: SimpleChanges):void {
@@ -38,15 +39,17 @@ export class EquipmentFormComponent {
 
   updateEquipment(): void {
     console.log('USAO U APDEJT EQUI')
-    const updatedEqupiment: CompanyEquipment = {
+    const updatedEqupiment = {
       id: 0,
       name: this.equipmentForm.value.name || '',
       description: this.equipmentForm.value.description || '',
       typeOfEquipment: this.equipmentForm.value.typeOfEquipment as TypeOfEquipment || '',
       grade: this.equipmentForm.value.grade || '',
-      price: this.equipmentForm.value.price || 0,
+      price: this.equipmentForm.value.price || 0
     };
 
+    const quantity = this.equipmentForm.value.quantity !== null && this.equipmentForm.value.quantity !== undefined
+      ? (this.equipmentForm.value.quantity >= 0 ? this.equipmentForm.value.quantity : 0) : 0;
 
     console.log(updatedEqupiment);
     console.log(this.equipment.id);
@@ -62,7 +65,7 @@ export class EquipmentFormComponent {
         console.log('ZAMENJENA KOMPANIJA');
         console.log(this.company);
 
-        this._companyService.updateCompanyEquipment(this.company, this.equipment.id!, updatedEquipmentFromBackend.id).subscribe({
+        this._companyService.updateCompanyEquipment(this.company, this.equipment.id!, updatedEquipmentFromBackend.id, quantity).subscribe({
           next: () => {
             this.updateEquipmentClicked.emit();
             this.equipmentForm.reset();

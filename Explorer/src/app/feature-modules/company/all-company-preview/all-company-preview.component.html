@@ -1,9 +1,9 @@
-<div>
+<div class="form-container">
   <div class="search-container">
     <button class="add-button" *ngIf="!renderCreateCompany" (click)="onAddCompany()" color="primary">
       Add new company
     </button>
-    <input type="text" class="search-input" placeholder="Search name or address..." [(ngModel)]="searchValue" (ngModelChange)="onSearchChange()">
+    <input class="blueSearch" type="text" class="search-input" placeholder="Search name or address..." [(ngModel)]="searchValue" (ngModelChange)="onSearchChange()">
     <button class="search-button">Search</button>
     <select id="gradeSelect" [(ngModel)]="selectedGrade" (change)="onGradeChange()">
       <option *ngIf="!selectedGrade" value="" disabled selected>Select Grade</option>
@@ -28,18 +28,16 @@
 
   <div class="available-company-container" *ngIf="companies">
     <div class="company-container" *ngFor="let company of filteredCompanies">
-      <button *ngIf="!tooManyPenaltyPoints && isCustomer" (click)="onReserve(company)" color="primary" mat-icon-button>
-        <mat-icon>add_shopping_cart</mat-icon>
-      </button>
+      
       <h2>{{ company.name }}</h2>
-      <p><strong>Adress:</strong>{{ company.adress }}</p>
+      <p><strong>📍 </strong>{{ company?.locationDto?.address }}, {{ company?.locationDto?.city }}, {{ company?.locationDto?.country }}</p>
       <p><strong>Description:</strong>{{ company.description }}</p>
       <p><strong>Grade:</strong>{{ company.grade }}</p>
       <div *ngIf="
           company.equipmentSet && company.equipmentSet.length > 0;
           else noEquipment
         ">
-        <h3><strong>Equipment:</strong></h3>
+        <h3 class="blue"><strong>🩺 Equipment:</strong></h3>
         <ul>
           <li *ngFor="let equipment of company.equipmentSet" class="equipment-item">
             <strong>Name:</strong>{{ equipment.name }}<br />
@@ -51,17 +49,22 @@
         </ul>
       </div>
       <ng-template #noEquipment>
-        <h3><strong>Equipment:</strong></h3>
+        <h3 class="blue"><strong>🩺 Equipment:</strong></h3>
         <br />
         Coming soon!
       </ng-template>
-      <button (click)="onEditCompanyClicked(company)" *ngIf="companyAdmin.companyId == company.id" color="primary" mat-icon-button>
+      <div class="divButton">
+      <button class="buttonPen" (click)="onEditCompanyClicked(company)" *ngIf="companyAdmin.companyId == company.id" color="primary" mat-icon-button>
         <mat-icon>edit</mat-icon>
       </button>
-      <button (click)="onCompanyNameClicked(company)" *ngIf="companyAdmin.companyId == company.id" color="primary" mat-icon-button>
+      <button class="buttonPen" (click)="onCompanyNameClicked(company)" *ngIf="companyAdmin.companyId == company.id" color="primary" mat-icon-button>
         <mat-icon>details</mat-icon>
       </button>
       <button class="contractClass" (click)="seeCompanyContracts(company)"  *ngIf="companyAdmin.companyId == company.id">See contracts</button>
+      <button class="buttonPen" *ngIf="!tooManyPenaltyPoints && isCustomer" (click)="onReserve(company)" color="primary" mat-icon-button>
+        <mat-icon>add_shopping_cart</mat-icon>
+      </button>
+    </div>
     </div>
   </div>
 

@@ -1,6 +1,9 @@
-<form [formGroup]="registrationAdminForm" (ngSubmit)="register()">
+<div class="form-container1">
+<form class="customer-card" [formGroup]="registrationAdminForm" (ngSubmit)="register()">
     <div>
+      
       <div class="row-container">
+        <img src="../../../../assets/girl3.png" color="white" height="80px" alt="user info" />
         <div class="one-item-container">
           <mat-form-field>
             <mat-label>Name</mat-label>
@@ -24,8 +27,9 @@
           </mat-form-field>
         </div>
       </div>
-      <div>
-        <mat-form-field class="one-item-container">
+      <div class="row-container">
+      <div class="one-item-container">
+        <mat-form-field>
           <mat-label>User Name</mat-label>
           <input matInput formControlName="userName" type="text" />
           <mat-error
@@ -35,8 +39,8 @@
           </mat-error>
         </mat-form-field>
       </div>
-      <div>
-        <mat-form-field class="one-item-container">
+      <div class="one-item-container">
+        <mat-form-field>
           <mat-label>Email</mat-label>
           <input matInput formControlName="email" type="text" />
           <mat-error *ngIf="registrationAdminForm.get('email')?.hasError('required')">
@@ -47,6 +51,7 @@
           </mat-error>
         </mat-form-field>
       </div>
+    </div>
       <div class="row-container">
         <div class="one-item-container">
           <mat-form-field>
@@ -115,4 +120,4 @@
       <button color="primary" type="submit" mat-raised-button>Create system admin</button>
     </div>
   </form>
-  
+</div>
