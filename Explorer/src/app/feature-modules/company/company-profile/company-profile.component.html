@@ -80,6 +80,12 @@
       <div *ngIf="shouldShowReservations">
         <h2>All reservations</h2>
         <div class="past-reservation-container">
+
+          <div class="uploadQR">
+            <label>Upload QR code here and pick up reservation! ⇩</label>
+            <input  type="file" (change)="handleFileSelect($event)" accept="image/*">
+          </div>
+
           <div class="pastReservations-container" *ngFor="let res of allReservations">
             <div class="reservation-item"  [ngStyle]="{'background-color': res.isPast ? '#E35193' : '#68A06B'}">
               <p><strong>📆 Date:</strong> {{ formatDateAndTime(res.dateTime).date }}</p>
@@ -92,7 +98,9 @@
               <p *ngIf="res.status == 'Cancelled'">Expired reservation!</p>
             </div>
           </div>
+          
         </div>
+        
       </div>
       
       <div *ngIf="shouldShowDatesComponent">
