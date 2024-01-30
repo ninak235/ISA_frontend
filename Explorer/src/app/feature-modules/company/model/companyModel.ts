@@ -1,14 +1,26 @@
 import { Equipment } from "../../equipment/model/equipmentModel";
 
 export interface Company {
-  id?:number;
+  id?: number;
   name: string;
-  adress: string;
+  locationDto: LocationDto; // Include the location property
   description: string;
   grade: string;
   equipmentSet: CompanyEquipment[];
   adminsSet: CompanyAdmin[];
 }
+
+export interface LocationDto {
+  id?: number;
+  address: string;
+  city: string;
+  country: string;
+  longitude: number;
+  latitude: number;
+}
+
+// ... rest of the code remains unchanged
+
 
 export interface CompanyAdmin {
   firstName: string;

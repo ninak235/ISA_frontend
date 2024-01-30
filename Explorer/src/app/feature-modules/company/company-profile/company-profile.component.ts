@@ -103,7 +103,7 @@ export class CompanyProfileComponent {
             for (const equipment of this.company.equipmentSet) {
               this.isItReserved(equipment);
             }
-            if (this.company && this.company.adress) {
+            if (this.company && this.company.locationDto) {
               let DefaultIcon = L.icon({
                 iconUrl: 'https://unpkg.com/leaflet@1.6.0/dist/images/marker-icon.png',
                 iconAnchor: [12, 41],
@@ -111,7 +111,7 @@ export class CompanyProfileComponent {
   
               L.Marker.prototype.options.icon = DefaultIcon;
               setTimeout(() => {
-                this.initMap(this.company.adress);
+                this.initMap(this.company.locationDto.address);
   
                 // Fetch all equipment after the company is available
                 this.equipmentService.getAllEquipments().subscribe({

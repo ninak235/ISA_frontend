@@ -1,5 +1,7 @@
-<form [formGroup]="loginForm" (ngSubmit)="login()">
-  <div>
+<!-- Dodajte ovu klasu "form-container" vašem divu -->
+<div class="form-container">
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <div class="div">
     <mat-form-field>
       <mat-label>User Name</mat-label>
       <input matInput formControlName="userName" type="text" />
@@ -9,6 +11,7 @@
       <input matInput formControlName="password" type="password" />
     </mat-form-field>
     <button color="primary" type="submit" mat-raised-button click>Login</button>
-    <p>Don't have an account yet?<a href="/register">Sign Up</a></p>
+    <p class="alink">Don't have an account yet?<a href="/register" class="alink">Sign Up</a></p>
   </div>
-</form>
+  </form>
+</div>
