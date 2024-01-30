@@ -25,7 +25,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { LoyalityProgramModule } from './feature-modules/loyality-program/loyality-program.module';
 import { QRCodeModule } from 'angularx-qrcode';
 
-
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -51,7 +50,7 @@ import { QRCodeModule } from 'angularx-qrcode';
     MatDialogModule,
     ReservationModule,
     LoyalityProgramModule,
-    QRCodeModule
+    QRCodeModule,
   ],
   providers: [
     {
