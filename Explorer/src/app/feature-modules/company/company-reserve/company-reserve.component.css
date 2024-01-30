@@ -1,13 +1,14 @@
 .company-info {
     text-align: center;
-    margin: 20px;
     margin-bottom: 100px;
   }
   
   .company-details {
-    background-color:cornflowerblue;
+    background-color:transparent;
     padding: 20px;
     border-radius: 10px;
+    border-color: rgb(5, 29, 167);
+    border: 1px solid rgb(5, 29, 167);
     width: 250px;
     margin: auto;
   }
@@ -25,7 +26,7 @@
   }
   
   .equipment-card {
-    border: 1px solid #ddd;
+    border: 1px solid rgb(5, 29, 167);
     border-radius: 8px;
     padding: 10px;
     margin: 10px;
@@ -44,7 +45,7 @@
   }
   
   .selected {
-    background-color: #aaf;
+    background-color: rgb(88, 180, 225);
   }
   
   .equipment-header {
@@ -68,35 +69,37 @@
   }
 
  .button{
-    background-color: crimson;
+    background-color: #e43081;
     color: white;
     border-color: transparent;
     font-size: large;
     border-radius: 10px;
     height: 50px;
     width: 120px;
+    cursor: pointer;
  }
 
  .button:hover{
-    background-color: rgb(143, 19, 44);
+    background-color: rgb(130, 12, 85);
  }
 
  .button2{
-  background-color: crimson;
+  background-color: rgb(228, 48, 129);
   color: white;
   border-color: transparent;
   font-size: large;
   border-radius: 10px;
   height: 50px;
   width: 120px;
+  cursor: pointer;
 }
 
 .button2:hover{
-  background-color: rgb(143, 19, 44);
+  background-color: rgb(130, 12, 85);
 }
 
 .button3{
-  background-color: rgb(150, 150, 150);
+  background-color: rgb(228, 48, 129);
   color: white;
   border-color: transparent;
   font-size: large;
@@ -106,7 +109,7 @@
 }
 
 .button3:hover{
-  background-color: rgb(109, 107, 107);
+  background-color: rgb(130, 12, 85);
 }
 
 .custom-radio {
@@ -127,6 +130,7 @@
  .date-cards-container {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
 }
 
@@ -160,6 +164,24 @@
   background-color: #3498db; /* Background color when checked */
 }
 
-
+.form-container {
+  background-image: url('/assets/back2.png'); /* Zamijenite ovu vrednost sa putanjom do vaše slike */
+  background-size: cover; /* Podešavanje da slika pokriva čitavu površinu kontejnera */
+  width: auto;
+  height: 770px; /* Postavite visinu na 100% visine prozora */
+  color: rgb(5, 29, 167); /* Postavite boju teksta kako biste bili vidljivi na slici */
+  font-family: Arial, sans-serif; /* Postavite font teksta po potrebi */
+}
   
+.h2{
+  font-weight: bold;
+}
+
+.buttonReserve{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
   

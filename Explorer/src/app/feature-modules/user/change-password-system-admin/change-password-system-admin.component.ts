@@ -79,7 +79,11 @@ export class ChangePasswordSystemAdminComponent {
           next: () => {
                 // Step 6: Continue with any additional logic or navigation
                 this.registrationAdminForm.reset();
-                this.router.navigate(['/']);
+                if(this.user.role.roles.includes("ROLE_COMPANYADMIN")){
+                  this.router.navigate(['/companyAdminHome']);
+                }else{
+                  this.router.navigate(['/']);
+                }
           },
         });
       });

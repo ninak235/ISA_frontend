@@ -19,6 +19,12 @@ export class ReservationService {
     );
   }
 
+  getAllReservations(): Observable<ReservationCalendar[]>{
+    return this.http.get<ReservationCalendar[]>(
+      environment.apiHost+ '/reservations/getAll'
+    );
+  }
+
   getAllReservationsByCompanyAdminId(
     companyAdminId: number
   ): Observable<ReservationCalendar[]> {
@@ -30,6 +36,12 @@ export class ReservationService {
   getUserReservations(userId: number): Observable<Reservation[]> {
     return this.http.get<Reservation[]>(
       environment.apiHost + '/reservations/byUserId/' + userId
+    );
+  }
+
+  getCompanyAdminReservations(adminId: number): Observable<Reservation[]> {
+    return this.http.get<Reservation[]>(
+      environment.apiHost + '/reservations/byAdminId/' + adminId
     );
   }
 
@@ -57,4 +69,10 @@ export class ReservationService {
   getPastUserReservations(userId: number): Observable<Reservation[]>{
     return this.http.get<Reservation[]>(environment.apiHost + '/reservations/pastByUserId/' + userId);
   }
+
+  getPastAdminReservations(adminId: number): Observable<Reservation[]>{
+    return this.http.get<Reservation[]>(environment.apiHost + '/reservations/pastByAdminId/' + adminId);
+  }
+
+
 }

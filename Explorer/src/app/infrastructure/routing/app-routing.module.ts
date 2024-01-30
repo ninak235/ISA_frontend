@@ -20,6 +20,8 @@ import { CompanyReserveComponent } from 'src/app/feature-modules/company/company
 import { DefineLoyalityProgramComponent } from 'src/app/feature-modules/loyality-program/define-loyality-program/define-loyality-program.component';
 import { CustomerGuard } from '../auth/customer.guard';
 import { PositionSimulatorComponent } from 'src/app/feature-modules/administration/position-simulator/position-simulator.component';
+import { CompanyAdminHomeComponent } from 'src/app/feature-modules/company/company-admin-home/company-admin-home.component';
+import { CompanyCustomersComponent } from 'src/app/feature-modules/company/company-customers/company-customers.component';
 
 const routes: Routes = [
   { path: '', component: AllCompanyPreviewComponent },
@@ -60,6 +62,8 @@ const routes: Routes = [
     component: CompanyReserveComponent,
   },
   { path: 'positionSimulator', component: PositionSimulatorComponent },
+  { path: 'companyAdminHome', component: CompanyAdminHomeComponent},
+  { path: 'companyCustomers', component: CompanyCustomersComponent}
 ];
 
 @NgModule({

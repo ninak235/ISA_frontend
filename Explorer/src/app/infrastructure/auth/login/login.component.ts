@@ -61,6 +61,10 @@ export class LoginComponent {
                       this.user.role.roles.includes('ROLE_COMPANYADMIN'))
                   ) {
                     this.router.navigate(['/changeSystemAdmin']);
+                  } else if (
+                    this.user.role.roles.includes('ROLE_COMPANYADMIN')
+                  ) {
+                    this.router.navigate(['/companyAdminHome']);
                   } else {
                     this.router.navigate(['/']);
                   }

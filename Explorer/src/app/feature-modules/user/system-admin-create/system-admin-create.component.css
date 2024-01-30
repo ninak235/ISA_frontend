@@ -33,15 +33,42 @@ form {
     margin-right: 20px; /* dodajte željeni razmak između elemenata */
     margin-bottom: 15px;
     flex: 1;
+    width: 328px;
   }
   
   button {
     margin-top: 20px;
-    transition: background-color 0.3s ease; /* Dodaje glatki prelaz za boju pozadine */
+    width: 350px;
+    margin: auto;
+    transition: background-color rgb(12, 73, 153) ease; /* Dodaje glatki prelaz za boju pozadine */
   }
   
   button:hover {
     background-color: #4169e1; /* Boja koja će se prikazati kada korisnik pređe mišem */
     color: white; /* Opciono, možete postaviti i boju teksta na belu ili drugu vidljivu boju */
+  }
+
+  .customer-card {
+    display: flex;
+    flex-direction: column;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+    font-size: large;
+    background-color: rgb(12, 73, 153);
+    display: flex;
+    margin-bottom: 50px;
+  }
+  
+
+  .form-container1 {
+    background-image: url('/assets/back2.png'); /* Zamijenite ovu vrednost sa putanjom do vaše slike */
+    background-size: cover; /* Podešavanje da slika pokriva čitavu površinu kontejnera */
+    width: 1950px;
+    height: 770px; 
   }
   
