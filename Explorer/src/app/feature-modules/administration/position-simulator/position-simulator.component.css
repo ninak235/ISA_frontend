@@ -6,7 +6,15 @@
   
   #map {
     flex: 1;
-    height: 700px;
+    height: 560px;
+  }
+
+  h2{
+    text-align: center;
+  }
+
+  .heigh{
+    height: 100px;
   }
 
   
