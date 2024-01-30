@@ -6,6 +6,7 @@ import { environment } from 'src/env/environment';
 import { CompanyIdName } from './model/companyIdName';
 import { AvailableDate } from './model/availableDateModel';
 import { CompanyAdminRegistration } from '../user/model/companyAdminModel';
+import { Contract } from './model/contract';
 
 @Injectable({
   providedIn: 'root',
@@ -184,5 +185,12 @@ export class CompanyService {
     return this.http.post<void>(url, null); // Assuming you just need to send a POST request
   }
 
-  
+  getCompanyContracts(name: String): Observable<Contract[]>{
+    return this.http.get<Contract[]>(environment.apiHost + '/contract/getAllByCompanyName/'+ name);
+  }
+
+  cancelDelivery(hospitalName: String): Observable<String>{
+    return this.http.post<String>('http://localhost:8080/api/contract/exchange2/response',hospitalName)
+  }
+
 }

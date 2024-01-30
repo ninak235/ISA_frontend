@@ -79,6 +79,8 @@ export class CustomerProfileComponent implements OnInit {
     }
 
     this.getReservations();
+    this.getCompanyAdmins();
+
     this.userId = this.authService.user$.getValue().id;
     this.service.getCustomerById(this.userId).subscribe({
       next: (c: Customer) => {
@@ -280,8 +282,9 @@ createReservationInfoString(reservation: Reservation): string{
         let compl: Complaint = {
           content: this.complaintForm.value.complaintContent || '',
           replay: '',
-          companyAdminId: 3,
-          customerId: this.userId
+          companyAdminId: parseInt(this.complaintForm.value.selectedCompanyAdmin) || 0,
+          customerId: this.userId,
+     
         }
 
         console.log(compl);
@@ -290,6 +293,17 @@ createReservationInfoString(reservation: Reservation): string{
           
         });
       
+  }
+
+  getCompanyAdmins(): void{
+    this.service.getCompanyAdmins().subscribe({
+      next: (result: CompanyAdminRegistration[]) => {
+        this.companyAdmins = result;
+      },
+      error: (error: any) => {
+        return null;
+      }
+    })
   }
 
   cancelReservation(reservation: Reservation): void {

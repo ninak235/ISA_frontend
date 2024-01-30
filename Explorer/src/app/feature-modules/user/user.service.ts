@@ -83,4 +83,8 @@ export class UserService {
   getUserById(userId: number): Observable<SystemUser> {
     return this.http.get<SystemUser>(environment.apiHost + '/user/' + userId);
   }
+
+  getCompanyAdmins(): Observable<CompanyAdminRegistration[]>{
+    return this.http.get<CompanyAdminRegistration[]>(environment.apiHost + '/companyAdmin/getAll')
+  }
 }
