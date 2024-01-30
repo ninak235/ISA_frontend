@@ -1,5 +1,7 @@
 
 .customer-card {
+  display: flex;
+  flex-direction: row;
   max-width: 650px;
   margin: 0 auto;
   margin-top: 70px;
@@ -9,8 +11,16 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   font-family: 'Arial', sans-serif;
   font-size: large;
-  background-color: lightsteelblue;
+  background-color: rgb(12, 73, 153);
   display: flex;
+  margin-bottom: 50px;
+}
+
+.buttonSubmit{
+  background-color: rgb(12, 73, 153);
+  color: white;
+  cursor: pointer;
+  width: 100px;
 }
 
 .uploadQR{
@@ -18,26 +28,33 @@
   height: 30px;
   margin-top: 220px;
   font-size: medium;
+  color: white;
 }
 
 
 .customer-info {
-  text-align: center;
+  margin-left: 25px;
+  text-align: start;
+
 }
 
+.edit{
+  color: white;
+  cursor: pointer;
+}
 
 .info-item {
   margin-bottom: 10px;
 }
 
 strong {
-  color: #333;
+  color: #bcb9b9;
   font-size: 16px;
 }
 
 span {
   font-style: italic;
-  color: #555;
+  color: #ffffff;
 }
 
 
@@ -67,10 +84,14 @@ span {
 }
 
 h2{
-  text-align: center;
+  text-align: start;
+  margin-left: 40px;
   margin-top: 20px;
   font-family: 'Courier New', Courier, monospace;
-  font-weight: 1000;
+  font-weight: bold;
+  text-decoration: underline;
+  text-underline-offset: initial;
+  text-underline-position: below;
 }
 
 .column{
@@ -81,7 +102,7 @@ h2{
 .sortReservationSelect{
 margin-left: 30px;
 width:fit-content;
-background-color: #4CAF50;
+background-color: rgb(12, 73, 153);
 color: white;
 border: none;
 border-radius: 5px;
@@ -93,6 +114,8 @@ height: 30px;
 .past-reservation-container {
 display: flex;
 flex-wrap: wrap;
+justify-content: center;
+margin-top: 10px;
 }
 
 .reservation-item {
@@ -100,6 +123,11 @@ border: 1px solid #ccc;
 padding: 10px;
 margin: 10px;
 width: 200px;
+color: black;
+}
+
+.parameter{
+  color: black;
 }
 
 h3{
@@ -111,13 +139,14 @@ display: flex;
 flex-direction: column;
 align-items: center;
 justify-content: center;
+margin-right: 20px;
 }
 
 .form-container {
 display: flex;
 flex-direction: column;
 align-items: center;
-justify-content: center;
+justify-content: space-around;
 max-width: 400px; /* Adjust as needed */
 width: 100%;
 padding: 20px;
@@ -126,6 +155,7 @@ border-radius: 8px;
 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 font-family: 'Arial', sans-serif;
 font-size: large;
+margin-right: 190px;
 }
 
 .form-group {
@@ -147,11 +177,28 @@ box-sizing: border-box;
 }
 
 button {
-background-color: #4CAF50;
+background-color: rgb(12, 73, 153);
 color: white;
+border-color: rgb(12, 73, 153);
 cursor: pointer;
 }
 
 button:hover {
-background-color: #45a049;
+background-color: rgb(4, 41, 89);
+}
+
+.form-container1 {
+  background-image: url('/assets/back2.png'); /* Zamijenite ovu vrednost sa putanjom do vaše slike */
+  background-size: cover; /* Podešavanje da slika pokriva čitavu površinu kontejnera */
+  width: 1900px;
+  height: 770px; /* Postavite visinu na 100% visine prozora */
+  color: rgb(5, 29, 167); /* Postavite boju teksta kako biste bili vidljivi na slici */
+  font-family: Arial, sans-serif; /* Postavite font teksta po potrebi */
+}
+
+.customerComplaint {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: start;
 }

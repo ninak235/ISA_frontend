@@ -1,7 +1,8 @@
 <form [formGroup]="companyForm" *ngIf="renderCreateCompany" (ngSubmit)="addCompany()">
-    <div class="fields">
+    
       <p class="label">Create new company:</p>
-      <mat-form-field >
+      <div class="fields">
+      <mat-form-field>
         <mat-label>Name</mat-label>
         <input matInput formControlName="name" type="text" />
       </mat-form-field>
@@ -38,8 +39,6 @@
             <input matInput formControlName="grade" type="text" />
       </mat-form-field>
 
-      <div id="map" style="height: 400px;"></div>
-  
       <button *ngIf="!shouldEdit"
         class="button"
         mat-raised-button
@@ -58,5 +57,8 @@
       >
       Update
     </button>
-    </div>
+  </div>
+
+      <div id="map" style="height: 400px;"></div>
+  
 </form>

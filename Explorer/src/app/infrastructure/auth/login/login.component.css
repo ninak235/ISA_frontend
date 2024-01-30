@@ -1,15 +1,38 @@
-form {
+.div {
     margin-top:150px;
     display: flex;
     justify-content: center;
+    flex-direction: column;
 }
 
 div {
     width: 400px;
     display:flex;
-    flex-direction: column;
+    
 }
 
 p {
     margin-top: 10px;
 }
+
+/* Dodajte ove stilove u vaš CSS fajl */
+.form-container {
+    background-image: url('/assets/back2.png'); /* Zamijenite ovu vrednost sa putanjom do vaše slike */
+    background-size: cover; /* Podešavanje da slika pokriva čitavu površinu kontejnera */
+    background-repeat: no-repeat; /* Da sprečite ponavljanje slike */
+    background-position: center; /* Podešavanje pozicije slike na sredinu kontejnera */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1950px;
+    height: 770px; /* Postavite visinu na 100% visine prozora */
+    color: white; /* Postavite boju teksta kako biste bili vidljivi na slici */
+    font-family: Arial, sans-serif; /* Postavite font teksta po potrebi */
+  }
+
+  .alink{
+    color: rgb(6, 58, 117);
+  }
+  
+  
+  

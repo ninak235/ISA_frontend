@@ -1,5 +1,6 @@
+<div class="form-container1">
 <div *ngIf="admin" class="customer-card">
-    <img src="../../../../assets/user.png" height="100px" alt="user info"/>
+    <img src="../../../../assets/girl3.png" height="100px" alt="user info"/>
     <div class="customer-info">
         <div class="info-item">
             <strong>First Name:</strong> <span>{{ admin.firstName }}</span>
@@ -26,10 +27,10 @@
         <div class="buttons">
             <mat-icon class="edit" (click)="editProfile()">edit</mat-icon>
         
-            <button (click)="navigateToCalendar()">View calendar</button>
+            <button class="button" (click)="navigateToCalendar()">View calendar</button>
         
             </div>
     </div>
     
-
+    </div>
 </div>

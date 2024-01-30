@@ -1,104 +1,105 @@
-<div *ngIf="customer">
-  <div class="customer-card">
-    <img src="../../../../assets/user.png" height="100px" alt="user info" />
-    <div *ngIf="customer" class="customer-info">
-      <div class="info-item">
-        <strong>First Name:</strong> <span>{{ customer.firstName }}</span>
+<div *ngIf="customer" class="form-container1">
+  <div class="customerComplaint">
+    <div class="customer-card">
+      <img src="../../../../assets/girl3.png" color="white" height="100px" alt="user info" />
+      <div *ngIf="customer" class="customer-info">
+        <div class="info-item">
+          <strong>First Name:</strong> <span>{{ customer.firstName }}</span>
+        </div>
+        <div class="info-item">
+          <strong>Last Name:</strong> <span>{{ customer.lastName }}</span>
+        </div>
+        <div class="info-item">
+          <strong>Email:</strong> <span>{{ customer.email }}</span>
+        </div>
+        <div class="info-item">
+          <strong>Country:</strong> <span>{{ customer.country }}</span>
+        </div>
+        <div class="info-item">
+          <strong>City:</strong> <span>{{ customer.city }}</span>
+        </div>
+        <div class="info-item">
+          <strong>Number:</strong> <span>{{ customer.number }}</span>
+        </div>
+        <div class="info-item">
+          <strong>Occupation:</strong> <span>{{ customer.occupation }}</span>
+        </div>
+        <div class="info-item">
+          <strong>Company Info:</strong> <span>{{ customer.companyInfo }}</span>
+        </div>
+        <div class="info-item2">
+          <strong>Penalty points:</strong>
+          <span>{{ customer.penaltyPoints }}</span>
+        </div>
       </div>
-      <div class="info-item">
-        <strong>Last Name:</strong> <span>{{ customer.lastName }}</span>
-      </div>
-      <div class="info-item">
-        <strong>Email:</strong> <span>{{ customer.email }}</span>
-      </div>
-      <div class="info-item">
-        <strong>Country:</strong> <span>{{ customer.country }}</span>
-      </div>
-      <div class="info-item">
-        <strong>City:</strong> <span>{{ customer.city }}</span>
-      </div>
-      <div class="info-item">
-        <strong>Number:</strong> <span>{{ customer.number }}</span>
-      </div>
-      <div class="info-item">
-        <strong>Occupation:</strong> <span>{{ customer.occupation }}</span>
-      </div>
-      <div class="info-item">
-        <strong>Company Info:</strong> <span>{{ customer.companyInfo }}</span>
-      </div>
-      <div class="info-item2">
-        <strong>Penalty points:</strong>
-        <span>{{ customer.penaltyPoints }}</span>
+      <mat-icon class="edit" (click)="editProfile()">edit</mat-icon>
+
+      <div class="uploadQR">
+        <label>Upload QR code here and pick up reservation!</label>
+        <input  type="file" (change)="handleFileSelect($event)" accept="image/*">
       </div>
     </div>
-    <mat-icon class="edit" (click)="editProfile()">edit</mat-icon>
 
-    <div class="uploadQR">
-      <label>Upload QR code here and pick up reservation!</label>
-      <input  type="file" (change)="handleFileSelect($event)" accept="image/*">
-  </div>
-  
-  </div>
+    <div class="complaint-form">
+      <h2></h2>
+      <h2></h2>
+      <form [formGroup]="complaintForm" (ngSubmit)="submitComplaint()" class="form-container">
+        <div class="form-group">
+          <label for="complaintContent">Fill a complaint:</label>
+          <textarea formControlName="complaintContent" rows="5"></textarea>
+        </div>
 
+        <div class="form-group">
+          <label for="companyAdmin">Select Company Admin:</label>
+          <select formControlName="selectedCompanyAdmin">
+            <option *ngFor="let admin of companyAdmins" [value]="admin.id">{{ admin.firstName }}</option>
+          </select>
+        </div>
+
+        <button class="buttonSubmit" type="submit">Submit Complaint</button>
+      </form>
+    </div>
+  </div>
  
 
   
 
-<h2 style="text-align: center;">All reservations</h2>
-<select class="sortReservationSelect" [(ngModel)]="sortReservationCriterium" (change)="onSortReservationChange()">
-  <option *ngIf="!sortReservationCriterium" value="" disabled selected>Select sort parameter</option>
-  <option value="sortDateN">Reservation date (from newest)</option>
-  <option value="sortDateO">Reservation date (from oldest)</option>
-  <option value="sortPriceH">Price (from highest)</option>
-  <option value="sortPriceL">Price (from lowest)</option>
-  <option value="sortDurationL">Duration (from longest)</option>
-  <option value="sortDurationS">Duration (from shortest)</option>
-</select>
+  <h2>All reservations</h2>
+  <select class="sortReservationSelect" [(ngModel)]="sortReservationCriterium" (change)="onSortReservationChange()">
+    <option *ngIf="!sortReservationCriterium" value="" disabled selected>Select sort parameter</option>
+    <option value="sortDateN">Reservation date (from newest)</option>
+    <option value="sortDateO">Reservation date (from oldest)</option>
+    <option value="sortPriceH">Price (from highest)</option>
+    <option value="sortPriceL">Price (from lowest)</option>
+    <option value="sortDurationL">Duration (from longest)</option>
+    <option value="sortDurationS">Duration (from shortest)</option>
+  </select>
 
-<select class="sortReservationSelect" [(ngModel)]="reservationTypeSelected" (change)="onTypeReservationChange()">
-  <option *ngIf="!reservationTypeSelected" value="" disabled selected>Select past/incoming reservations</option>
-  <option value="past">Just past reservations</option>
-  <option value="incoming">Just incoming reservations</option>
-  <option value="both">Both</option>
-</select>
-
-
+  <select class="sortReservationSelect" [(ngModel)]="reservationTypeSelected" (change)="onTypeReservationChange()">
+    <option *ngIf="!reservationTypeSelected" value="" disabled selected>Select past/incoming reservations</option>
+    <option value="past">Just past reservations</option>
+    <option value="incoming">Just incoming reservations</option>
+    <option value="both">Both</option>
+  </select>
 
 
-<div class="past-reservation-container" *ngIf="isCustomer">
-  <div class="pastReservations-container" *ngFor="let res of allReservations">
-    <div class="reservation-item"  [ngStyle]="{'background-color': res.isPast ? '#f7564a' : '#8de675'}">
-      <p><strong>📆 Date:</strong> {{ formatDateAndTime(res.dateTime).date }}</p>
-      <p><strong>⏰ Time: </strong>{{ formatDateAndTime(res.dateTime).time }}</p>
-      <p><strong>Num of days:</strong> {{ res.duration }}</p>
-      <p><strong>Grade:</strong> {{ res.grade }}</p>
-      
-      <!-- Display "Cancel Reservation" button only for past reservations -->
-      <button *ngIf="!res.isPast && res.isCancelEnabled && res.status != 'PickedUp' && res.status != 'Cancelled'" (click)="cancelReservation(res)">Cancel Reservation</button>
-      <p *ngIf="res.status == 'PickedUp'">Picked up reservation!</p>
-      <p *ngIf="res.status == 'Cancelled'">Cancelled reservation!</p>
-      <button *ngIf="!res.isPending" (click)="seeQR(res)">▌│█║▌║▌║See QR</button>
+
+
+  <div class="past-reservation-container" *ngIf="isCustomer">
+    <div class="pastReservations-container" *ngFor="let res of allReservations">
+      <div class="reservation-item"  [ngStyle]="{'background-color': res.isPast ? '#E35193' : '#68A06B'}">
+        <p><strong>📆 Date:</strong> {{ formatDateAndTime(res.dateTime).date }}</p>
+        <p><strong>⏰ Time: </strong>{{ formatDateAndTime(res.dateTime).time }}</p>
+        <p><strong>Num of hours:</strong> {{ res.duration }}</p>
+        <p><strong>Grade:</strong> {{ res.grade }}</p>
+        
+        <!-- Display "Cancel Reservation" button only for past reservations -->
+        <button *ngIf="!res.isPast && res.isCancelEnabled && res.status != 'PickedUp' && res.status != 'Cancelled'" (click)="cancelReservation(res)">Cancel Reservation</button>
+        <p *ngIf="res.status == 'PickedUp'">Picked up reservation!</p>
+        <p *ngIf="res.status == 'Cancelled'">Cancelled reservation!</p>
+        <button *ngIf="!res.isPending" (click)="seeQR(res)">▌│█║▌║▌║See QR</button>
+      </div>
     </div>
-
-    
   </div>
   
-</div>
-<div class="complaint-form">
-  <h2 style="text-align: center;">Fill a Complaint</h2>
-  <form [formGroup]="complaintForm" (ngSubmit)="submitComplaint()" class="form-container">
-    <div class="form-group">
-      <label for="complaintContent">Complaint Content:</label>
-      <textarea formControlName="complaintContent" rows="5"></textarea>
-    </div>
-
-    <div class="form-group">
-      <label for="companyAdmin">Select Company Admin:</label>
-      <select formControlName="selectedCompanyAdmin">
-        <option *ngFor="let admin of companyAdmins" [value]="admin.id">{{ admin.firstName }}</option>
-      </select>
-    </div>
-
-    <button type="submit">Submit Complaint</button>
-  </form>
 </div>
