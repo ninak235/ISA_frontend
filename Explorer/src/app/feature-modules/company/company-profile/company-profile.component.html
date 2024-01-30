@@ -1,7 +1,6 @@
 <div  *ngIf="company">
     <h1>{{ company.name}} Admin Home Page</h1>
     <div >
-<<<<<<< HEAD
       <div class="company-info-container">
         <xp-company-info [company]="company" class="company-info"></xp-company-info>
         <div class="map-frame">
@@ -20,38 +19,6 @@
           <li *ngFor="let admin of company.adminsSet" class="admin-item">
             <strong>First Name: </strong>{{ admin.firstName }}<br />
             <strong>Last Name: </strong>{{ admin.lastName }}<br />
-=======
-      <h2>{{ company.name }}</h2>
-      <p><strong>Location:</strong>{{ company?.locationDto?.address }}, {{ company?.locationDto?.city }}, {{ company?.locationDto?.country }}</p>
-      
-      <p><strong>Description:</strong>{{ company.description }}</p>
-      <p><strong>Grade:</strong>{{ company.grade }}</p>
-      <h3><strong>Equipment:</strong></h3>
-      <button mat-icon-button color="primary" (click)="showEquipmentSelect()" >
-        <mat-icon>add</mat-icon>
-      </button>
-      <div *ngIf="
-          company.equipmentSet && company.equipmentSet.length > 0;
-          else noEquipment
-        ">
-        
-        
-        <input type="text" class="search-input" placeholder="Search equipment..." [(ngModel)]="equipmentSearchValue" (ngModelChange)="onEquipmentSearchChange()">
-        
-        <ul>
-          <li *ngFor="let equipment of filteredEquipment || company.equipmentSet" class="equipment-item">
-            <strong>Name: </strong>{{ equipment.name }}<br />
-            <strong>Description: </strong> {{ equipment.description }}<br />
-            <strong>Type: </strong> {{ equipment.typeOfEquipment }}<br />
-            <strong>Grade: </strong> {{ equipment.grade }}<br />
-            <strong>Price: </strong> {{ equipment.price }}<br />
-            <button mat-icon-button color="warn" (click)="deleteEquipment(equipment)" [disabled]="isEquipmentReserved(equipment)">
-              <mat-icon>delete</mat-icon>
-            </button>
-            <button mat-icon-button color="primary" (click)="openUpdateEquipmentForm(equipment)">
-              <mat-icon>edit</mat-icon>
-            </button>
->>>>>>> origin/development
           </li>
         </ol>
       </div>
@@ -70,8 +37,6 @@
             company.equipmentSet && company.equipmentSet.length > 0;
             else noEquipment
           ">
-          
-          
           <ul>
             <li *ngFor="let equipment of filteredEquipment || company.equipmentSet" class="equipment-item">
               <strong>Name: </strong>{{ equipment.name }}<br />
