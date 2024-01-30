@@ -19,9 +19,10 @@ import { ReservationCreatedComponent } from './reservation-created/reservation-c
 import { EquipmentModule } from '../equipment/equipment.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { CompanyContractsComponent } from './company-contracts/company-contracts.component';
 
 @NgModule({
-  declarations: [AllCompanyPreviewComponent, CompanyFormComponent, CompanyProfileComponent, AddAvailabledateFormComponent, CompanyReserveComponent, ReservationCreatedComponent],
+  declarations: [AllCompanyPreviewComponent, CompanyFormComponent, CompanyProfileComponent, AddAvailabledateFormComponent, CompanyReserveComponent, ReservationCreatedComponent, CompanyContractsComponent],
   imports: [CommonModule, MatInputModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatIconModule, MatCheckboxModule,
     MatCardModule, MatDatepickerModule, MatNativeDateModule, MatDialogModule, EquipmentModule, BrowserAnimationsModule, FullCalendarModule],
   exports: [AllCompanyPreviewComponent],

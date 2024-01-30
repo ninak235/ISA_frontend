@@ -6,6 +6,7 @@ import { environment } from 'src/env/environment';
 import { CompanyIdName } from './model/companyIdName';
 import { AvailableDate } from './model/availableDateModel';
 import { CompanyAdminRegistration } from '../user/model/companyAdminModel';
+import { Contract } from './model/contract';
 
 @Injectable({
   providedIn: 'root',
@@ -162,5 +163,14 @@ export class CompanyService {
   ): Observable<any> {
     const url = `${environment.apiHost}/company/add-equipment/${companyName}/${equipmentId}`;
     return this.http.post<void>(url, null); // Assuming you just need to send a POST request
+  }
+
+  getCompanyContracts(name: String): Observable<Contract[]>{
+    return this.http.get<Contract[]>(environment.apiHost + '/contract/getAllByCompanyName/'+ name);
+  }
+
+  cancelDelivery(hospitalName: String): Observable<void>{
+    const url = 'http://localhost:8082/api/delivery/canceled/' + hospitalName;
+    return this.http.post<void>(url, null);
   }
 }

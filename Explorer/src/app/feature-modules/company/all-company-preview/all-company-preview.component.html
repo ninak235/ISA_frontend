@@ -61,6 +61,7 @@
       <button (click)="onCompanyNameClicked(company)" *ngIf="companyAdmin.companyId == company.id" color="primary" mat-icon-button>
         <mat-icon>details</mat-icon>
       </button>
+      <button class="contractClass" (click)="seeCompanyContracts(company)"  *ngIf="companyAdmin.companyId == company.id">See contracts</button>
     </div>
   </div>
 

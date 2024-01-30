@@ -1,0 +1,25 @@
+<div *ngIf="contracts && contracts.length > 0; else noContracts">
+    <h2>COMPANY CONTRACTS:</h2>
+    <div *ngFor="let contract of contracts" class="contract-card">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{ contract.hospitalName }}</h5>
+          <p class="card-text">Company: {{ contract.companyName }}</p>
+          <p class="card-text">Next delivery time: {{ formatExactDeliveryTime(contract.exactDeliveryTime) }}</p>
+          <p class="card-text">Location: [{{ contract.hospitalAddressLong }}, {{ contract.hospitalAddressLat }}]</p>
+          <h3>Contracts of Equipment:</h3>
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let equipment of contract.contractsOfEquipment">
+              {{ equipment.equipmentName }} - Quantity: {{ equipment.quantity }}
+            </li>
+          </ul>
+        </div>
+        <button class="cancel" (click)="cancelDelivery(contract)" [disabled]="!isCancellationAllowed(contract)">Cancel contract</button>
+      </div>
+    </div>
+  </div>
+  
+  <ng-template #noContracts>
+    <h2>No contracts yet</h2>
+  </ng-template>
+  
