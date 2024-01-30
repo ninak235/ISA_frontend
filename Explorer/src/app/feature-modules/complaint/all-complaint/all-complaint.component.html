@@ -1,8 +1,9 @@
-<!-- all-complaint.component.html -->
+<div class="form-container1">
 <div class="complaint-container" *ngIf="complaints && complaints.length > 0">
+  <h2>✴ ALL COMPLAINTS ✴</h2>
   <div *ngFor="let singleComplaint of complaints" class="single-complaint">
     <div class="complaint-content">
-      <strong>Content of complaint:</strong> <span>{{ singleComplaint.content }}</span>
+      <strong>Content of complaint:  </strong> <span>{{ singleComplaint.content }}</span>
     </div>
 
     <button
@@ -22,4 +23,5 @@
   ></xp-replay-on-complaint>
 
   <button class="done-button" (click)="navigateToUserProfile()">Done with replays</button>
+</div>
 </div>

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from 'src/app/infrastructure/material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PositionSimulatorComponent } from './position-simulator/position-simulator.component';
-
+import { BrowserModule } from '@angular/platform-browser';
 
 
 @NgModule({
@@ -14,7 +14,8 @@ import { PositionSimulatorComponent } from './position-simulator/position-simula
   imports: [
     CommonModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserModule
   ],
   exports: [
   ]

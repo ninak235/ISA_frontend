@@ -1,16 +1,28 @@
 <form [formGroup]="companyForm" *ngIf="renderCreateCompany" (ngSubmit)="addCompany()">
-    <div class="fields">
+    
       <p class="label">Create new company:</p>
-      <mat-form-field >
+      <div class="fields">
+      <mat-form-field>
         <mat-label>Name</mat-label>
         <input matInput formControlName="name" type="text" />
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Adress</mat-label>
-            <input matInput formControlName="adress" type="text" />
+        <mat-label>Address</mat-label>
+        <input matInput formControlName="address" type="text" id="address" />
       </mat-form-field>
-  
+      
+      <mat-form-field>
+        <mat-label>City</mat-label>
+        <input matInput formControlName="city" type="text" id="city"  />
+      </mat-form-field>
+      
+      <mat-form-field>
+        <mat-label>Country</mat-label>
+        <input matInput formControlName="country" type="text" id="country"  />
+      </mat-form-field>
+
+
       <mat-form-field>
         <mat-label>Description</mat-label>
         <textarea
@@ -26,7 +38,7 @@
         <mat-label>Grade</mat-label>
             <input matInput formControlName="grade" type="text" />
       </mat-form-field>
-  
+
       <button *ngIf="!shouldEdit"
         class="button"
         mat-raised-button
@@ -45,5 +57,8 @@
       >
       Update
     </button>
-    </div>
+  </div>
+
+      <div id="map" style="height: 400px;"></div>
+  
 </form>

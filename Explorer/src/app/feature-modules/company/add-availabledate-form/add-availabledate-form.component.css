@@ -4,12 +4,13 @@
   }
   
   h2 {
-    color: #007bff; /* Blue color for the heading */
+    color: rgb(5, 29, 167); /* Blue color for the heading */
     margin-bottom: 20px; /* Add spacing below the heading */
   }
   
   .date-section,
   .time-section {
+    margin-left: 60px;
     margin-bottom: 15px; /* Add spacing between date and time sections */
   }
   
@@ -21,14 +22,16 @@
   .cancel-button {
     font-size: medium;
     border: transparent;
-    background-color: #dc3545; /* Red color for cancel button */
+    background-color: transparent; /* Red color for cancel button */
     color: white;
+    cursor: pointer;
   }
   
   .save-button {
     font-size: medium;
     border: transparent;
-    background-color: #28a745; /* Green color for save button */
+    background-color: transparent; /* Green color for save button */
     color: white;
+    cursor: pointer;
   }
   

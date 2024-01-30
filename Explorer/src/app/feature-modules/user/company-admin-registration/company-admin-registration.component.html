@@ -1,4 +1,5 @@
-<form [formGroup]="registrationAdminForm" (ngSubmit)="register()">
+<div class="form-container1">
+<form class="customer-card" [formGroup]="registrationAdminForm" (ngSubmit)="register()">
     <div>
       <div class="row-container">
         <div class="one-item-container">
@@ -24,8 +25,9 @@
           </mat-form-field>
         </div>
       </div>
-      <div>
-        <mat-form-field class="one-item-container">
+      <div class="row-container">
+      <div class="one-item-container">
+        <mat-form-field>
           <mat-label>User Name</mat-label>
           <input matInput formControlName="userName" type="text" />
           <mat-error
@@ -35,8 +37,8 @@
           </mat-error>
         </mat-form-field>
       </div>
-      <div>
-        <mat-form-field class="one-item-container">
+      <div class="one-item-container">
+        <mat-form-field>
           <mat-label>Email</mat-label>
           <input matInput formControlName="email" type="text" />
           <mat-error *ngIf="registrationAdminForm.get('email')?.hasError('required')">
@@ -47,6 +49,7 @@
           </mat-error>
         </mat-form-field>
       </div>
+    </div>
       <div class="row-container">
         <div class="one-item-container">
           <mat-form-field>
@@ -101,8 +104,9 @@
           </mat-form-field>
         </div>
       </div>
-      <div>
-        <mat-form-field class="one-item-container">
+      <div class="row-container">
+      <div class="one-item-container">
+        <mat-form-field>
           <mat-label>Number</mat-label>
           <input matInput formControlName="number" type="text" />
           <mat-error *ngIf="registrationAdminForm.get('number')?.hasError('required')">
@@ -110,18 +114,19 @@
           </mat-error>
         </mat-form-field>
       </div>
-      <div>
-          <label>Select Company</label>
-          <select formControlName="selectedCompany">
+      <div class="one-item-container">
+          <label >Select Company</label>
+          <select class="one-item-container1" formControlName="selectedCompany">
             <option *ngFor="let company of companyNames" [value]="company.id">
               {{ company.name }}
             </option> 
           </select>
       </div>
-      
+    </div>
       
          
       <button color="primary" type="submit" mat-raised-button>Register</button>
     </div>
   </form>
+</div>
   
