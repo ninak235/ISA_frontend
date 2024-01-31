@@ -1,5 +1,4 @@
   .company-info {
-    flex: 0 0 300px; /* Adjust the width as needed */
     margin-right: 16px; /* Optional margin for spacing between components */
     height: 400px;
     align-self: center;
@@ -7,9 +6,7 @@
 
   .company-info-container {
     display: flex;
-    gap: 150px;
     justify-content: center; /* Center the content horizontally */
-    margin-top: 50px; /* Adjust the top margin as needed */
   }
 
   .map-frame {
@@ -50,16 +47,13 @@
     margin-bottom: 10px;
   }
   
-  .admin-list {
-    list-style-type: none;
-    padding: 0;
-  }
   
   .admin-item {
-    border: 1px solid #ddd;
+    border: 1px solid #f9f9f9;
     padding: 10px;
     margin-bottom: 10px;
     background-color: #f9f9f9;
+    width: 200px;
   }
   
   .no-admins-message {
@@ -70,7 +64,6 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: start;
-    margin-top: 10px;
     margin-left: 20px;
     }
     
@@ -81,35 +74,84 @@
     width: 200px;
     color: black;
     }
+
+    .buttonsMenu{
+      display: flex;
+      flex-direction: column;
+      justify-content: end;
+      margin-left: 20px;
+      margin-bottom: 200px;
+      gap: 10px;
+      
+    }
+
+    .oneButton{
+      color: rgb(5, 29, 167);
+    }
   
 
   .equipment-container {
+    margin-top: 20px;
     max-width: 800px; /* Adjust the maximum width as needed */
-    margin: 0 auto;
     padding: 20px;
-    border: 2px solid #ccc;
+    border: 2px solid rgb(5, 29, 167);
     border-radius: 10px;
-    background-color: #f8f8f8;
-    
+    background-color: transparent;
+    margin-left: 850px;
   }
 
   .equipment-header {
     font-size: 24px;
     margin-bottom: 20px;
   }
-  
-  .equipment-list {
-    margin-top: 20px;
+
+  .search-input{
+    margin: auto;
   }
-  
-  .equipment-cards {
-    margin-top: 20px;
+
+  .buttonAdd{
+    margin-left: 700px;
+    color: rgb(5, 29, 167);
+  }
+
+  .h2Class{
     display: flex;
-    flex-wrap: wrap;
-    justify-content:center;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    margin-top: 20px;
+  }
+
+  .h2{
+    margin-left: 30px;
+    text-decoration: underline;
+    text-underline-position: below;
   }
   
+  .companyAdminsDiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .admin-list{
+    padding: 20px;
+    border: 1px solid rgb(5, 29, 167);
+    margin-top:5px;
+  }
+
+  .pickUpDateButton{
+    background-color: rgb(5, 29, 167);
+    color: white;
+    margin-right: 20px;
+    width: 240px;
+    height: 30px;
+    cursor: pointer;
+    border-color: transparent;
+  }
+
   .equipment-card {
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -117,7 +159,7 @@
     margin: 10px;
     cursor: pointer;
     transition: background-color 0.3s;
-    
+    width: 180px;
   }
 
   .equipment-card:hover {
@@ -148,7 +190,6 @@
   }
   
   .grade-and-price {
-    margin-top: 5px;
     font-size: 0.8em;
     color: #777; /* Adjust color as needed */
   }
@@ -182,13 +223,15 @@
 }
 
 .button3{
-  background-color: rgb(150, 150, 150);
+  background-color: rgb(5, 29, 167);
   color: white;
   border-color: transparent;
   font-size: large;
   border-radius: 10px;
   height: 50px;
   width: 120px;
+  cursor: pointer;
+  height: 40px;
 }
 
 .button3:hover{
@@ -252,7 +295,15 @@ h1 {
   font-size: 28px; /* Adjust the font size as needed */
   font-weight: bold; /* Make the text bold */
   text-align: center; /* Center the text horizontally */
-  margin-top: 50px; /* Adjust the top margin as needed */
+}
+
+.form-container1 {
+  background-image: url('/assets/back2.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  width: 100%;
+  height: 250vh; /* 100% of the viewport height */
+  color: rgb(5, 29, 167);
 }
 
 

@@ -1,0 +1,18 @@
+.button{
+    margin-left: 10px;
+    color: rgb(5, 29, 167);
+    cursor: pointer;
+    height: 30px;
+}
+
+.label{
+    color: rgb(5, 29, 167);
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.fields{
+    gap: 10px;
+    border: 1px solid rgb(5, 29, 167);
+    padding: 10px;
+}

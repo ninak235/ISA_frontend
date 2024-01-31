@@ -154,15 +154,17 @@ export class AllCompanyPreviewComponent implements OnInit {
     }
   }
 
+  /*
   onEditCompanyClicked(company: Company): void{
     this.shouldEdit = true;
     this.oldCompanyName = company.name;
     this.selectedCompany = company;
   }
-
+*/
+  /*
   onCompanyNameClicked(company: Company): void{
     this.router.navigate(['/companyProfile/' + company.name]);
-  }
+  }*/
 
   onReserve(company:Company) : void{
     this.router.navigate(['/comapnyProfileReserve/' + company.name]);

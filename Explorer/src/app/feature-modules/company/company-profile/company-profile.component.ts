@@ -22,6 +22,7 @@ import { ReservationCalendar } from '../../reservation/model/reservationCalendar
 import jsQR from 'jsqr';
 import { Customer } from '../../user/model/customer.model';
 import { UserService } from '../../user/user.service';
+import { CompanyAdminRegistration } from '../../user/model/companyAdminModel';
 
 interface ExtendedReservation extends Reservation {
   isPast? : boolean;
@@ -44,7 +45,7 @@ export class CompanyProfileComponent {
   
   shouldRenderEquipmentForm: boolean = false;     //da li da otvori formu za izmenu opreme
   equipmentForUpdate: CompanyEquipment;           //oprema koju smo krenuli da izmenimo
-  shouldRenderEquipmentSelect: boolean = false;   //plus za dodavanje nove opreme
+  shouldRenderEquipmentSelect: boolean = true;   //plus za dodavanje nove opreme
   selectedEquipmentId: number;          //selektovan equipment iz liste za dodavanje nove opreme
   availableEquipment: Equipment[];      //oprema koju firma ima u ponudi -----------------------------DODAJ DA SE PROVERI I DA LI IMA DOVOLJAN QUANTITY >= 1
   showDatePicker: boolean = false;      //prikazivanje date pickera za kreiranje novog termina
@@ -55,19 +56,51 @@ export class CompanyProfileComponent {
   adminId: number;  
   equipmentReservationStatus: { [key: number]: boolean } = {}; //mapa za svaku opremu da li postoji rezervacija unutar te firme sa njom, ------------------- TREBA IZMENITI TAKO DA UCITAVA I KOLICINU OPREME 
   shouldShowDatesComponent: boolean = false;
-
+  shouldRenderAdmins: boolean =false;
   pastReservations: ExtendedReservation[] = [];
   futureReservations: ExtendedReservation[] = [];
   allReservations: ExtendedReservation[] = [];
   shouldShowReservations: boolean = false;
   decodedText: string = '';
-
+  shouldCustomersRender: boolean = false;
+  shouldAddEquipment: boolean = false;
+  shouldShowDateChoose: boolean = false;
   constructor(private companyService: CompanyService, private userService: UserService,  private equipmentService: EquipmentService, private reservationService: ReservationService,  private router: Router, private route: ActivatedRoute, private authService: AuthService, private appRef: ApplicationRef,private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.authService.user$.subscribe(user => {
       if (user) {
         this.adminId = user.id;
+        var companyId;
+        this.companyService.getAdmin(user.id)
+        .subscribe({
+          next: (admin : CompanyAdminRegistration) => {
+            if (admin.id !== undefined) {
+              this.adminId = admin.id;
+            } else {
+                console.log('CANNOT FIND THE ID');
+            }
+            this.companyService.getById(admin.companyId)
+            .subscribe({
+              next: (company: Company) => {
+                if (company.id !== undefined) {
+                  this.company = company;
+                  console.log('MEEEDIC TRECI PUT');
+                  console.log(this.company);
+                  this.ngAfterViewInit();
+                } else {
+                  console.log('CANNOT FIND THE ID');
+                }
+              },
+              error: (err: any) => {
+                console.log('This admins company cannot be found in our database!', err);
+              }
+            })
+          }, 
+          error: (err: any) => {
+            console.log('Looks like you arent logged in as an company admin', err);
+          },
+        });
         this.loadAdminAvailableDates();
         this.getReservations();
       }
@@ -155,12 +188,7 @@ export class CompanyProfileComponent {
   
 
   ngAfterViewInit(): void {
-    this.route.paramMap.subscribe((params) => {
-      const companyName = params.get('companyName');
-      if (companyName) {
-        this.companyService.getByName(companyName).subscribe({
-          next: (c: Company) => {
-            this.company = c;
+      if (this.company) {
             console.log('KOMPANIJA');
             console.log(this.company);
             for (const equipment of this.company.equipmentSet) {
@@ -194,14 +222,9 @@ export class CompanyProfileComponent {
                   },
                 });
               }, 0);
-            }
-          },
-          error: (err: any) => {
-            console.log(err);
-          }
-        });
+            }    
       }
-    });
+    
   }
   
 
@@ -304,25 +327,17 @@ export class CompanyProfileComponent {
   }
 
   showEquipmentSelect(): void {
-    // Set the form values using patchValue with the equipment details
-    // this.equipmentForm.patchValue({
-      // name: equipment.name,
-      // description: equipment.description,
-      // typeOfEquipment: equipment.typeOfEquipment,
-      // grade: equipment.grade,
-      // price: equipment.price,
-      // Add other equipment properties as needed
-      this.shouldRenderEquipmentSelect = true;
-      console.log(this.shouldRenderEquipmentSelect)
-    // });
+    this.shouldAddEquipment = !this.shouldAddEquipment;
   }
 
   addEquipment() {
+    this.shouldAddEquipment = !this.shouldAddEquipment;
     this.companyService.addEquipmentToCompany(this.company.name, this.selectedEquipmentId).subscribe({
       next:() => {
         console.log('Equipment added successfully');
         this.selectedEquipmentId = 0;
-        this.ngAfterViewInit();
+        this.ngOnInit();
+        
         
         // You can add any additional logic or feedback here
       },
@@ -339,7 +354,7 @@ export class CompanyProfileComponent {
 
   updateEquipmentClicked(): void{
     this.shouldRenderEquipmentForm = false;
-this.ngAfterViewInit();
+    this.ngAfterViewInit();
   }
 
   openDatePicker() {
@@ -373,12 +388,12 @@ this.ngAfterViewInit();
   }
 
   createPickupTerm(): void {
-    console.log('SELECTED TIME SLOT');
-    console.log(this.selectedTimeSlot);
+    this.shouldShowDateChoose= !this.shouldShowDateChoose;
     if(this.selectedTimeSlot){
       this.companyService.createAvailableDate(this.selectedTimeSlot).subscribe({
         next: () => {
           console.log(this.selectedTimeSlot);
+          this.ngOnInit();
         }
         ,
         error: (err:any) => {
@@ -485,6 +500,14 @@ calendarOptions: CalendarOptions = {
   toggleReservationsVisibility() {
     this.shouldShowReservations = !this.shouldShowReservations;
   }
+
+  toggleCompanyAdminsVisibility(){
+    this.shouldRenderAdmins = !this.shouldRenderAdmins;
+    }
+
+    toggleCompanyCustomersVisibility(){
+    this.shouldCustomersRender = !this.shouldCustomersRender;
+    }
 
   parseDateTime(localDateTime: string | object): Date {
     if (typeof localDateTime === 'object' && localDateTime !== null) {

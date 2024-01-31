@@ -1,47 +1,63 @@
+<div class="form-container1">
 <div  *ngIf="company">
     <h1>{{ company.name}} Admin Home Page</h1>
-    <div >
       <div class="company-info-container">
         <xp-company-info [company]="company" class="company-info"></xp-company-info>
         <div class="map-frame">
           <div id="leafletMap" class="map-wrap"></div>
         </div>
-        <button mat-icon-button color="primary" (click)="toggleEquipmentComponent()">
-          <mat-icon>{{ shouldShowEquipmentComponent ? 'exit_to_app' : 'note_add' }}</mat-icon>
-        </button>
-        <button (click)="toggleAdminsVisibility()">
-          <mat-icon>{{ shouldShowDatesComponent ?  'exit_to_app' : 'calendar_today' }}</mat-icon>
-        </button>
-        <button (click)="toggleReservationsVisibility()">
-          <mat-icon>{{ shouldShowReservations ?  'remove' : 'add' }}</mat-icon>
-        </button>
+        <div class="buttonsMenu">
+          <button class="oneButton" mat-icon-button color="primary" (click)="toggleEquipmentComponent()">
+            <mat-icon>{{ shouldShowEquipmentComponent ? 'exit_to_app' : 'note_add' }}</mat-icon>
+          </button>
+          <button class="oneButton" (click)="toggleAdminsVisibility()">
+            <mat-icon>{{ shouldShowDatesComponent ?  'exit_to_app' : 'calendar_today' }}</mat-icon>
+          </button>
+          <button class="oneButton" (click)="toggleReservationsVisibility()">
+            <mat-icon>{{ shouldShowReservations ?  'remove' : 'add' }}</mat-icon>
+          </button>
+          <button class="oneButton" color="primary" mat-raised-button [routerLink]="['/allReservations']">
+            Company Calendar
+          </button>
+          <button class="oneButton" (click)="toggleCompanyCustomersVisibility()">
+            Our customers
+          </button>
+          <button class="oneButton" (click)="toggleCompanyAdminsVisibility()">
+            Company Admins
+          </button>
+        </div>
       </div>
-      <div *ngIf="company.adminsSet && company.adminsSet.length > 0; else noAdmins">
-        <h3 class="section-title"><strong>Company Admins:</strong></h3>
-        <ol class="admin-list">
-          <li *ngFor="let admin of company.adminsSet" class="admin-item">
-            <strong>First Name: </strong>{{ admin.firstName }}<br />
-            <strong>Last Name: </strong>{{ admin.lastName }}<br />
-          </li>
-        </ol>
+      <div class="companyAdminsDiv" *ngIf="shouldRenderAdmins">
+        <div  *ngIf="company.adminsSet && company.adminsSet.length > 0; else noAdmins">
+          <h3 class="section-title"><strong>Company Admins:</strong></h3>
+          <ol class="admin-list">
+            <li *ngFor="let admin of company.adminsSet" class="admin-item">
+              <strong>First Name: </strong>{{ admin.firstName }}<br />
+              <strong>Last Name: </strong>{{ admin.lastName }}<br />
+            </li>
+          </ol>
+        </div>
+      
+        <ng-template #noAdmins>
+          <p class="no-admins-message">No administrators found for this company.</p>
+        </ng-template>
       </div>
-      
-      <ng-template #noAdmins>
-        <p class="no-admins-message">No administrators found for this company.</p>
-      </ng-template>
-      
+
+    <xp-company-customers *ngIf="shouldCustomersRender"></xp-company-customers>
+
       <div class="equipment-container" *ngIf="shouldShowEquipmentComponent">
         <h3 class="equipment-header"><strong>Equipment</strong></h3>
-        <button mat-icon-button color="primary" (click)="showEquipmentSelect()" >
-          <mat-icon>add</mat-icon>
-        </button>
+        
         <input type="text" class="search-input" placeholder="Search equipment..." [(ngModel)]="equipmentSearchValue" (ngModelChange)="onEquipmentSearchChange()">
+        <button mat-icon-button class="buttonAdd" color="primary" (click)="showEquipmentSelect()" >
+          Add equipment
+        </button>
         <div *ngIf="
             company.equipmentSet && company.equipmentSet.length > 0;
             else noEquipment
           ">
           <ul>
-            <li *ngFor="let equipment of filteredEquipment || company.equipmentSet" class="equipment-item">
+            <li *ngFor="let equipment of filteredEquipment || company.equipmentSet" class="equipment-card">
               <strong>Name: </strong>{{ equipment.name }}<br />
               <strong>Description: </strong> {{ equipment.description }}<br />
               <strong>Type: </strong> {{ equipment.typeOfEquipment }}<br />
@@ -55,13 +71,17 @@
               </button>
             </li>
           </ul>
+
+          
         </div>
+
+        
         <ng-template #noEquipment>
           <h3><strong>Equipment:</strong></h3>
           <br />
           Coming soon!
         </ng-template>
-        <div *ngIf="shouldRenderEquipmentSelect">
+        <div *ngIf="shouldAddEquipment">
           <h3><strong>Add Equipment:</strong></h3>
           
           <!-- Add the listbox for equipment selection -->
@@ -72,13 +92,13 @@
           </select>
           
           <!-- Add the "Add" button to call the equipmentService method -->
-          <button mat-raised-button color="primary" (click)="addEquipment()">Add</button>
+          <button mat-raised-button color="primary" *ngIf="shouldAddEquipment" (click)="addEquipment()">Add</button>
         </div>
       
         <xp-equipment-form *ngIf="shouldRenderEquipmentForm" (updateEquipmentClicked)="updateEquipmentClicked()" [equipment]="equipmentForUpdate" [company]="company" ></xp-equipment-form>
       </div>
-      <div *ngIf="shouldShowReservations">
-        <h2>All reservations</h2>
+      <div class="h2Class" *ngIf="shouldShowReservations">
+        <h2>   ALL RESERVATIONS</h2>
         <div class="past-reservation-container">
 
           <div class="uploadQR">
@@ -94,7 +114,7 @@
               <p><strong>Grade:</strong> {{ res.grade }}</p>
               
               <!-- Display "Cancel Reservation" button only for past reservations -->
-              <button *ngIf="res.id !== undefined && res.isCancelEnabled && res.status != 'PickedUp' && res.status != 'Cancelled'" (click)="processThePickup(res.id)">
+              <button *ngIf="res.id !== undefined  && res.status != 'PickedUp' && res.status != 'Cancelled'" (click)="processThePickup(res.id)">
                 {{ res.isPast ?  'Penalize Customer' : 'Give Equipment' }}
               </button>
               <p *ngIf="res.status == 'Cancelled'">Expired reservation!</p>
@@ -106,14 +126,14 @@
       </div>
       
       <div *ngIf="shouldShowDatesComponent">
-        <button mat-raised-button color="primary" (click)="openDatePicker()">Add Pickup Date</button>
-        <mat-form-field *ngIf="showDatePicker">
+        <button class="pickUpDateButton" (click)="openDatePicker()">Add Pickup Date</button>
+        <mat-form-field *ngIf="showDatePicker && !shouldShowDateChoose">
           <input matInput [matDatepicker]="picker" (dateInput)="onDateSelected($event)" placeholder="Select a date" [(ngModel)]="selectedDate">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
-        <h2 *ngIf="availableTimeSlots">AVAILABLE TIME SLOTS:</h2>
-        <div class="date-cards-container">
+        <h2 *ngIf="availableTimeSlots && !shouldShowDateChoose">AVAILABLE TIME SLOTS:</h2>
+        <div class="date-cards-container" *ngIf="!shouldShowDateChoose">
           <div class="date-card" *ngFor="let timeSlot of availableTimeSlots">
             <div class="card-content">
               <input type="radio" name="selectedTimeSlot" [(ngModel)]="selectedTimeSlot" [value]="timeSlot" class="custom-radio" />
@@ -121,10 +141,11 @@
               <h3>⏰ Time: {{ formatDateAndTime(timeSlot.startTime).time }}</h3>
             </div>
           </div>
-          <button class="button3" (click)="createPickupTerm()" *ngIf="selectedTimeSlot">Choose</button>
+          <button class="button3" (click)="createPickupTerm()" *ngIf="selectedTimeSlot && !shouldShowDateChoose">Choose</button>
         </div>
         <h2>Your scheduled deliveries</h2>
         <full-calendar [options]="calendarOptions"></full-calendar>
       </div>
     </div>
 <div>
+</div>
