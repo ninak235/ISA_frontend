@@ -9,6 +9,7 @@ export class AddAvailabledateFormComponent {
 
   selectedDate: Date; 
   //selectedTime: string;
+  minDate: Date = new Date();
 
   constructor(public dialogRef: MatDialogRef<AddAvailabledateFormComponent>) {}
 

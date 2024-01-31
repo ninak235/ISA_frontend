@@ -64,6 +64,7 @@ export class CompanyContractsComponent implements OnInit {
   cancelDelivery(contract: Contract) {
     if (this.isCancellationAllowed(contract)) {
       this.service.cancelDelivery(contract.hospitalName).subscribe(() => {
+        this.getCompanyContracts();
       });
     } else {
       console.log("Delivery cannot be canceled because it's within 24 hours.");

@@ -25,6 +25,9 @@
           <button class="oneButton" (click)="toggleCompanyAdminsVisibility()">
             Company Admins
           </button>
+          <button class="oneButton" (click)="seeContracts(company)">
+            See contracts
+          </button>
         </div>
       </div>
       <div class="companyAdminsDiv" *ngIf="shouldRenderAdmins">

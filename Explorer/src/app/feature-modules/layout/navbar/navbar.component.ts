@@ -28,8 +28,8 @@ export class NavbarComponent implements OnInit {
         this.systemAdmin = false;
         this.customer = false;
       }
-      else{
-        this.customer = true;
+      else if(this.user.role.roles.includes("ROLE_CUSTOMER")){
+        this.customer = false;
         this.companyAdmin = false;
         this.systemAdmin = false;
       }
