@@ -221,11 +221,11 @@ export class CustomerProfileComponent implements OnInit {
       });
       break;
    
-      case 'sortPriceH':
-        //this.pastReservations.sort((a, b) => a.grade - b.grade);
-        break;
       case 'sortPriceL':
-        //this.pastReservations.sort((a, b) => a. - b.someNumber);
+        this.allReservations.sort((a, b) => (a.price||0) - (b.price||0));
+        break;
+      case 'sortPriceH':
+        this.allReservations.sort((a, b) => (b.price||0) - (a.price||0));
         break;
       case 'sortDurationS':
         this.allReservations.sort((a, b) => a.duration - b.duration);
@@ -342,6 +342,7 @@ seeQR(reservation: Reservation): void {
             this.reservations[index].status = ReservationStatus.Cancelled;
             this.appRef.tick();
           }
+          this.getReservations();
         },
         error: (error: any) => {
           console.error('Error canceling reservation:', error);

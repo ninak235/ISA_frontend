@@ -9,6 +9,7 @@ export interface Reservation {
   customerId: number;
   companyAdminId: number;
   reservationOfEquipments?: ReservationEquipment[];
+  price?: number;
 }
 
 

@@ -15,6 +15,9 @@ import { AddAvailabledateFormComponent } from '../add-availabledate-form/add-ava
 import { AvailableDate } from '../model/availableDateModel';
 import { ReservationCreatedComponent } from '../reservation-created/reservation-created.component';
 
+import { merge, of } from 'rxjs';
+import { mergeMap, toArray } from 'rxjs/operators';
+
 interface ExtendedEquipment extends CompanyEquipment {
    quantity?: number;
 }
@@ -38,6 +41,7 @@ export class CompanyReserveComponent {
   shouldAdd0: boolean = false;
   selectedDate: AvailableDate;
   userId: number;
+  sumPrice: number = 0;
 
   constructor(
     private companyService: CompanyService,
@@ -162,28 +166,39 @@ export class CompanyReserveComponent {
     });
   }
 
-  reserve(): void {
-    if (this.selectedDate != null) {
-      const [year, month, day, hour, minute] = this.selectedDate.startTime;
 
-      const startDate = new Date(
-        parseInt(year, 10),
-        parseInt(month, 10) - 1,
-        parseInt(day, 10),
-        parseInt(hour, 10),
-        parseInt(minute, 10)
+reserve(): void {
+  if (this.selectedDate != null) {
+    const [year, month, day, hour, minute] = this.selectedDate.startTime;
+
+    const startDate = new Date(
+      parseInt(year, 10),
+      parseInt(month, 10) - 1,
+      parseInt(day, 10),
+      parseInt(hour, 10),
+      parseInt(minute, 10)
+    );
+    startDate.setHours(startDate.getHours() + 1);
+
+    const observables = this.selectedEquipment.map(equipment => {
+      const resEq: ReservationEquipment = {
+        equipmentName: equipment.name || '',
+        quantity: equipment.quantity || 0,
+      };
+      this.reservationEquipments.push(resEq);
+      return this.companyService.getEquipmentName(equipment.name).pipe(
+        mergeMap((eq: CompanyEquipment) => {
+          this.sumPrice += (eq.price * (equipment.quantity || 0));
+          return of(null); // Return a dummy observable to keep the array consistent
+        })
       );
-      startDate.setHours(startDate.getHours() + 1);
+    });
 
-      this.selectedEquipment.forEach(equipment => {
-          const resEq: ReservationEquipment = {
-            equipmentName: equipment.name || '',
-            quantity: equipment.quantity || 0,
-          }
-          this.reservationEquipments.push(resEq);
-      });
-      
-
+    // Wait for all observables to complete
+    merge(...observables).pipe(
+      toArray() // Wait for all observables to complete
+    ).subscribe(() => {
+      // SECOND PART
       const reservation: Reservation = {
         dateTime: startDate,
         duration: this.selectedDate.duration,
@@ -192,6 +207,7 @@ export class CompanyReserveComponent {
         customerId: this.userId,
         companyAdminId: this.selectedDate.adminId || 0,
         reservationOfEquipments: this.reservationEquipments,
+        price: this.sumPrice,
       };
       this.selectedDate.taken = true;
       if(this.shouldAdd0 == false){
@@ -232,4 +248,8 @@ export class CompanyReserveComponent {
 
     }
   }
+}
+
+    
+  
 }
