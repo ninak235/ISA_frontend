@@ -50,28 +50,6 @@ export class AllCompanyPreviewComponent implements OnInit {
       this.isAdmin = true;
     }
     this.userId = this.authService.user$.getValue().id;
-    this.authService.user$.subscribe(user => {
-      if(user){
-
-        if(this.isAdmin){
-          this.companyService.getAdmin(user.id).subscribe({
-            next: (admin : CompanyAdminRegistration) => {
-              if (admin.id !== undefined) {
-                this.companyAdmin.id = admin.id;
-              } else {
-                 console.log('CANNOT FIND THE ID');
-              }
-              this.companyAdmin.companyId = admin.companyId;
-              console.log(this.companyAdmin);
-            }, 
-            error: (err: any) => {
-              console.log('Looks like you arent logged in as an company admin', err);
-           },
-          });
-        }
-      }
-    });
-
     this.checkPenaltyPoints();
   
     // Subscribe to the addCompanyClicked event
@@ -176,15 +154,17 @@ export class AllCompanyPreviewComponent implements OnInit {
     }
   }
 
+  /*
   onEditCompanyClicked(company: Company): void{
     this.shouldEdit = true;
     this.oldCompanyName = company.name;
     this.selectedCompany = company;
   }
-
+*/
+  /*
   onCompanyNameClicked(company: Company): void{
     this.router.navigate(['/companyProfile/' + company.name]);
-  }
+  }*/
 
   onReserve(company:Company) : void{
     this.router.navigate(['/comapnyProfileReserve/' + company.name]);

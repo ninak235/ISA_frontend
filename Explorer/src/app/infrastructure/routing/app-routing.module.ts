@@ -49,7 +49,7 @@ const routes: Routes = [
   { path: 'allEquipments', component: AllEquipmentPreviewComponent },
   { path: 'adminProfile', component: CompanyAdminProfileComponent },
   { path: 'updateAdminProfile/:id', component: UpdateAdminProfileComponent },
-  { path: 'companyProfile/:companyName', component: CompanyProfileComponent },
+  { path: 'companyProfile', component: CompanyProfileComponent },
   { path: 'createSystemAdmin', component: SystemAdminCreateComponent },
   { path: 'userProfile', component: UserProfileComponent },
   { path: 'allCompaints', component: AllComplaintComponent },

@@ -9,7 +9,7 @@
     <button color="primary" mat-raised-button [routerLink]="['/allReservations']">
         Calendar
     </button>
-    <button color="primary" mat-raised-button [routerLink]="['/companyProfile/', company.name]">
+    <button color="primary" mat-raised-button (click)="goToCompanyProfile()">
         CompanyProfile
     </button>
       

@@ -1,8 +1,8 @@
 <div *ngIf="company" class="card-container">
     <h2>{{ company.name }}</h2>
-    <p><strong>Address: </strong>{{ company?.locationDto?.address }}, {{ company?.locationDto?.city }}, {{ company?.locationDto?.country }} </p>
-    <p><strong>Description: </strong>{{ company.description }}</p>
-    <p><strong>Average Grade: </strong>{{ company.grade }}</p>
+    <p><strong>📍  </strong>{{ company?.locationDto?.address }}, {{ company?.locationDto?.city }}, {{ company?.locationDto?.country }} </p>
+    <p><strong>✍ </strong>{{ company.description }}</p>
+    <p><strong>🥇 </strong>{{ company.grade }}</p>
     <!-- Add Leaflet map here -->
 </div>
 

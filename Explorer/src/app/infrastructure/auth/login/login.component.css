@@ -17,15 +17,15 @@ p {
 
 /* Dodajte ove stilove u vaš CSS fajl */
 .form-container {
-    background-image: url('/assets/back2.png'); /* Zamijenite ovu vrednost sa putanjom do vaše slike */
+    background-image: url('/assets/back2.jpg'); /* Zamijenite ovu vrednost sa putanjom do vaše slike */
     background-size: cover; /* Podešavanje da slika pokriva čitavu površinu kontejnera */
     background-repeat: no-repeat; /* Da sprečite ponavljanje slike */
     background-position: center; /* Podešavanje pozicije slike na sredinu kontejnera */
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 1950px;
-    height: 770px; /* Postavite visinu na 100% visine prozora */
+    width: 100%;
+    height: 100vh; /* Postavite visinu na 100% visine prozora */
     color: white; /* Postavite boju teksta kako biste bili vidljivi na slici */
     font-family: Arial, sans-serif; /* Postavite font teksta po potrebi */
   }

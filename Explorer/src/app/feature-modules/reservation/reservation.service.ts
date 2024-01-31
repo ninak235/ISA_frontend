@@ -60,6 +60,8 @@ export class ReservationService {
   }
 
   pickUpReservation(reservation: Reservation): Observable<CancelationModel> {
+    console.log("MEDIIIIIIC");
+    console.log(reservation);
     return this.http.put<CancelationModel>(
       environment.apiHost + '/reservations/pickUpReservation',
       reservation

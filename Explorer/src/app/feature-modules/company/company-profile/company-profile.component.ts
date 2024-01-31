@@ -22,6 +22,7 @@ import { ReservationCalendar } from '../../reservation/model/reservationCalendar
 import jsQR from 'jsqr';
 import { Customer } from '../../user/model/customer.model';
 import { UserService } from '../../user/user.service';
+import { CompanyAdminRegistration } from '../../user/model/companyAdminModel';
 
 interface ExtendedReservation extends Reservation {
   isPast? : boolean;
@@ -44,7 +45,7 @@ export class CompanyProfileComponent {
   
   shouldRenderEquipmentForm: boolean = false;     //da li da otvori formu za izmenu opreme
   equipmentForUpdate: CompanyEquipment;           //oprema koju smo krenuli da izmenimo
-  shouldRenderEquipmentSelect: boolean = false;   //plus za dodavanje nove opreme
+  shouldRenderEquipmentSelect: boolean = true;   //plus za dodavanje nove opreme
   selectedEquipmentId: number;          //selektovan equipment iz liste za dodavanje nove opreme
   availableEquipment: Equipment[];      //oprema koju firma ima u ponudi -----------------------------DODAJ DA SE PROVERI I DA LI IMA DOVOLJAN QUANTITY >= 1
   showDatePicker: boolean = false;      //prikazivanje date pickera za kreiranje novog termina
@@ -55,19 +56,51 @@ export class CompanyProfileComponent {
   adminId: number;  
   equipmentReservationStatus: { [key: number]: boolean } = {}; //mapa za svaku opremu da li postoji rezervacija unutar te firme sa njom, ------------------- TREBA IZMENITI TAKO DA UCITAVA I KOLICINU OPREME 
   shouldShowDatesComponent: boolean = false;
-
+  shouldRenderAdmins: boolean =false;
   pastReservations: ExtendedReservation[] = [];
   futureReservations: ExtendedReservation[] = [];
   allReservations: ExtendedReservation[] = [];
   shouldShowReservations: boolean = false;
   decodedText: string = '';
-
+  shouldCustomersRender: boolean = false;
+  shouldAddEquipment: boolean = false;
+  shouldShowDateChoose: boolean = false;
   constructor(private companyService: CompanyService, private userService: UserService,  private equipmentService: EquipmentService, private reservationService: ReservationService,  private router: Router, private route: ActivatedRoute, private authService: AuthService, private appRef: ApplicationRef,private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.authService.user$.subscribe(user => {
       if (user) {
         this.adminId = user.id;
+        var companyId;
+        this.companyService.getAdmin(user.id)
+        .subscribe({
+          next: (admin : CompanyAdminRegistration) => {
+            if (admin.id !== undefined) {
+              this.adminId = admin.id;
+            } else {
+                console.log('CANNOT FIND THE ID');
+            }
+            this.companyService.getById(admin.companyId)
+            .subscribe({
+              next: (company: Company) => {
+                if (company.id !== undefined) {
+                  this.company = company;
+                  console.log('MEEEDIC TRECI PUT');
+                  console.log(this.company);
+                  this.ngAfterViewInit();
+                } else {
+                  console.log('CANNOT FIND THE ID');
+                }
+              },
+              error: (err: any) => {
+                console.log('This admins company cannot be found in our database!', err);
+              }
+            })
+          }, 
+          error: (err: any) => {
+            console.log('Looks like you arent logged in as an company admin', err);
+          },
+        });
         this.loadAdminAvailableDates();
         this.getReservations();
       }
@@ -95,6 +128,8 @@ export class CompanyProfileComponent {
     this.reservationService.getCompanyAdminReservations(this.adminId).subscribe({
       next: (reservations: ExtendedReservation[]) => {
         this.futureReservations = reservations;
+        console.log("MEDIC DRUGI PUT");
+        console.log(this.futureReservations);
         this.futureReservations.forEach(res => {
           res.isPast = false;
 
@@ -153,12 +188,7 @@ export class CompanyProfileComponent {
   
 
   ngAfterViewInit(): void {
-    this.route.paramMap.subscribe((params) => {
-      const companyName = params.get('companyName');
-      if (companyName) {
-        this.companyService.getByName(companyName).subscribe({
-          next: (c: Company) => {
-            this.company = c;
+      if (this.company) {
             console.log('KOMPANIJA');
             console.log(this.company);
             for (const equipment of this.company.equipmentSet) {
@@ -192,14 +222,9 @@ export class CompanyProfileComponent {
                   },
                 });
               }, 0);
-            }
-          },
-          error: (err: any) => {
-            console.log(err);
-          }
-        });
+            }    
       }
-    });
+    
   }
   
 
@@ -302,25 +327,17 @@ export class CompanyProfileComponent {
   }
 
   showEquipmentSelect(): void {
-    // Set the form values using patchValue with the equipment details
-    // this.equipmentForm.patchValue({
-      // name: equipment.name,
-      // description: equipment.description,
-      // typeOfEquipment: equipment.typeOfEquipment,
-      // grade: equipment.grade,
-      // price: equipment.price,
-      // Add other equipment properties as needed
-      this.shouldRenderEquipmentSelect = true;
-      console.log(this.shouldRenderEquipmentSelect)
-    // });
+    this.shouldAddEquipment = !this.shouldAddEquipment;
   }
 
   addEquipment() {
+    this.shouldAddEquipment = !this.shouldAddEquipment;
     this.companyService.addEquipmentToCompany(this.company.name, this.selectedEquipmentId).subscribe({
       next:() => {
         console.log('Equipment added successfully');
         this.selectedEquipmentId = 0;
-        this.ngAfterViewInit();
+        this.ngOnInit();
+        
         
         // You can add any additional logic or feedback here
       },
@@ -337,7 +354,7 @@ export class CompanyProfileComponent {
 
   updateEquipmentClicked(): void{
     this.shouldRenderEquipmentForm = false;
-this.ngAfterViewInit();
+    this.ngAfterViewInit();
   }
 
   openDatePicker() {
@@ -371,12 +388,12 @@ this.ngAfterViewInit();
   }
 
   createPickupTerm(): void {
-    console.log('SELECTED TIME SLOT');
-    console.log(this.selectedTimeSlot);
+    this.shouldShowDateChoose= !this.shouldShowDateChoose;
     if(this.selectedTimeSlot){
       this.companyService.createAvailableDate(this.selectedTimeSlot).subscribe({
         next: () => {
           console.log(this.selectedTimeSlot);
+          this.ngOnInit();
         }
         ,
         error: (err:any) => {
@@ -484,6 +501,14 @@ calendarOptions: CalendarOptions = {
     this.shouldShowReservations = !this.shouldShowReservations;
   }
 
+  toggleCompanyAdminsVisibility(){
+    this.shouldRenderAdmins = !this.shouldRenderAdmins;
+    }
+
+    toggleCompanyCustomersVisibility(){
+    this.shouldCustomersRender = !this.shouldCustomersRender;
+    }
+
   parseDateTime(localDateTime: string | object): Date {
     if (typeof localDateTime === 'object' && localDateTime !== null) {
         localDateTime = localDateTime.toString(); 
@@ -554,87 +579,89 @@ calendarOptions: CalendarOptions = {
       }
 
       const idQR = parseInt(this.decodedText)
-
-      this.pastReservations.forEach(pastRes => {
-        if (pastRes.id === idQR && pastRes.status!=ReservationStatus.Cancelled) {
-          // Dodavanje alert poruke
-          this.userService.getCustomerById(pastRes.customerId).subscribe({
-            next: (customer: Customer) => {
-              alert(`The deadline for picking up equipment has passed! ${customer.firstName} ${customer.lastName} receives 2 penalty points.`);
-      
-              this.reservationService.cancelReservationQR(pastRes).subscribe({
-                next: (result: CancelationModel) => {
-                  console.log(result);
-                  customer.penaltyPoints += 2;
-                  const index = this.allReservations.findIndex(
-                    (r) => r.id === result.reservationId
-                  );
-                  if (index !== -1) {
-                    this.allReservations[index].status = ReservationStatus.Cancelled;
-                    this.appRef.tick();
-                    
-                  }
-                },
-                error: (error: any) => {
-                  console.error('Error canceling reservation:', error);
-                },
-              });
-            }
-          });
-        }
-        else if(pastRes.status==ReservationStatus.Cancelled){
-          alert(`The reservation is already cancelled!`);
-        }
-      });
-
-      this.futureReservations.forEach(futureRes => {
-        if (futureRes.id === idQR && futureRes.status != ReservationStatus.PickedUp) {
-
-          this.userService.getCustomerById(futureRes.customerId).subscribe({
-            next: (customer: Customer) =>{
-              const reservationDate = this.parseDateTime(futureRes.dateTime);
-          const futureDate = this.parseDateTime(futureRes.dateTime);
-      
-          const additionalHours = futureRes.duration;
-          futureDate.setHours(futureDate.getHours() + additionalHours);
-      
-          const currentDate = new Date();
-      
-          if (reservationDate <= currentDate && currentDate <= futureDate) {
-            this.reservationService.pickUpReservation(futureRes).subscribe({
-              next: (result: CancelationModel) => {
-                console.log(result);
-                const index = this.allReservations.findIndex(
-                  (r) => r.id === result.reservationId
-                );
-      
-                if (index !== -1) {
-                  alert(`${customer.firstName} ${customer.lastName} has successfully picked up their equipment!`);
-                  this.allReservations[index].status = ReservationStatus.PickedUp;
-                  this.appRef.tick();
-                }
-              },
-              error: (error: any) => {
-                console.error('Error picking up reservation:', error);
-              }
-            });
-          } else {
-            alert(`Now you can't pick up this equipment, check again your date!`);
-          }
-            }
-          })
-
-          
-        } else if(futureRes.status == ReservationStatus.PickedUp) {
-          alert(`Already picked up!`);
-        }
-      });
-      
-      
+      this.processThePickup(idQR);
     };
   
     // Postavljanje izvora slike
     image.src = imageUrl;
+  }
+
+  processThePickup(idReservation: number): void {
+    this.pastReservations.forEach(pastRes => {
+      if (pastRes.id === idReservation && pastRes.status!=ReservationStatus.Cancelled) {
+        // Dodavanje alert poruke
+        this.userService.getCustomerById(pastRes.customerId).subscribe({
+          next: (customer: Customer) => {
+            alert(`The deadline for picking up equipment has passed! ${customer.firstName} ${customer.lastName} receives 2 penalty points.`);
+    
+            this.reservationService.cancelReservationQR(pastRes).subscribe({
+              next: (result: CancelationModel) => {
+                console.log(result);
+                customer.penaltyPoints += 2;
+                const index = this.allReservations.findIndex(
+                  (r) => r.id === result.reservationId
+                );
+                if (index !== -1) {
+                  this.allReservations[index].status = ReservationStatus.Cancelled;
+                  this.appRef.tick();
+                  
+                }
+              },
+              error: (error: any) => {
+                console.error('Error canceling reservation:', error);
+              },
+            });
+          }
+        });
+      }
+      else if(pastRes.status==ReservationStatus.Cancelled){
+        alert(`The reservation is already cancelled!`);
+      }
+    });
+
+    this.futureReservations.forEach(futureRes => {
+      if (futureRes.id === idReservation && futureRes.status != ReservationStatus.PickedUp) {
+
+        this.userService.getCustomerById(futureRes.customerId).subscribe({
+          next: (customer: Customer) =>{
+            const reservationDate = this.parseDateTime(futureRes.dateTime);
+        const futureDate = this.parseDateTime(futureRes.dateTime);
+    
+        const additionalHours = futureRes.duration;
+        futureDate.setHours(futureDate.getHours() + additionalHours);
+    
+        const currentDate = new Date();
+    
+        if (true) {
+          this.reservationService.pickUpReservation(futureRes).subscribe({
+            next: (result: CancelationModel) => {
+              console.log(result);
+              const index = this.allReservations.findIndex(
+                (r) => r.id === result.reservationId
+              );
+    
+              if (index !== -1) {
+                alert(`${customer.firstName} ${customer.lastName} has successfully picked up their equipment!`);
+                this.allReservations[index].status = ReservationStatus.PickedUp;
+                this.appRef.tick();
+              }
+            },
+            error: (error: any) => {
+              console.error('Error picking up reservation:', error);
+            }
+          });
+        } else {
+          alert(`Now you can't pick up this equipment, check again your date!`);
+        }
+          }
+        })
+
+        
+      } else if(futureRes.status == ReservationStatus.PickedUp) {
+        alert(`Already picked up!`);
+      }
+    });
+
   }
   
   sliceTextFrom17th(text: string): string {

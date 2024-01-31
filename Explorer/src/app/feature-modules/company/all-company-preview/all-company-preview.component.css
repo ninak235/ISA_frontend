@@ -120,10 +120,10 @@ li.equipment-item {
  }
 
  .form-container {
-    background-image: url('/assets/back2.png'); /* Zamijenite ovu vrednost sa putanjom do vaše slike */
+    background-image: url('/assets/back2.jpg'); /* Zamijenite ovu vrednost sa putanjom do vaše slike */
     background-size: cover; /* Podešavanje da slika pokriva čitavu površinu kontejnera */
-    width: auto;
-    height: 770px; /* Postavite visinu na 100% visine prozora */
+    width: 100%;
+    height: 150vh; /* Postavite visinu na 100% visine prozora */
     color: rgb(5, 29, 167); /* Postavite boju teksta kako biste bili vidljivi na slici */
     font-family: Arial, sans-serif; /* Postavite font teksta po potrebi */
   }
