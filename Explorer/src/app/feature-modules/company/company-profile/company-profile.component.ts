@@ -23,6 +23,7 @@ import jsQR from 'jsqr';
 import { Customer } from '../../user/model/customer.model';
 import { UserService } from '../../user/user.service';
 import { CompanyAdminRegistration } from '../../user/model/companyAdminModel';
+import { CompanyContractsComponent } from '../company-contracts/company-contracts.component';
 
 interface ExtendedReservation extends Reservation {
   isPast? : boolean;
@@ -65,7 +66,7 @@ export class CompanyProfileComponent {
   shouldCustomersRender: boolean = false;
   shouldAddEquipment: boolean = false;
   shouldShowDateChoose: boolean = false;
-  constructor(private companyService: CompanyService, private userService: UserService,  private equipmentService: EquipmentService, private reservationService: ReservationService,  private router: Router, private route: ActivatedRoute, private authService: AuthService, private appRef: ApplicationRef,private cdr: ChangeDetectorRef) { }
+  constructor(private dialog: MatDialog, private companyService: CompanyService, private userService: UserService,  private equipmentService: EquipmentService, private reservationService: ReservationService,  private router: Router, private route: ActivatedRoute, private authService: AuthService, private appRef: ApplicationRef,private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.authService.user$.subscribe(user => {
@@ -673,6 +674,14 @@ calendarOptions: CalendarOptions = {
     } else {
       return text.slice(startIndex);
     }
+  }
+
+  seeContracts(company: Company): void{
+    const dialogRef = this.dialog.open(CompanyContractsComponent, {
+      width: ' 700px', 
+      height: '450px',
+      data: { companyName: company.name } 
+    });
   }
   
   
