@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Company, CompanyEquipment } from '../model/companyModel';
+import { ComEq, Company, CompanyEquipment } from '../model/companyModel';
 import { CompanyService } from '../company.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
@@ -7,12 +7,18 @@ import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import {
   Reservation,
+  ReservationEquipment,
   ReservationStatus,
 } from '../../reservation/model/reservation.model';
 import { ReservationService } from '../../reservation/reservation.service';
 import { AddAvailabledateFormComponent } from '../add-availabledate-form/add-availabledate-form.component';
 import { AvailableDate } from '../model/availableDateModel';
 import { ReservationCreatedComponent } from '../reservation-created/reservation-created.component';
+
+interface ExtendedEquipment extends CompanyEquipment {
+   quantity?: number;
+}
+
 
 @Component({
   selector: 'xp-company-reserve',
@@ -21,8 +27,9 @@ import { ReservationCreatedComponent } from '../reservation-created/reservation-
 })
 export class CompanyReserveComponent {
   company: Company;
-  selectedEquipment: CompanyEquipment[] = [];
-  filteredEquipments: CompanyEquipment[] = [];
+  selectedEquipment: ExtendedEquipment[] = [];
+  filteredEquipments: ExtendedEquipment[] = [];
+  reservationEquipments: ReservationEquipment[] = [];
   searchValue: String;
   isEquipmentChoosen: boolean = false;
   isDone: boolean = false;
@@ -86,7 +93,20 @@ export class CompanyReserveComponent {
   }
 
   doneChoosing(): void {
-    if (this.selectedEquipment.length != 0) this.isDone = true;
+    if (this.selectedEquipment.length != 0){
+      this.selectedEquipment.forEach(elem => {
+        this.companyService.getComEq(this.company.id|| 0,  elem.id || 0).subscribe({
+          next: (comEq: ComEq) => {
+            if(comEq.quantity >= (elem.quantity||0)){
+                 this.isDone = true;
+            }
+            else{
+              console.log("**********to much***********");
+            }
+          }
+        })
+      });
+    } 
   }
 
   onSearchChange(): void {
@@ -155,6 +175,15 @@ export class CompanyReserveComponent {
       );
       startDate.setHours(startDate.getHours() + 1);
 
+      this.selectedEquipment.forEach(equipment => {
+          const resEq: ReservationEquipment = {
+            equipmentName: equipment.name || '',
+            quantity: equipment.quantity || 0,
+          }
+          this.reservationEquipments.push(resEq);
+      });
+      
+
       const reservation: Reservation = {
         dateTime: startDate,
         duration: this.selectedDate.duration,
@@ -162,11 +191,11 @@ export class CompanyReserveComponent {
         status: ReservationStatus.Pending,
         customerId: this.userId,
         companyAdminId: this.selectedDate.adminId || 0,
-        reservationEquipments: this.selectedEquipment || null,
+        reservationOfEquipments: this.reservationEquipments,
       };
 
       this.reservationService.createReservation(reservation).subscribe({
-        next: (reservation: Reservation) => {
+        next: () => {
           this.selectedDate.taken = true;
           if (this.shouldAdd0 == false) {
             this.companyService

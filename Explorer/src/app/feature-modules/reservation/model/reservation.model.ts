@@ -8,8 +8,15 @@ export interface Reservation {
   status: ReservationStatus;
   customerId: number;
   companyAdminId: number;
-  reservationEquipments: CompanyEquipment[];
+  reservationOfEquipments?: ReservationEquipment[];
 }
+
+
+export interface ReservationEquipment {
+  equipmentName: string;
+  quantity: number;
+}
+
 
 export enum ReservationStatus {
   Pending = 'Pending',

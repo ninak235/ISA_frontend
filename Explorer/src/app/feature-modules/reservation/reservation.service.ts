@@ -12,8 +12,8 @@ import { ReservationCalendar } from './model/reservationCalendar';
 export class ReservationService {
   constructor(private http: HttpClient, private router: Router) {}
 
-  createReservation(reservation: Reservation): Observable<Reservation> {
-    return this.http.post<Reservation>(
+  createReservation(reservation: Reservation): Observable<void> {
+    return this.http.post<void>(
       environment.apiHost + '/reservations/new',
       reservation
     );
