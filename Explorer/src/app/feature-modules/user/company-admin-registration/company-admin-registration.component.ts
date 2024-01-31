@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatOptionModule } from '@angular/material/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'xp-company-admin-registration',
@@ -22,7 +23,8 @@ export class CompanyAdminRegistrationComponent {
   constructor(
     private userService: UserService,
     private companyService: CompanyService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router: Router
   ) {
     this.registrationAdminForm = this.formBuilder.group(
       {
@@ -77,6 +79,9 @@ export class CompanyAdminRegistrationComponent {
         },
       });
     }
+
+
+    this.router.navigate(['']);
   }
 
   confirmPasswordValidator: ValidatorFn = (

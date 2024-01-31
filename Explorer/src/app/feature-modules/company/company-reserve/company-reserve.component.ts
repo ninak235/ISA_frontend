@@ -193,28 +193,43 @@ export class CompanyReserveComponent {
         companyAdminId: this.selectedDate.adminId || 0,
         reservationOfEquipments: this.reservationEquipments,
       };
+      this.selectedDate.taken = true;
+      if(this.shouldAdd0 == false){
+        this.companyService
+            .updateAvailableDate(this.selectedDate)
+            .subscribe({
+              next: () => {
+                this.reservationService.createReservation(reservation).subscribe({
+                  next: () =>{
+                    const dialogRef = this.dialog.open(ReservationCreatedComponent, {
+                      width: '400px',
+                    });
+                    dialogRef.afterClosed().subscribe(() => {
+                      this.router.navigate(['/allCompanies']);
+                    });
+                  }
+                });
+              }
+            });
+      }else{
+        this.companyService
+            .createAvailableDate(this.selectedDate)
+            .subscribe({
+              next: () => {
+                this.reservationService.createReservation(reservation).subscribe({
+                  next: () => {
+                    const dialogRef = this.dialog.open(ReservationCreatedComponent, {
+                      width: '400px',
+                    });
+                    dialogRef.afterClosed().subscribe(() => {
+                      this.router.navigate(['/allCompanies']);
+                    });
+                  }
+                });
+              }
+            });
+      }
 
-      this.reservationService.createReservation(reservation).subscribe({
-        next: () => {
-          this.selectedDate.taken = true;
-          if (this.shouldAdd0 == false) {
-            this.companyService
-              .updateAvailableDate(this.selectedDate)
-              .subscribe();
-          } else {
-            this.companyService
-              .createAvailableDate(this.selectedDate)
-              .subscribe();
-          }
-          const dialogRef = this.dialog.open(ReservationCreatedComponent, {
-            width: '400px',
-          });
-
-          dialogRef.afterClosed().subscribe(() => {
-            this.router.navigate(['/allCompanies']);
-          });
-        },
-      });
     }
   }
 }

@@ -44,7 +44,7 @@
       </div>
 
     <xp-company-customers *ngIf="shouldCustomersRender"></xp-company-customers>
-
+      <div class="equipmentDiv">
       <div class="equipment-container" *ngIf="shouldShowEquipmentComponent">
         <h3 class="equipment-header"><strong>Equipment</strong></h3>
         
@@ -97,6 +97,8 @@
       
         <xp-equipment-form *ngIf="shouldRenderEquipmentForm" (updateEquipmentClicked)="updateEquipmentClicked()" [equipment]="equipmentForUpdate" [company]="company" ></xp-equipment-form>
       </div>
+
+    </div>
       <div class="h2Class" *ngIf="shouldShowReservations">
         <h2>   ALL RESERVATIONS</h2>
         <div class="past-reservation-container">

@@ -359,6 +359,7 @@ export class CompanyProfileComponent {
 
   openDatePicker() {
     this.showDatePicker = true;
+    this.shouldShowDateChoose = false;
   }
 
   onDateSelected(event: MatDatepickerInputEvent<Date>): void {
@@ -379,6 +380,7 @@ export class CompanyProfileComponent {
           console.log('TIMESLOTS');
           console.log(result);
           this.availableTimeSlots = result;
+
         },
         error: (err:any) => {
           console.error('Error getting the available dates', err);
@@ -614,9 +616,6 @@ calendarOptions: CalendarOptions = {
           }
         });
       }
-      else if(pastRes.status==ReservationStatus.Cancelled){
-        alert(`The reservation is already cancelled!`);
-      }
     });
 
     this.futureReservations.forEach(futureRes => {
@@ -632,7 +631,7 @@ calendarOptions: CalendarOptions = {
     
         const currentDate = new Date();
     
-        if (true) {
+        if (reservationDate <= currentDate && currentDate <= futureDate) {
           this.reservationService.pickUpReservation(futureRes).subscribe({
             next: (result: CancelationModel) => {
               console.log(result);

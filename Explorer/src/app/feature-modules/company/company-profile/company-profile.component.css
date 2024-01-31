@@ -97,7 +97,13 @@
     border: 2px solid rgb(5, 29, 167);
     border-radius: 10px;
     background-color: transparent;
-    margin-left: 850px;
+  }
+
+  .equipmentDiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 
   .equipment-header {
