@@ -1,18 +1,20 @@
 <div class="form-container">
-<div *ngIf="company" class="company-info">
+  <div *ngIf="company" class="company-info">
     <div class="company-details">
       <h2>{{ company.name }}</h2>
       <p><strong>📍 </strong> {{ company.locationDto.address }}, {{ company.locationDto.city }}, {{ company.locationDto.country }}</p>
       <p><strong>Description:</strong> {{ company.description }}</p>
       <p><strong>Grade:</strong> {{ company.grade }}</p>
     </div>
-      <div *ngIf="!isDone; else nextPart">
-        <div *ngIf="company.equipmentSet && company.equipmentSet.length > 0; else noEquipment" class="equipment-list">
-          <h3><strong>Equipments:</strong></h3>
-          <input type="text" class="search-input" placeholder="🔍Search name..." [(ngModel)]="searchValue" (ngModelChange)="onSearchChange()">
-          
-          <div class="equipment-cards">
-            <div *ngFor="let equipment of filteredEquipments" class="equipment-card" (click)="selectEquipment(equipment)" [ngClass]="{'selected': isSelected(equipment)}" >
+
+    <div *ngIf="!isDone; else nextPart">
+      <div *ngIf="company.equipmentSet && company.equipmentSet.length > 0; else noEquipment" class="equipment-list">
+        <h3><strong>Equipments:</strong></h3>
+        <input type="text" class="search-input" placeholder="🔍Search name..." [(ngModel)]="searchValue" (ngModelChange)="onSearchChange()">
+
+        <div class="equipment-cards">
+          <ng-container *ngFor="let equipment of filteredEquipments">
+            <div class="equipment-card"  (click)="selectEquipment(equipment)"  [ngClass]="{'selected': isSelected(equipment)}" >
               <div class="equipment-header">
                 <h3>{{ equipment.name }}</h3>
               </div>
@@ -22,18 +24,28 @@
                 <p class="grade-and-price"><strong>📈Grade:</strong> {{ equipment.grade }} | <strong>💰Price:</strong> {{ equipment.price }}</p>
               </div>
             </div>
-            
-          <button class="button" color="accent" (click)="doneChoosing()">Done</button>
+          </ng-container>
+        </div>
+      </div>
+
+      <!-- Quantity Selection Container -->
+      <div class="quantity-selection-container">
+        <div *ngFor="let equipment of filteredEquipments">
+          <div *ngIf="isSelected(equipment)">
+            <label for="quantity-{{equipment.id}}">Quantity for {{ equipment.name }}:</label>
+            <input type="number" id="quantity-{{equipment.id}}" name="quantity" [(ngModel)]="equipment.quantity" min="1" max="20">
           </div>
         </div>
       </div>
-      
-  
-      <ng-template #noEquipment>
-        <h3><strong>Equipment:</strong></h3>
-        <br />
-        Coming soon!
-      </ng-template>
+
+      <button class="button" color="accent" (click)="doneChoosing()">Done</button>
+    </div>
+
+    <ng-template #noEquipment>
+      <h3><strong>Equipment:</strong></h3>
+      <br />
+      Coming soon!
+    </ng-template>
   
       <ng-template #nextPart>
         <h2>AVAILABLE DATES:</h2>

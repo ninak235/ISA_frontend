@@ -1,12 +1,13 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
 import { Observable, catchError } from 'rxjs';
-import { Company, CompanyAdmin, LocationDto } from './model/companyModel';
+import { ComEq, Company, CompanyAdmin, CompanyEquipment, LocationDto } from './model/companyModel';
 import { environment } from 'src/env/environment';
 import { CompanyIdName } from './model/companyIdName';
 import { AvailableDate } from './model/availableDateModel';
 import { CompanyAdminRegistration } from '../user/model/companyAdminModel';
 import { Contract } from './model/contract';
+import { Equipment } from '../equipment/model/equipmentModel';
 
 @Injectable({
   providedIn: 'root',
@@ -153,6 +154,15 @@ export class CompanyService {
       availableDate
     );
   }
+
+  getEquipmentName(name: String): Observable<CompanyEquipment>{
+    return this.http.get<CompanyEquipment>(environment.apiHost + '/equipment/byEquipmentName/'+name);
+  }
+
+  getComEq(companyId: number, eqId: number): Observable<ComEq>{
+    return this.http.get<ComEq>(environment.apiHost + '/company/equipments/getBy/'+ companyId + '/'+ eqId);
+  }
+
   updateCompanyEquipment(
     updatedCompany: Company,
     oldId: number,

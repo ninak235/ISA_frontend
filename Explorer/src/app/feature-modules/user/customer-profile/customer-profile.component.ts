@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/infrastructure/auth/auth.service';
 import {
   CancelationModel,
   Reservation,
+  ReservationEquipment,
   ReservationStatus,
 } from '../../reservation/model/reservation.model';
 import { ReservationService } from '../../reservation/reservation.service';
@@ -20,6 +21,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Complaint } from '../../complaint/model/complaintModel';
 import readQRCode  from 'jsqr';
 import jsQR from 'jsqr';
+import { CompanyService } from '../../company/company.service';
+import { EquipmentCompany } from '../../equipment/model/equipmentModel';
+import { Observable, forkJoin, map, of } from 'rxjs';
 
 interface ExtendedReservation extends Reservation {
   isPast? : boolean;
@@ -59,6 +63,7 @@ export class CustomerProfileComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private reservationService: ReservationService,
+    private companyService: CompanyService,
     private appRef: ApplicationRef,
     private dialog: MatDialog,
     private fb: FormBuilder,
@@ -106,6 +111,7 @@ export class CustomerProfileComponent implements OnInit {
     this.reservationService.getPastUserReservations(this.userId).subscribe({
       next: (reservations: ExtendedReservation[]) => {
         this.pastReservations = reservations;
+        console.log(this.pastReservations);
         this.pastReservations.forEach(res => {
           res.isPast = true;
           res.isCancelEnabled = true;
@@ -255,28 +261,41 @@ export class CustomerProfileComponent implements OnInit {
     return timeA - timeB;
   }
 
-createReservationInfoString(reservation: Reservation): string{
-    let reservationInfo: string = `Reservation ID: ${reservation.id}, DateTime: ${reservation.dateTime}, Duration: ${reservation.duration}, Grade: ${reservation.grade}, Status: ${reservation.status}, Customer ID: ${reservation.customerId}, Company Admin ID: ${reservation.companyAdminId}`;
 
-    const reservationEquipments: CompanyEquipment[] = reservation.reservationEquipments;
+createReservationInfoString(reservation: Reservation): Observable<string> {
+  let reservationInfo: string = `Reservation ID: ${reservation.id}, DateTime: ${reservation.dateTime}, Duration: ${reservation.duration}, Grade: ${reservation.grade}, Status: ${reservation.status}, Customer ID: ${reservation.customerId}, Company Admin ID: ${reservation.companyAdminId}`;
+
+  if (reservation.reservationOfEquipments !== undefined) {
     reservationInfo += ', Reservation Equipments: ';
     
-    for (const equipment of reservationEquipments) {
-      reservationInfo += `[ID: ${equipment.id}, Name: ${equipment.name}, Description: ${equipment.description}, Grade: ${equipment.grade}, Price: ${equipment.price}]`;
-    }
+    const observables = reservation.reservationOfEquipments.map(res => {
+      return this.companyService.getEquipmentName(res.equipmentName);
+    });
 
-    return reservationInfo;
+    return forkJoin(observables).pipe(
+      map((equipments: CompanyEquipment[]) => {
+        equipments.forEach(equipment => {
+          reservationInfo += `[ID: ${equipment.id}, Name: ${equipment.name}, Grade: ${equipment.grade}, Price: ${equipment.price}]`;
+        });
+        return reservationInfo;
+      })
+    );
   }
 
+  return of(reservationInfo); // Return a completed observable if there are no reservation equipments
+}
 
-  seeQR(reservation: Reservation): void{
-    const reservationInfo = this.createReservationInfoString(reservation);
-
+seeQR(reservation: Reservation): void {
+  this.createReservationInfoString(reservation).subscribe(reservationInfo => {
+    console.log(reservationInfo);
     const dialogRef = this.dialog.open(ReservationInfoDialogComponent, {
       width: '500px', // Set the width as needed
       data: { reservationInfo: reservationInfo },
     });
-  }
+  });
+}
+
+  
 
   submitComplaint(): void{
         let compl: Complaint = {
