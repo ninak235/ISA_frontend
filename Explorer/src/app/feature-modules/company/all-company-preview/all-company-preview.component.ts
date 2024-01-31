@@ -10,6 +10,8 @@ import { ReservationService } from '../../reservation/reservation.service';
 import { CancelationModel, Reservation } from '../../reservation/model/reservation.model';
 import { UserService } from '../../user/user.service';
 import { Customer } from '../../user/model/customer.model';
+import { MatDialog } from '@angular/material/dialog';
+import { CompanyContractsComponent } from '../company-contracts/company-contracts.component';
 
 
 
@@ -35,7 +37,7 @@ export class AllCompanyPreviewComponent implements OnInit {
   isCustomer: boolean = false;
   isAdmin: boolean = false;
  
-  constructor(private companyService: CompanyService, private router: Router, private authService: AuthService, private reservationService: ReservationService, private userService: UserService) {}
+  constructor(private dialog: MatDialog, private companyService: CompanyService, private router: Router, private authService: AuthService, private reservationService: ReservationService, private userService: UserService) {}
 
   ngOnInit(): void {
     this.refreshCompanyList(); // Initial load of companies
@@ -164,5 +166,13 @@ export class AllCompanyPreviewComponent implements OnInit {
 
   onReserve(company:Company) : void{
     this.router.navigate(['/comapnyProfileReserve/' + company.name]);
+  }
+
+  seeCompanyContracts(company: Company): void {
+    const dialogRef = this.dialog.open(CompanyContractsComponent, {
+      width: ' 700px', 
+      height: '450px',
+      data: { companyName: company.name } 
+    });
   }
 }

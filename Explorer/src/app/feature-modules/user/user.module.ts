@@ -16,10 +16,11 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { RouterModule } from '@angular/router';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { ChangePasswordSystemAdminComponent } from './change-password-system-admin/change-password-system-admin.component';
+import { CustomAlertComponent } from './custom-alert/custom-alert.component';
 
 
 @NgModule({
-  declarations: [CustomerRegistrationComponent, CustomerProfileComponent, UpdateProfileComponent, CompanyAdminRegistrationComponent, CompanyAdminProfileComponent, UpdateAdminProfileComponent, SystemAdminCreateComponent, UserProfileComponent, ChangePasswordSystemAdminComponent],
+  declarations: [CustomerRegistrationComponent, CustomerProfileComponent, UpdateProfileComponent, CompanyAdminRegistrationComponent, CompanyAdminProfileComponent, UpdateAdminProfileComponent, SystemAdminCreateComponent, UserProfileComponent, ChangePasswordSystemAdminComponent, CustomAlertComponent],
   imports: [RouterModule, CommonModule, MaterialModule, ReactiveFormsModule, FormsModule, MatFormFieldModule, MatInputModule, FullCalendarModule],
   exports: [CustomerRegistrationComponent, CompanyAdminRegistrationComponent, ChangePasswordSystemAdminComponent],
 })

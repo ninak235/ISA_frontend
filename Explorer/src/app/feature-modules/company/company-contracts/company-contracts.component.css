@@ -1,0 +1,50 @@
+.contract-card {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .card {
+    padding: 20px;
+    width: 400px; 
+    margin-left: 20px;
+    border: 1px solid #ccc; 
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); 
+  }
+
+  h2{
+    text-align: center;
+  }
+  
+  .cancel{
+    color: white;
+    background-color: #3498db;
+    border-radius: 15px;
+    width: 80px;
+  }
+
+  .cancel[disabled] {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .card-body {
+    padding: 20px; 
+  }
+  
+  .card-title {
+    font-size: 20px; 
+    margin-bottom: 10px; 
+  }
+  
+  .card-text {
+    margin-bottom: 5px; 
+  }
+  
+  .list-group-item {
+    border: none;
+    padding: 5px 0; 
+  }
+  
