@@ -29,7 +29,7 @@ export class NavbarComponent implements OnInit {
         this.customer = false;
       }
       else if(this.user.role.roles.includes("ROLE_CUSTOMER")){
-        this.customer = false;
+        this.customer = true;
         this.companyAdmin = false;
         this.systemAdmin = false;
       }

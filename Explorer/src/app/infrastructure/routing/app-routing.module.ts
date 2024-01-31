@@ -22,6 +22,8 @@ import { CustomerGuard } from '../auth/customer.guard';
 import { PositionSimulatorComponent } from 'src/app/feature-modules/administration/position-simulator/position-simulator.component';
 import { CompanyAdminHomeComponent } from 'src/app/feature-modules/company/company-admin-home/company-admin-home.component';
 import { CompanyCustomersComponent } from 'src/app/feature-modules/company/company-customers/company-customers.component';
+import { CompanyAdminGuard } from '../auth/companyAdmin.guard';
+import { AdminGuard } from '../auth/admin.guard';
 
 const routes: Routes = [
   { path: '', component: AllCompanyPreviewComponent },
@@ -35,35 +37,34 @@ const routes: Routes = [
   {
     path: 'addCompany',
     component: CompanyFormComponent,
+    canActivate: [AdminGuard],
+
   },
   {
     path: 'registerCompanyAdmin',
     component: CompanyAdminRegistrationComponent,
+    canActivate: [AdminGuard],
+
   },
   {
     path: 'customerProfile',
     component: CustomerProfileComponent,
     canActivate: [CustomerGuard],
   },
-  { path: 'updateCustomerProfile/:id', component: UpdateProfileComponent },
+  { path: 'updateCustomerProfile/:id', component: UpdateProfileComponent,  canActivate: [CustomerGuard], },
   { path: 'allEquipments', component: AllEquipmentPreviewComponent },
-  { path: 'adminProfile', component: CompanyAdminProfileComponent },
-  { path: 'updateAdminProfile/:id', component: UpdateAdminProfileComponent },
-  { path: 'companyProfile', component: CompanyProfileComponent },
-  { path: 'createSystemAdmin', component: SystemAdminCreateComponent },
-  { path: 'userProfile', component: UserProfileComponent },
+  { path: 'adminProfile', component: CompanyAdminProfileComponent,  canActivate: [CompanyAdminGuard], },
+  { path: 'updateAdminProfile/:id', component: UpdateAdminProfileComponent, canActivate: [CompanyAdminGuard], },
+  { path: 'companyProfile', component: CompanyProfileComponent, canActivate: [CompanyAdminGuard], },
+  { path: 'createSystemAdmin', component: SystemAdminCreateComponent, canActivate: [AdminGuard],  },
+  { path: 'userProfile', component: UserProfileComponent, canActivate: [AdminGuard],  },
   { path: 'allCompaints', component: AllComplaintComponent },
-  { path: 'allReservations', component: AllReservationsComponent },
-  { path: 'changeSystemAdmin', component: ChangePasswordSystemAdminComponent },
-  { path: 'comapnyProfileReserve/:companyName', component: CompanyReserveComponent },
-  { path: 'defineLoyalityProgram', component: DefineLoyalityProgramComponent },
-  {
-    path: 'comapnyProfileReserve/:companyName',
-    component: CompanyReserveComponent,
-  },
-  { path: 'positionSimulator', component: PositionSimulatorComponent },
-  { path: 'companyAdminHome', component: CompanyAdminHomeComponent},
-  { path: 'companyCustomers', component: CompanyCustomersComponent}
+  { path: 'allReservations', component: AllReservationsComponent, canActivate: [CompanyAdminGuard],  },
+  { path: 'changeSystemAdmin', component: ChangePasswordSystemAdminComponent},
+  { path: 'comapnyProfileReserve/:companyName', component: CompanyReserveComponent, canActivate: [CustomerGuard], },
+  { path: 'defineLoyalityProgram', component: DefineLoyalityProgramComponent, canActivate: [AdminGuard],  },
+  { path: 'positionSimulator', component: PositionSimulatorComponent, canActivate: [CompanyAdminGuard],  },
+  { path: 'companyCustomers', component: CompanyCustomersComponent, canActivate: [CompanyAdminGuard], }
 ];
 
 @NgModule({
