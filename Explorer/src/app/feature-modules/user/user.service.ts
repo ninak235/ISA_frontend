@@ -66,6 +66,7 @@ export class UserService {
   updateAdminProfile(
     updatedProfile: CompanyAdminRegistration
   ): Observable<void> {
+    console.log(updatedProfile)
     return this.http.put<void>(
       environment.apiHost + '/companyAdmin/updateAdmin',
       updatedProfile

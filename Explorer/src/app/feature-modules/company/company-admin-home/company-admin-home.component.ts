@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CompanyAdminBasicModel } from '../../user/model/companyAdminBasicModel';
 import { CompanyService } from '../company.service';
 import { Router } from '@angular/router';
@@ -8,13 +8,16 @@ import { UserService } from '../../user/user.service';
 import { CompanyAdminRegistration } from '../../user/model/companyAdminModel';
 import { CompanyFormComponent } from '../company-form/company-form.component';
 import { Company } from '../model/companyModel';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'xp-company-admin-home',
   templateUrl: './company-admin-home.component.html',
   styleUrls: ['./company-admin-home.component.css']
 })
-export class CompanyAdminHomeComponent implements OnInit{
+export class CompanyAdminHomeComponent implements OnInit, OnDestroy {
+  private ngUnsubscribe = new Subject<void>();
+
   companyAdmin: CompanyAdminBasicModel = {id: 0, companyId: 0};
   company: Company;
   
@@ -23,9 +26,13 @@ export class CompanyAdminHomeComponent implements OnInit{
   ngOnInit(): void {
     this.companyAdmin.id = this.authService.user$.getValue().id;
 
-    this.authService.user$.subscribe(user => {
+    this.authService.user$
+    .pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(user => {
       if(user){
-        this.companyService.getAdmin(user.id).subscribe({
+        this.companyService.getAdmin(user.id)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe({
           next: (admin : CompanyAdminRegistration) => {
             if (admin.id !== undefined) {
               this.companyAdmin.id = admin.id;
@@ -34,7 +41,9 @@ export class CompanyAdminHomeComponent implements OnInit{
             }
             this.companyAdmin.companyId = admin.companyId;
             console.log(this.companyAdmin);
-            this.companyService.getById(this.companyAdmin.companyId).subscribe({
+            this.companyService.getById(this.companyAdmin.companyId)
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe({
               next: (company: Company) => {
                 if (company.id !== undefined) {
                   this.company = company;
@@ -55,7 +64,16 @@ export class CompanyAdminHomeComponent implements OnInit{
       }
     });
 
-
   }
+  
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
+  goToCompanyProfile(): void {
+    this.router.navigate(['/companyProfile/', this.company.name]);
+}
+
 
 }
