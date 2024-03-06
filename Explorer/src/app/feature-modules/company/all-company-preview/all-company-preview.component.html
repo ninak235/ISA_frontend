@@ -1,0 +1,69 @@
+<div class="form-container">
+  <div class="search-container">
+    <button class="add-button" *ngIf="!renderCreateCompany" (click)="onAddCompany()" color="primary">
+      Add new company
+    </button>
+    <input class="blueSearch" type="text" class="search-input" placeholder="Search name or address..." [(ngModel)]="searchValue" (ngModelChange)="onSearchChange()">
+    <button class="search-button">Search</button>
+    <select id="gradeSelect" [(ngModel)]="selectedGrade" (change)="onGradeChange()">
+      <option *ngIf="!selectedGrade" value="" disabled selected>Select Grade</option>
+      <option value="A">A</option>
+      <option value="B">B</option>
+      <option value="C">C</option>
+      <option value="D">D</option>
+      <option value="E">E</option>
+      <option value="F">F</option>
+    </select>
+    <select id="sortCriteriumSelect" [(ngModel)]="sortCriteriumSelected" (change)="onCriteriumChange()">
+      <option *ngIf="!sortCriteriumSelected" value="" disabled selected>Select sort parameter</option>
+      <option value="sortName">Company name A-Z</option>
+      <option value="sortCity">City A-Z</option>
+      <option value="sortGradeH">Grade (from highest)</option>
+      <option value="sortGradeL">Grade (from lowest)</option>
+    </select>
+  </div>
+  <div>
+
+    <xp-company-form class="formAdding" *ngIf="renderCreateCompany" (addCompanyClicked)="onAddCompanyClicked()" [company]="selectedCompany" [shouldEdit]="shouldEdit" [oldCompanyName]="oldCompanyName"></xp-company-form>
+
+  <div class="available-company-container" *ngIf="companies">
+    <div class="company-container" *ngFor="let company of filteredCompanies">
+      
+      <h2>{{ company.name }}</h2>
+      <p><strong>📍 </strong>{{ company?.locationDto?.address }}, {{ company?.locationDto?.city }}, {{ company?.locationDto?.country }}</p>
+      <p><strong>Description:</strong>{{ company.description }}</p>
+      <p><strong>Grade:</strong>{{ company.grade }}</p>
+      <div *ngIf="
+          company.equipmentSet && company.equipmentSet.length > 0;
+          else noEquipment
+        ">
+        <h3 class="blue"><strong>🩺 Equipment:</strong></h3>
+        <ul>
+          <li *ngFor="let equipment of company.equipmentSet" class="equipment-item">
+            <strong>Name:</strong>{{ equipment.name }}<br />
+            <strong>Description:</strong> {{ equipment.description }}<br />
+            <strong>Type:</strong> {{ equipment.typeOfEquipment }}<br />
+            <strong>Grade:</strong> {{ equipment.grade }}<br />
+            <strong>Price:</strong> {{ equipment.price }}<br />
+          </li>
+        </ul>
+      </div>
+      <ng-template #noEquipment>
+        <h3 class="blue"><strong>🩺 Equipment:</strong></h3>
+        <br />
+        Coming soon!
+      </ng-template>
+      <div class="divButton">
+        <!--<button class="buttonPen" (click)="onEditCompanyClicked(company)" *ngIf="companyAdmin.companyId == company.id" color="primary" mat-icon-button>
+        <mat-icon>edit</mat-icon>
+      </button>-->
+      
+      <button class="contractClass" (click)="seeCompanyContracts(company)"  *ngIf="companyAdmin.companyId == company.id">See contracts</button>
+      <button class="buttonPen" *ngIf="!tooManyPenaltyPoints && isCustomer" (click)="onReserve(company)" color="primary" mat-icon-button>
+        <mat-icon>add_shopping_cart</mat-icon>
+      </button>
+    </div>
+    </div>
+  </div>
+
+</div>

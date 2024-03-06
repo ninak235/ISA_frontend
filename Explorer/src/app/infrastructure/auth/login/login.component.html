@@ -1,16 +1,17 @@
-<form [formGroup]="loginForm" (ngSubmit)="login()">
-    <div>
-        <mat-form-field>
-            <mat-label>Username</mat-label>
-            <input matInput formControlName="username" type="text"/>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Password</mat-label>
-            <input matInput formControlName="password" type="password"/>
-        </mat-form-field>
-    <button color="primary" type="submit" mat-raised-button>Login</button>
-    <p>Don't have an account yet?<a href="/register">Sign Up</a></p>
-    </div>
-</form>
-
-
+<!-- Dodajte ovu klasu "form-container" vašem divu -->
+<div class="form-container">
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <div class="div">
+    <mat-form-field>
+      <mat-label>User Name</mat-label>
+      <input matInput formControlName="userName" type="text" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input matInput formControlName="password" type="password" />
+    </mat-form-field>
+    <button color="primary" type="submit" mat-raised-button click>Login</button>
+    <p class="alink">Don't have an account yet?<a href="/register" class="alink">Sign Up</a></p>
+  </div>
+  </form>
+</div>

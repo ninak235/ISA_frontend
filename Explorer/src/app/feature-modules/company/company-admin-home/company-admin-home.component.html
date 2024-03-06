@@ -1,0 +1,17 @@
+<div class="container">
+    <h1>Welcome to the Company Admin Home Page</h1>
+    <button color="primary" mat-raised-button [routerLink]="['/companyCustomers']">
+        Our customers
+    </button>
+    <button color="primary" mat-raised-button [routerLink]="['/companyAdminHome']">
+        Manage PickUps
+    </button>
+    <button color="primary" mat-raised-button [routerLink]="['/allReservations']">
+        Calendar
+    </button>
+    <button color="primary" mat-raised-button (click)="goToCompanyProfile()">
+        CompanyProfile
+    </button>
+      
+</div>
+  

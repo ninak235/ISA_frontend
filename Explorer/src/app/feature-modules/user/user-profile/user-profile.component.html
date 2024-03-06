@@ -1,0 +1,38 @@
+<div class="form-container1">
+<div *ngIf="user" class="customer-card">
+    <img src="../../../../assets/girl3.png" height="100px" alt="customer-info"/>
+    <div class="customer-info">
+        <div class="info-item">
+            <strong>First Name:</strong> <span>{{ user.firstName }}</span>
+        </div>
+        <div class="info-item">
+            <strong>Last Name:</strong> <span>{{ user.lastName }}</span>
+        </div>
+        <div class="info-item">
+            <strong>Email:</strong> <span>{{ user.email }}</span>
+        </div>
+        <div class="info-item">
+            <strong>Country:</strong> <span>{{ user.country }}</span>
+        </div>
+        <div class="info-item">
+            <strong>City:</strong> <span>{{ user.city }}</span>
+        </div>
+        <div class="info-item">
+            <strong>Number:</strong> <span>{{ user.number }}</span>
+        </div>
+
+        <div class="buttons">
+
+            <button class="button" routerLink="/createSystemAdmin">Add more system admins</button>
+            <button class="button" routerLink="/allCompaints">
+                Replay on complaint
+              </button>
+            </div>
+        
+    </div>
+    
+
+    <!--<xp-all-complaint *ngIf="renderReplayOnComplaint" (replayOnComplaintClicked)="onReplayOnComplaintClicked()"></xp-all-complaint>-->
+    
+</div>
+</div>

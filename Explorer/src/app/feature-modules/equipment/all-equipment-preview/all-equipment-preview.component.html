@@ -1,0 +1,45 @@
+<div>
+    <div class="search-container">
+      <input type="text" class="search-input" placeholder="Search name..." [(ngModel)]="searchValue" (ngModelChange)="onSearchChange()">
+      <select id="gradeSelect" [(ngModel)]="selectedGrade" (change)="onGradeChange()">
+        <option *ngIf="!selectedGrade" value="" disabled selected>Select Grade</option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <option value="D">D</option>
+        <option value="E">E</option>
+        <option value="F">F</option>
+      </select>
+
+      <select id="typeOfEquipmentSelect" [(ngModel)]="selectedTypeOfEquipment" (change)="onTypeChange()">
+        <option *ngIf="!selectedTypeOfEquipment" value="" disabled selected>Select Type</option>
+        <option value="Therapeutic">Therapeutic</option>
+        <option value="Surgical">Surgical</option>
+        <option value="Dental">Dental </option>
+        <option value="Rehabilitation">Rehabilitation</option>
+      </select>
+    </div>
+  
+    <div class="available-company-container" *ngIf="equipments">
+      <div class="company-container" *ngFor="let equipment of filteredEquipments">
+        <h2>{{ equipment.name }}</h2>
+        <p><strong>Description:</strong> {{ equipment.description }}</p>
+        <p><strong>Type:</strong> {{ equipment.typeOfEquipment }}</p>
+        <p><strong>Grade:</strong> {{ equipment.grade }}</p>
+        <p><strong>Price:</strong> {{ equipment.price }}</p>
+
+        <h3><strong>Companies:</strong></h3>
+        <ul>
+          <li *ngFor="let company of equipment.companySet" class="equipment-item">
+            <strong>Name:</strong>{{ company.name }}<br />
+            <strong>Description:</strong> {{ company.description }}<br />
+            <strong>Grade:</strong> {{ company.grade }}<br />
+          </li>
+        </ul>
+      
+        <button>Order now</button>
+      </div>
+    </div>
+
+    
+</div>

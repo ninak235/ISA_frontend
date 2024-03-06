@@ -1,0 +1,45 @@
+/* your.component.css */
+.complaint-form {
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .fields {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .label {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  
+  .input-field {
+    width: 100%;
+  }
+  
+  .button {
+    color: rgb(12, 73, 153);
+    background-color: transparent;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    width: 60px;
+    height: 50px;
+  }
+
+  button:hover {
+    background-color: #acb6d5; /* Boja koja će se prikazati kada korisnik pređe mišem */
+    color: white; /* Opciono, možete postaviti i boju teksta na belu ili drugu vidljivu boju */
+  }
+
+
+  

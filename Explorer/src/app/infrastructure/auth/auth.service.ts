@@ -8,21 +8,26 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { Login } from './model/login.model';
 import { AuthenticationResponse } from './model/authentication-response.model';
 import { User } from './model/user.model';
-import { Registration } from './model/registration.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-  user$ = new BehaviorSubject<User>({username: "", id: 0, role: "" });
+  user$ = new BehaviorSubject<User>({
+    id: 0,
+    username: '',
+    role: { roles: [] },
+  });
 
-  constructor(private http: HttpClient,
+  constructor(
+    private http: HttpClient,
     private tokenStorage: TokenStorage,
-    private router: Router) { }
+    private router: Router
+  ) {}
 
   login(login: Login): Observable<AuthenticationResponse> {
     return this.http
-      .post<AuthenticationResponse>(environment.apiHost + 'users/login', login)
+      .post<AuthenticationResponse>(environment.autHost + '/login', login)
       .pipe(
         tap((authenticationResponse) => {
           this.tokenStorage.saveAccessToken(authenticationResponse.accessToken);
@@ -31,23 +36,17 @@ export class AuthService {
       );
   }
 
-  register(registration: Registration): Observable<AuthenticationResponse> {
-    return this.http
-    .post<AuthenticationResponse>(environment.apiHost + 'users', registration)
-    .pipe(
-      tap((authenticationResponse) => {
-        this.tokenStorage.saveAccessToken(authenticationResponse.accessToken);
-        this.setUser();
-      })
-    );
-  }
-
   logout(): void {
-    this.router.navigate(['/home']).then(_ => {
-      this.tokenStorage.clear();
-      this.user$.next({username: "", id: 0, role: "" });
-      }
-    );
+    console.log('Logout initiated...');
+
+    this.tokenStorage.clear();
+    this.user$.next({ username: '', id: 0, role: { roles: [] } });
+
+    console.log('Before navigate to login');
+    this.router.navigate(['/login']).then(() => {
+      console.log('Navigate to login successful.');
+    });
+    console.log('After navigate to login');
   }
 
   checkIfUserExists(): void {
@@ -60,13 +59,14 @@ export class AuthService {
 
   private setUser(): void {
     const jwtHelperService = new JwtHelperService();
-    const accessToken = this.tokenStorage.getAccessToken() || "";
+    const accessToken = this.tokenStorage.getAccessToken() || '';
+    const rolesArray = jwtHelperService
+      .decodeToken(accessToken)
+      .role.map((role: any) => role.name);
     const user: User = {
       id: +jwtHelperService.decodeToken(accessToken).id,
-      username: jwtHelperService.decodeToken(accessToken).username,
-      role: jwtHelperService.decodeToken(accessToken)[
-        'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-      ],
+      username: jwtHelperService.decodeToken(accessToken).sub,
+      role: { roles: rolesArray },
     };
     this.user$.next(user);
   }

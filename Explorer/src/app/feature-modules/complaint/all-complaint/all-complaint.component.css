@@ -1,0 +1,55 @@
+/* styles.css or your component-specific CSS file */
+
+.complaint-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .single-complaint {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 300px;
+  }
+  
+  .complaint-content {
+    margin-bottom: 10px;
+  }
+  
+  .replay-button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 70px;
+  }
+  
+  .replay-component {
+    margin-top: 20px;
+  }
+  
+  .done-button {
+    margin-top: 20px;
+    background-color: #E33886;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .form-container1 {
+    background-image: url('/assets/back2.jpg'); /* Zamijenite ovu vrednost sa putanjom do vaše slike */
+    background-size: cover; /* Podešavanje da slika pokriva čitavu površinu kontejnera */
+    width: 100%;
+    height: 100vh;
+    color: rgb(12, 73, 153); 
+  }
+  
